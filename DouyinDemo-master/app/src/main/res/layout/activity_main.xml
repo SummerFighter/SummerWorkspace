@@ -5,6 +5,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/black"
+                android:fitsSystemWindows="true"
     >
 
     <android.support.v7.widget.RecyclerView
@@ -107,10 +108,12 @@
             android:textStyle="bold"
             />
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/shoot"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_weight="1"
+            android:background="#00000000"
             android:src="@mipmap/add_bg"
             />
 

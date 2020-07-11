@@ -6,10 +6,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/header_icon_1"
         android:label="@string/app_name"
+        android:resizeableActivity="true"
         android:roundIcon="@mipmap/header_icon_1"
         android:supportsRtl="true"
-        android:resizeableActivity="true"
         android:theme="@style/main_theme">
+        <activity android:name=".ShootActivity"></activity>
         <!-- android 全面屏 -->
         <meta-data
             android:name="android.max_aspect"
@@ -23,5 +24,19 @@
             </intent-filter>
         </activity>
     </application>
+
+    <uses-permission
+        android:name="android.permission.RECORD_AUDIO">
+    </uses-permission>
+
+    <uses-permission
+        android:name="android.permission.CAMERA">
+    </uses-permission>
+
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
 </manifest>

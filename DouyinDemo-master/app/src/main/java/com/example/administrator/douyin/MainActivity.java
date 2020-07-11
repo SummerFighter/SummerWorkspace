@@ -2,10 +2,12 @@ package com.example.administrator.douyin;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +15,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.VideoView;
@@ -24,12 +29,32 @@ public class MainActivity extends AppCompatActivity {
     private MyAdapter mAdapter;
     MyLayoutManager2 myLayoutManager;
 
+    private ImageButton ShootButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ShootButton = (ImageButton) findViewById(R.id.shoot);
+        ShootButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,ShootActivity.class);
+                startActivity(intent);
+            }
+        });
         initView();
         initListener();
+        initState();
+    }
+
+    private void initState() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //透明导航栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
     }
 
     private void initView() {
@@ -76,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
         图片文件存储在res/mipmap-xxhdpi中
         视频文件存储在res/raw中*/
 
-        private int[] imgs = {R.mipmap.img_video_1, R.mipmap.img_video_2, R.mipmap.img_video_3};
-        private int[] videos = {R.raw.video_1, R.raw.video_2, R.raw.video_3};
+        private int[] imgs = {R.mipmap.img_video_3, R.mipmap.img_video_2, R.mipmap.img_video_1};
+        private int[] videos = {R.raw.video_3, R.raw.video_2, R.raw.video_1};
         private int index = 0;
         private Context mContext;
 
