@@ -6,6 +6,15 @@
     android:orientation="vertical"
     tools:context="com.example.administrator.douyin.ShootActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        >
+
+    </RelativeLayout>
+
     <!-- 开始录制按钮 -->
     <Button
         android:id="@+id/startRecord"
