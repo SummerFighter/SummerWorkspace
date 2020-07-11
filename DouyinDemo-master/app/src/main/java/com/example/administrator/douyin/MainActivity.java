@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         ShootButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,ShootActivity.class);
+                Intent intent = new Intent(MainActivity.this,PlayVideoActivity.class);
                 startActivity(intent);
             }
         });
