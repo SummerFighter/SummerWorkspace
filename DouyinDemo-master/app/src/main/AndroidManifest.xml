@@ -19,14 +19,17 @@
         android:roundIcon="@mipmap/header_icon_1"
         android:supportsRtl="true"
         android:theme="@style/main_theme">
-        <activity android:name=".UploadActivity"></activity>
+        <activity android:name=".PersonInfo"></activity>
+        <activity android:name=".Register" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".UploadActivity" />
         <activity android:name=".PlayVideoActivity" />
         <activity android:name=".ShootActivity" /> <!-- android 全面屏 -->
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

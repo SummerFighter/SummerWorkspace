@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 
@@ -35,14 +37,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        String userName = intent.getStringExtra("user");
+        Toast.makeText(MainActivity.this, "Hello！ " + userName, Toast.LENGTH_SHORT).show();
+
         ShootButton = (ImageButton) findViewById(R.id.shoot);
         ShootButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,PlayVideoActivity.class);
+                Intent intent = new Intent(MainActivity.this, PlayVideoActivity.class);
                 startActivity(intent);
             }
         });
+        TextView myInfoTextView = (TextView)findViewById(R.id.myInfo);
+        myInfoTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, PersonInfo.class);
+                startActivity(intent);
+            }
+        });
+
         initView();
         initListener();
         initState();
