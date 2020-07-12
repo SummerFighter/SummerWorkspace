@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class PersonInfo extends AppCompatActivity {
 
     private TextView tz;
-    private Button bianjzl;
+    private Button editinfo;
     private ImageView ht;
     private TextView sy;
     private TextView gz;
@@ -27,11 +27,20 @@ public class PersonInfo extends AppCompatActivity {
                 asdasd();
             }
         });
-
+        editinfo = findViewById(R.id.editinfo);
+        editinfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditInfo();
+            }
+        });
     }
     public void asdasd() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-
+    public void EditInfo() {
+        Intent intent = new Intent(this, EditMyinfo.class);
+        startActivity(intent);
+    }
 }

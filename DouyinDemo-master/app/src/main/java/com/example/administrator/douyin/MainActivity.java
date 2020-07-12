@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         图片文件存储在res/mipmap-xxhdpi中
         视频文件存储在res/raw中*/
 
-        private int[] imgs = {R.mipmap.img_video_3, R.mipmap.img_video_2, R.mipmap.img_video_1};
+        private int[] imgs = {R.mipmap.bk, R.mipmap.bk, R.mipmap.bk};
         private int[] videos = {R.raw.video_3, R.raw.video_2, R.raw.video_1};
         private int index = 0;
         private Context mContext;
