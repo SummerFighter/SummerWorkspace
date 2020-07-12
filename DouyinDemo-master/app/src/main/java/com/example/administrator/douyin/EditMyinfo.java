@@ -5,10 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class EditMyinfo extends AppCompatActivity  {
 
-    private Button fh;
+    private Button fh,okBtn;
+    EditText editname;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,9 +23,23 @@ public class EditMyinfo extends AppCompatActivity  {
                 pasdwadf();
             }
         });
+
+        okBtn = findViewById(R.id.ok);
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                store();
+            }
+        });
     }
     public void pasdwadf(){
         Intent intent=new Intent(this,PersonInfo.class);
         startActivity(intent);
     }
+    public void store(){
+        Intent intent=new Intent(this,PersonInfo.class);
+        startActivity(intent);
+    }
+
+
 }

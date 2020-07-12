@@ -22,14 +22,15 @@
         tools:layout_editor_absoluteY="6dp" />
 
     <TextView
+        android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/imageButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="19dp"
+        android:layout_marginBottom="5dp"
         android:text="点击更换头像"
         android:textColor="#ffffff"
-        android:id="@+id/textView16" />
+         />
 
     <TextView
         android:id="@+id/textView3"
@@ -55,7 +56,7 @@
         android:layout_marginStart="29dp"
         android:layout_marginLeft="29dp"
         android:layout_marginTop="15dp"
-        android:text="抖音号"
+        android:text="账号"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
@@ -88,16 +89,18 @@
         android:textSize="18sp" />
 
     <TextView
+        android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/textView6"
         android:layout_alignEnd="@+id/textView3"
         android:layout_alignRight="@+id/textView3"
-        android:layout_below="@+id/textView6"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="2dp"
         android:text="生日"
         android:textColor="#ffffff"
-        android:textSize="18sp"
-        android:id="@+id/textView7" />
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -111,7 +114,7 @@
         android:textSize="18sp"
         android:id="@+id/textView8" />
 
-    <TextView
+    <EditText
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -119,11 +122,11 @@
         android:layout_alignBottom="@+id/textView3"
         android:layout_alignEnd="@+id/textView18"
         android:layout_alignRight="@+id/textView18"
-        android:text="可乐 >"
+        android:hint="请输入你的用户名"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
-    <TextView
+    <EditText
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -131,11 +134,11 @@
         android:layout_alignBottom="@+id/textView4"
         android:layout_alignEnd="@+id/textView14"
         android:layout_alignRight="@+id/textView14"
-        android:text="夏天热热 >"
+        android:hint="请输入你的账号"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
-    <TextView
+    <EditText
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -143,37 +146,54 @@
         android:layout_alignBottom="@+id/textView5"
         android:layout_alignEnd="@+id/textView9"
         android:layout_alignRight="@+id/textView9"
-        android:text="武汉大学>"
+        android:hint="请输入你的学校"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
-    <TextView
+    <RadioGroup
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView6"
-        android:layout_alignBottom="@+id/textView6"
+        android:layout_alignBaseline="@+id/textView14"
+        android:layout_alignBottom="@+id/textView14"
         android:layout_marginStart="101dp"
         android:layout_marginLeft="101dp"
         android:layout_marginBottom="-10dp"
         android:layout_toEndOf="@+id/imageButton"
         android:layout_toRightOf="@+id/imageButton"
-        android:text="男 >"
+        android:text="男 "
         android:textColor="#ffffff"
-        android:textSize="18sp" />
+        android:textSize="18sp">
 
-    <TextView
+        <RadioButton
+            android:id="@+id/man"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView14"
+            android:text="男"
+            android:textColor="#D5D0D0"
+            android:textColorHint="#EFE9E9" />
+
+        <RadioButton
+            android:id="@+id/woman"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="女"
+            android:textColor="#DACDCD" />
+    </RadioGroup>
+
+    <EditText
         android:id="@+id/textView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/textView8"
         android:layout_alignEnd="@+id/textView9"
         android:layout_alignRight="@+id/textView9"
-        android:text="10 08 >"
+        android:hint="请输入你的生日"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
-    <TextView
+    <EditText
         android:id="@+id/textView15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -181,7 +201,7 @@
         android:layout_alignBottom="@+id/textView8"
         android:layout_alignEnd="@+id/textView17"
         android:layout_alignRight="@+id/textView17"
-        android:text="武汉 >"
+        android:hint="请输入你的地区"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
@@ -212,13 +232,20 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="22dp"
         android:background="@mipmap/head" />
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView15"
+        android:layout_marginTop="53dp"
+        android:text="保存" />
 
     <Button
         android:id="@+id/fh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView15"
-        android:layout_marginTop="53dp"
+        android:layout_below="@+id/ok"
+        android:layout_marginTop="1dp"
         android:text="返回" />
 
 
