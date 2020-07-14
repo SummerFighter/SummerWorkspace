@@ -47,12 +47,14 @@
                 />
         </LinearLayout>
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/tosearch"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="16dp"
             android:layout_centerVertical="true"
+            android:background="#00000000"
             android:src="@mipmap/search_icon"
             android:tint="#f2f2f2"
             />

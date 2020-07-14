@@ -32,6 +32,14 @@ public class MainActivity extends AppCompatActivity {
     MyLayoutManager2 myLayoutManager;
 
     private ImageButton ShootButton;
+    private ImageButton SearchButton;
+
+    /*这里的imgs数组指定视频封面文件名，videos数组指定视频文件名，两个数组的元素按顺序对应
+        图片文件存储在res/mipmap-xxhdpi中
+        视频文件存储在res/raw中*/
+    private int[] imgs = {R.mipmap.img_video_3, R.mipmap.img_video_2, R.mipmap.img_video_1};
+    private int[] videos = {R.raw.video_3, R.raw.video_2, R.raw.video_1};
+    private int index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +55,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, PlayVideoActivity.class);
+                startActivity(intent);
+            }
+        });
+        SearchButton = (ImageButton) findViewById(R.id.tosearch);
+        SearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
             }
         });
@@ -112,14 +128,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-
-        /*这里的imgs数组指定视频封面文件名，videos数组指定视频文件名，两个数组的元素按顺序对应
-        图片文件存储在res/mipmap-xxhdpi中
-        视频文件存储在res/raw中*/
-
-        private int[] imgs = {R.mipmap.img_video_3, R.mipmap.img_video_2, R.mipmap.img_video_1};
-        private int[] videos = {R.raw.video_3, R.raw.video_2, R.raw.video_1};
-        private int index = 0;
         private Context mContext;
 
         public MyAdapter(Context context) {
