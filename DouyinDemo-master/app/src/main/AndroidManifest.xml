@@ -20,7 +20,6 @@
         android:supportsRtl="true"
         android:theme="@style/main_theme">
         <activity android:name=".MainActivity2"></activity>
-        <activity android:name=".SearchResultActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".PersonInfo" />
         <activity android:name=".Register" />
