@@ -28,7 +28,7 @@
         <activity android:name=".UploadActivity" />
         <activity android:name=".PlayVideoActivity" />
         <activity android:name=".EditMyinfo" />
-        <activity android:name=".ShootActivity" /> <!-- android 全面屏 -->
+        <activity android:name=".ShootActivity" />
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
