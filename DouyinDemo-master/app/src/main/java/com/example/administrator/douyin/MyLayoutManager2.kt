@@ -1,10 +1,11 @@
 package com.example.administrator.douyin
 
 import android.content.Context
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.PagerSnapHelper
-import android.support.v7.widget.RecyclerView
+
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  *  @desc
@@ -32,7 +33,7 @@ class MyLayoutManager2 : LinearLayoutManager, RecyclerView.OnChildAttachStateCha
     }
 
 
-    override fun onChildViewDetachedFromWindow(view: View?) {
+    override fun onChildViewDetachedFromWindow(view: View) {
         val position = getPosition(view)
         if (0 < diffY) {
             viewPagerListener?.onPageRelease(true, position)
@@ -41,7 +42,7 @@ class MyLayoutManager2 : LinearLayoutManager, RecyclerView.OnChildAttachStateCha
         }
     }
 
-    override fun onChildViewAttachedToWindow(view: View?) {
+    override fun onChildViewAttachedToWindow(view: View) {
 
         val position = getPosition(view)
         if (0 == position) {
@@ -54,8 +55,9 @@ class MyLayoutManager2 : LinearLayoutManager, RecyclerView.OnChildAttachStateCha
     override fun onScrollStateChanged(state: Int) {
         if (RecyclerView.SCROLL_STATE_IDLE == state) {
             val view = pagerSpaner!!.findSnapView(this)
-            val position = getPosition(view)
+            val position = getPosition(view!!)
             viewPagerListener?.onPageSelected(position, position == itemCount - 1)
+
         }
         super.onScrollStateChanged(state)
     }

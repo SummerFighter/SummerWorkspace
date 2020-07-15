@@ -1,13 +1,15 @@
 package com.example.administrator.douyin;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class EditMyinfo extends AppCompatActivity  {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class EditMyinfo extends AppCompatActivity {
 
     private Button fh,okBtn;
     EditText editname;
