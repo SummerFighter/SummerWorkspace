@@ -19,6 +19,7 @@
         android:roundIcon="@mipmap/header_icon_1"
         android:supportsRtl="true"
         android:theme="@style/main_theme">
+
         <activity android:name=".MainActivity2"></activity>
         <activity android:name=".SearchActivity" />
         <activity android:name=".PersonInfo" />
@@ -26,6 +27,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".UploadActivity" />
         <activity android:name=".PlayVideoActivity" />
+        <activity android:name=".EditMyinfo" />
         <activity android:name=".ShootActivity" /> <!-- android 全面屏 -->
         <meta-data
             android:name="android.max_aspect"

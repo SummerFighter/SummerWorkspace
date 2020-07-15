@@ -75,6 +75,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //在这里获取视频和封面
+
+
+
+
+        
         initView();
         initListener();
         initState();
@@ -128,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+
         private Context mContext;
 
         public MyAdapter(Context context) {
