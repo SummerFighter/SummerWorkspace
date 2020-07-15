@@ -8,33 +8,99 @@
     android:background="@android:color/black"
     tools:context="com.example.administrator.douyin.UploadActivity">
 
-    <TextView
-        android:id="@+id/last"
-        android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="100dp"
-        android:text="最后一步"
-        android:textSize="60dp"
-        android:textColor="@android:color/holo_orange_light"
-        android:gravity="center"
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rg"
+        android:orientation="vertical"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="24dp"
+        android:background="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-        />
+        app:layout_constraintTop_toTopOf="parent">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="音乐"
+            android:textColor="@android:color/white"
+            android:id="@+id/music_rb"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="影视"
+            android:textColor="@android:color/white"
+            android:id="@+id/movie_rb"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="社会"
+            android:textColor="@android:color/white"
+            android:id="@+id/society_rb"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="游戏"
+            android:textColor="@android:color/white"
+            android:id="@+id/game_rb"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="美食"
+            android:textColor="@android:color/white"
+            android:id="@+id/food_rb"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="儿童"
+            android:textColor="@android:color/white"
+            android:id="@+id/child_rb"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="生活"
+            android:textColor="@android:color/white"
+            android:id="@+id/live_rb"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="体育"
+            android:textColor="@android:color/white"
+            android:id="@+id/PE_rb"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="文化"
+            android:textColor="@android:color/white"
+            android:id="@+id/culture_rb"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="时尚"
+            android:textColor="@android:color/white"
+            android:id="@+id/fashion_rb"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="科技"
+            android:textColor="@android:color/white"
+            android:id="@+id/science_rb"/>
+    </RadioGroup>
 
     <EditText
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="24dp"
         android:hint="请输入视频名称"
         android:selectAllOnFocus="true"
         android:background="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/last" />
+        app:layout_constraintTop_toBottomOf="@+id/rg" />
 
     <EditText
         android:id="@+id/describe"

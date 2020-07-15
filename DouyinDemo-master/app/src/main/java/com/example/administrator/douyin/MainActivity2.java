@@ -24,63 +24,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity2 extends AppCompatActivity {
     private static final String TAG = "douyin";
     private RecyclerView mRecyclerView;
-    private MyAdapter mAdapter;
+    private MainActivity2.MyAdapter2 mAdapter;
     MyLayoutManager2 myLayoutManager;
 
-    private ImageButton ShootButton;
-    private ImageButton SearchButton;
-
-    /*这里的imgs数组指定视频封面文件名，videos数组指定视频文件名，两个数组的元素按顺序对应
-        图片文件存储在res/mipmap-xxhdpi中
-        视频文件存储在res/raw中*/
-    private int[] imgs = {R.mipmap.img_video_3, R.mipmap.img_video_2, R.mipmap.img_video_1};
-    private int[] videos = {R.raw.video_3, R.raw.video_2, R.raw.video_1};
-    private int index = 0;
+    private int[] imgs;
+    private int[] videos;
+    private int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
 
-        Intent intent = getIntent();
-        String userName = intent.getStringExtra("user");
-        Toast.makeText(MainActivity.this, "Hello！ " + userName, Toast.LENGTH_SHORT).show();
+        final Intent intent = getIntent();
+        index = intent.getIntExtra("index",0);
+        imgs = intent.getIntArrayExtra("img");
+        videos = intent.getIntArrayExtra("video");
 
-        ShootButton = (ImageButton) findViewById(R.id.shoot);
-        ShootButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, PlayVideoActivity.class);
-                startActivity(intent);
-            }
-        });
-        SearchButton = (ImageButton) findViewById(R.id.tosearch);
-        SearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(intent);
-            }
-        });
-        TextView myInfoTextView = (TextView)findViewById(R.id.myInfo);
-        myInfoTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, PersonInfo.class);
-                startActivity(intent);
-            }
-        });
-
-        //在这里获取视频和封面
-
-
-
-
-        
         initView();
         initListener();
         initState();
@@ -99,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recycler);
         myLayoutManager = new MyLayoutManager2(this, OrientationHelper.VERTICAL, false);
 
-        mAdapter = new MyAdapter(this);
+        mAdapter = new MainActivity2.MyAdapter2(this);
         mRecyclerView.setLayoutManager(myLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -133,23 +96,22 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-
+    class MyAdapter2 extends RecyclerView.Adapter<MainActivity2.MyAdapter2.ViewHolder> {
         private Context mContext;
 
-        public MyAdapter(Context context) {
+        public MyAdapter2(Context context) {
             this.mContext = context;
         }
 
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public MainActivity2.MyAdapter2.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_pager, parent, false);
-            return new ViewHolder(view);
+            return new MainActivity2.MyAdapter2.ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(MainActivity2.MyAdapter2.ViewHolder holder, int position) {
             holder.img_thumb.setImageResource(imgs[index]);
             holder.videoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + videos[index]));
             index++;
@@ -233,5 +195,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 }
