@@ -1,5 +1,6 @@
 package com.example.administrator.douyin;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -8,9 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.OrientationHelper;
-import android.support.v7.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +22,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.OrientationHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity2 extends AppCompatActivity {
     private static final String TAG = "douyin";
@@ -58,6 +61,7 @@ public class MainActivity2 extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("WrongConstant")
     private void initView() {
         mRecyclerView = findViewById(R.id.recycler);
         myLayoutManager = new MyLayoutManager2(this, OrientationHelper.VERTICAL, false);

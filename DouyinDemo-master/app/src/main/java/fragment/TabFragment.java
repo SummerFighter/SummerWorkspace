@@ -25,10 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
 import adapter.VideoAdapter;
 import skeleton.Skeleton;
 import skeleton.SkeletonScreen;
-
+/*
+* 作品、动态、我的喜欢
+* */
 public class TabFragment extends Fragment implements VideoAdapter.OnItemClickListener {
 
     private SkeletonScreen mSkeletonScreen;

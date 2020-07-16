@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by ethanhua on 2017/8/2.
+ *
  */
 
 public class ViewReplacer {

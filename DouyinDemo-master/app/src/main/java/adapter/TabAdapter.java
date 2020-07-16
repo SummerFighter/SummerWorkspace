@@ -1,5 +1,6 @@
 package adapter;
 
+
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,9 @@ import java.util.List;
 import model.TabItemModel;
 
 
+/*
+*
+* */
 public class TabAdapter extends FragmentPagerAdapter {
 
 

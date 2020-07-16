@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 
 /**
- * @author kakrot
+ *
  * 顶部下拉图片放大回弹效果
  */
 public class ScaleScrollView extends NestedScrollView {

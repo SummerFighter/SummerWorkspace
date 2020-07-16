@@ -10,9 +10,9 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-
-import com.example.administrator.douyin.R;
+/*
+* 播放我的作品、动态、喜欢类
+* */
 
 public class DetailActivity extends AppCompatActivity {
 

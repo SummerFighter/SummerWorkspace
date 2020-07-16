@@ -182,8 +182,6 @@ public class ShimmerLayout extends FrameLayout {
     /**
      * Set the angle of the shimmer effect in clockwise direction in degrees.
      * The angle must be between {@value #MIN_ANGLE_VALUE} and {@value #MAX_ANGLE_VALUE}.
-     *
-     * @param angle The angle to be set
      */
     public void setShimmerAngle(int angle) {
         if (angle < MIN_ANGLE_VALUE || MAX_ANGLE_VALUE < angle) {
@@ -199,8 +197,6 @@ public class ShimmerLayout extends FrameLayout {
      * Sets the width of the shimmer line to a value higher than 0 to less or equal to 1.
      * 1 means the width of the shimmer line is equal to half of the width of the ShimmerLayout.
      * The default value is 0.5.
-     *
-     * @param maskWidth The width of the shimmer line.
      */
     public void setMaskWidth(float maskWidth) {
         if (maskWidth <= MIN_MASK_WIDTH_VALUE || MAX_MASK_WIDTH_VALUE < maskWidth) {
@@ -216,8 +212,6 @@ public class ShimmerLayout extends FrameLayout {
      * Sets the width of the center gradient color to a value higher than 0 to less than 1.
      * 0.99 means that the whole shimmer line will have this color with a little transparent edges.
      * The default value is 0.1.
-     *
-     * @param gradientCenterColorWidth The width of the center gradient color.
      */
     public void setGradientCenterColorWidth(float gradientCenterColorWidth) {
         if (gradientCenterColorWidth <= MIN_GRADIENT_CENTER_COLOR_WIDTH_VALUE

@@ -7,7 +7,7 @@ import androidx.annotation.IntRange;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * Created by ethanhua on 2017/7/29.
+ *
  */
 
 public class SkeletonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

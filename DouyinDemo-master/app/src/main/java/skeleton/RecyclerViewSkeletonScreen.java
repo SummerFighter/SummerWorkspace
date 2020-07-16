@@ -12,7 +12,7 @@ import com.example.administrator.douyin.R;
 
 
 /**
- * Created by ethanhua on 2017/7/29.
+ *循环
  */
 
 public class RecyclerViewSkeletonScreen implements skeleton.SkeletonScreen {

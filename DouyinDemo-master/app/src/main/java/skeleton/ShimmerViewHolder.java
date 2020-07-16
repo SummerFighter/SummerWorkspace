@@ -10,7 +10,7 @@ import com.example.administrator.douyin.R;
 
 
 /**
- * Created by ethanhua on 2017/7/29.
+ *
  */
 
 public class ShimmerViewHolder extends RecyclerView.ViewHolder {

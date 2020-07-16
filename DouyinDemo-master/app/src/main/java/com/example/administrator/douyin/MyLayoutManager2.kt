@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 
 /**
- *  @desc
- *  @auth ${user}
- *  @time 2018/8/9  15:38
+ *
+ *
+ *
  */
 class MyLayoutManager2 : LinearLayoutManager, RecyclerView.OnChildAttachStateChangeListener {
 

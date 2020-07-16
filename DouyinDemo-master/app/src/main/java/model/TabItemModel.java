@@ -1,7 +1,9 @@
 package model;
 
 import android.os.Bundle;
-
+/*
+*
+* */
 public class TabItemModel {
 
     private CharSequence title;

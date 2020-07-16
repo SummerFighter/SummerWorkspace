@@ -3,7 +3,9 @@ package com.example.administrator.douyin;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.VideoView;
-
+/*
+* 播放窗口全屏类
+* */
 public class FullWindowVideoView extends VideoView {
 
     public FullWindowVideoView(Context context) {

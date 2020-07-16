@@ -26,7 +26,9 @@ import fragment.TabFragment;
 import widget.FullViewPager;
 import widget.ScaleScrollView;
 import widget.TitleLayout;
-
+/*
+* 个人信息类
+* */
 
 public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnScrollChangeListener {
 
@@ -105,9 +107,9 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
 
     private List<model.TabItemModel> getTabs() {
         List<model.TabItemModel> tabs = new ArrayList<>();
-        tabs.add(new model.TabItemModel("作品30", TabFragment.class.getName(), null));
-        tabs.add(new model.TabItemModel("动态30", TabFragment.class.getName(), null));
-        tabs.add(new model.TabItemModel("喜欢30", TabFragment.class.getName(), null));
+        tabs.add(new model.TabItemModel("作品10", TabFragment.class.getName(), null));
+        tabs.add(new model.TabItemModel("动态10", TabFragment.class.getName(), null));
+        tabs.add(new model.TabItemModel("喜欢999", TabFragment.class.getName(), null));
         return tabs;
     }
 
