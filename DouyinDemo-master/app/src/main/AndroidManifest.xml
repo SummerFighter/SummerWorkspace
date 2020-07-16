@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
-
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-feature
         android:name="android.hardware.camera2"
         android:required="true" />
@@ -18,8 +18,8 @@
         android:resizeableActivity="true"
         android:roundIcon="@mipmap/header_icon_1"
         android:supportsRtl="true"
+        android:networkSecurityConfig="@xml/network_config"
         android:theme="@style/main_theme">
-
 
         <activity android:name=".MainActivity2"></activity>
         <activity android:name=".SearchActivity" />

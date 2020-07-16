@@ -11,10 +11,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import Controller.HttpUtil;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class Register extends Activity implements View.OnClickListener{
 
@@ -43,7 +49,6 @@ public class Register extends Activity implements View.OnClickListener{
         final String username1 = user.getText().toString().trim();
         final String password1 = pw.getText().toString().trim();
         final String password2 = pw2.getText().toString().trim();
-        final String serverPath = "http://47.95.193.106:8080/ServletTest/register";
 
         if (TextUtils.isEmpty(username1) || TextUtils.isEmpty(password1) || TextUtils.isEmpty(password2)) {
             Toast.makeText(Register.this, "请输入用户名，密码和确认密码！！！", Toast.LENGTH_SHORT).show();
@@ -51,47 +56,7 @@ public class Register extends Activity implements View.OnClickListener{
             if (!(password1.equals(password2))) {
                 Toast.makeText(Register.this, "两次输入的密码不同，请重新输入！！！", Toast.LENGTH_SHORT).show();
             } else {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            //使用GET方式请求服务器只能这样
-                            URL url = new URL(serverPath + "?username=" + username1 + "&password=" + password1);
-                            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                            httpURLConnection.setRequestMethod("GET");
-                            httpURLConnection.setConnectTimeout(5000);
-                            httpURLConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:22.0) Gecko/20100101 Firefox/22.0");
-                            final int responseCode = httpURLConnection.getResponseCode();
-                            if (200 == responseCode) {
-                                InputStream inputStream = httpURLConnection.getInputStream();
-                                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-                                final String responseMsg = bufferedReader.readLine();
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (responseMsg.equals("equal")){
-                                            Toast.makeText(Register.this, "账号存在，请更改用户名！！", Toast.LENGTH_LONG).show();
 
-                                        }else if(responseMsg.equals("true")){
-                                            Toast.makeText(Register.this, "注册成功！", Toast.LENGTH_LONG).show();
-                                            Intent intent=new Intent(Register.this,Login.class);
-                                            startActivity(intent);
-                                        }else {
-                                            Toast.makeText(Register.this, "注册失败！", Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-                                });
-                                bufferedReader.close();
-                                httpURLConnection.disconnect();
-                            } else {
-                                //提示错误报告
-                                Toast.makeText(Register.this,"responseCode = " + responseCode,Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
             }
         }
     }

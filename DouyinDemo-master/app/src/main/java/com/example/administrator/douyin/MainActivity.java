@@ -27,9 +27,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import Controller.HttpUtil;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "douyin";
+
+    private JSONArray videoJsonArray = null;//获取的视频解析数组
+
     private RecyclerView mRecyclerView;
     private MyAdapter mAdapter;
     MyLayoutManager2 myLayoutManager;
@@ -48,10 +63,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Intent intent = getIntent();
-        String userName = intent.getStringExtra("user");
-        Toast.makeText(MainActivity.this, "Hello！ " + userName, Toast.LENGTH_SHORT).show();
 
         ShootButton = (ImageButton) findViewById(R.id.shoot);
         ShootButton.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +93,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+        //开启子线程获取视频信息
+        getVideoJSONArray();
         
         initView();
         initListener();
@@ -103,10 +115,12 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recycler);
         myLayoutManager = new MyLayoutManager2(this, OrientationHelper.VERTICAL, false);
 
-        mAdapter = new MyAdapter(this);
         mRecyclerView.setLayoutManager(myLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+    }
 
+    private void loadAdapter(){
+        mAdapter = new MyAdapter(this);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void initListener() {
@@ -154,12 +168,25 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
+            String urlVideo="";
+            try {
+                urlVideo=videoJsonArray.getJSONObject(index).getString("url");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Toast.makeText(MainActivity.this,"视频地址"+urlVideo,Toast.LENGTH_LONG).show();
+            holder.videoView.setVideoURI(Uri.parse(urlVideo));
+            index++;
+            if(index>=videoJsonArray.length())
+                index=0;
+            /*
             holder.img_thumb.setImageResource(imgs[index]);
             holder.videoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + videos[index]));
             index++;
             if (index >= imgs.length) {
                 index = 0;
             }
+            */
         }
 
         @Override
@@ -234,6 +261,38 @@ public class MainActivity extends AppCompatActivity {
                     videoView.start();
                     isPlaying = true;
                 }
+            }
+        });
+    }
+
+    private void getVideoJSONArray(){
+        final String userAccount= getSharedPreferences("info1.txt", MODE_PRIVATE).getString("account","0");
+        HttpUtil.getRecommendVideo(userAccount,new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                final String responseData = response.body().string();
+                try {
+                    videoJsonArray=new JSONObject(responseData).getJSONArray("videos");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this,"连接成功，正在解析视频数据！！！",Toast.LENGTH_LONG).show();
+                        loadAdapter();
+                    }
+                });
+            }
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this,"连接失败,播放本地视频！！！",Toast.LENGTH_LONG).show();
+                        //暂时不写
+                    }
+                });
             }
         });
     }

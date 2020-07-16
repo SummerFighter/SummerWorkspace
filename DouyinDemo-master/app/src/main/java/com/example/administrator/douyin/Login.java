@@ -14,10 +14,17 @@ import android.widget.Toast;
 
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import Controller.HttpUtil;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+
 /*
 * 登录
 * */
@@ -55,70 +62,51 @@ public class Login extends Activity{
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String username = accountEdit.getText().toString();
+                final String account = accountEdit.getText().toString();
                 final String password = passwordEdit.getText().toString();
-                //服务器ip地址
-                final String serverPath = "http://47.95.193.106:8080/ServletTest/login";
-                if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-                    Toast.makeText(Login.this,"用户名或密码不能为空！",Toast.LENGTH_SHORT).show();
+
+                if (TextUtils.isEmpty(account) || TextUtils.isEmpty(password)) {
+                    Toast.makeText(Login.this,"账号或密码不能为空！",Toast.LENGTH_SHORT).show();
                 }
                 else {
                     editor = sp.edit();
                     if (rememberPass.isChecked()) {
                         editor.putBoolean("remember_password", true);
-                        editor.putString("account", username);
+                        editor.putString("account", account);
                         editor.putString("password", password);
                     } else {
                         editor.clear();
                     }
                     editor.commit();
-
-                    Intent mainIntent=new Intent(Login.this,MainActivity.class);
-                    String nameMessage = accountEdit.getText().toString();
-                    mainIntent.putExtra("user", nameMessage);
-                    startActivity(mainIntent);
-
-                    new Thread(new Runnable() {
+                    HttpUtil.login(account,password,new Callback() {
                         @Override
-                        public void run() {
-                            try {
-                                //使用GET方式请求服务器
-                                URL url = new URL(serverPath + "?username=" + username + "&password=" + password);
-                                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                                httpURLConnection.setRequestMethod("GET");
-                                httpURLConnection.setConnectTimeout(5000);
-                                httpURLConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:22.0) Gecko/20100101 Firefox/22.0");
-                                int responseCode = httpURLConnection.getResponseCode();
-                                if (200 == responseCode) {
-                                    InputStream inputStream = httpURLConnection.getInputStream();
-                                    //设置读取数据编码格式
-                                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-                                    final String responseMsg = bufferedReader.readLine();
-                                    //更新主线程
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if (responseMsg.equals("true")){
-                                                Toast.makeText(Login.this, "登录成功！", Toast.LENGTH_LONG).show();
-                                                Intent intent=new Intent(Login.this,MainActivity.class);
-                                                intent.putExtra("username",username);
-                                                startActivity(intent);
-                                            }else {
-                                                Toast.makeText(Login.this, "登录失败！", Toast.LENGTH_LONG).show();
-                                            }
-                                        }
-                                    });
-                                    bufferedReader.close();
-                                    httpURLConnection.disconnect();
-                                } else {
-                                    //报告错误原因
-                                    Toast.makeText(Login.this,"responseCode = " + responseCode,Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                        public void onFailure(Call call, IOException e) {
+                            try{
+                                runOnUiThread(new Runnable(){
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(Login.this, "连接失败！！", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }catch(Exception ee){
+                                ee.printStackTrace();
                             }
                         }
-                    }).start();
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            //final String responseData = response.body().string();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(Login.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+
+                        }
+                    });
+
                 }
             }
         });

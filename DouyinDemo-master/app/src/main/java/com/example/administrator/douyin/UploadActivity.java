@@ -60,32 +60,6 @@ public class UploadActivity extends AppCompatActivity {
         postProgress.setVisibility(View.VISIBLE);
         postText.setVisibility(View.VISIBLE);
 
-        File file = new File(path);
-        //还缺少的一个参数
-        String account="";
-
-        HttpUtil.postFile(account,describe.getText().toString(), videoTag, new ProgressListener() {
-            @Override
-            public void onProgress(long currentBytes, long contentLength, boolean done) {
-                //Log.i(TAG, "currentBytes==" + currentBytes + "==contentLength==" + contentLength + "==done==" + done);
-                int progress = (int) (currentBytes * 100 / contentLength);
-                postProgress.setProgress(progress);
-                postText.setText(progress + "%");
-            }
-        }, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response != null) {
-                    String result = response.body().string();
-                    //Log.i(TAG, "result===" + result);
-                }
-            }
-        }, file);
-
 
     }
 
