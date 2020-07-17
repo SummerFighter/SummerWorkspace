@@ -23,9 +23,9 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="420dp"
         android:layout_margin="15dip"
-        android:padding="15dip" >
+        android:padding="15dip">
 
         <TextView
             android:id="@+id/tv_user_register"
@@ -44,12 +44,36 @@
             android:background="@drawable/login_edit"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:hint="用户名"
+            android:hint="邮箱地址"
             android:inputType="text"
-            android:paddingBottom="7dp"
             android:paddingLeft="9dp"
-            android:paddingRight="8dp"
             android:paddingTop="7dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="7dp"
+            android:singleLine="true"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_username_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_user_register"
+            android:layout_marginTop="8dp"
+            android:text="昵称"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/et_username_register"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_username_register"
+            android:layout_marginTop="-2dp"
+            android:background="@drawable/login_edit"
+            android:hint="昵称"
+            android:paddingLeft="9dp"
+            android:paddingTop="7dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="7dp"
             android:singleLine="true"
             android:textSize="15sp" />
 
@@ -57,8 +81,8 @@
             android:id="@+id/tv_pass_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/et_user_register"
-            android:layout_marginTop="8dp"
+            android:layout_below="@id/tv_username_register"
+            android:layout_marginTop="38dp"
             android:text="密码"
             android:textSize="14sp" />
 
@@ -67,22 +91,24 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_pass_register"
+            android:layout_marginTop="3dp"
             android:background="@drawable/login_edit"
             android:hint="密码"
             android:inputType="textPassword"
-            android:paddingBottom="7dp"
             android:paddingLeft="9dp"
-            android:paddingRight="8dp"
             android:paddingTop="7dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="7dp"
             android:password="true"
             android:singleLine="true"
             android:textSize="15sp" />
+
         <TextView
             android:id="@+id/tv_pass_register2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/et_pass_register"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="13dp"
             android:text="确认密码"
             android:textSize="14sp" />
 
@@ -91,14 +117,15 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_pass_register2"
+            android:layout_marginTop="1dp"
             android:background="@drawable/login_edit"
-            android:inputType="textPassword"
-            android:paddingBottom="7dp"
-            android:paddingLeft="9dp"
-            android:paddingRight="8dp"
-            android:paddingTop="7dp"
-            android:password="true"
             android:hint="密码"
+            android:inputType="textPassword"
+            android:paddingLeft="9dp"
+            android:paddingTop="7dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="7dp"
+            android:password="true"
             android:singleLine="true"
             android:textSize="15sp" />
 
@@ -106,10 +133,11 @@
             android:id="@+id/register"
             android:layout_width="wrap_content"
             android:layout_height="33dp"
-            android:layout_alignRight="@id/et_pass_register2"
             android:layout_below="@id/et_pass_register2"
+            android:layout_alignRight="@id/et_pass_register2"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginRight="13dp"
             android:background="#4cc05f"
             android:drawablePadding="5dp"
             android:paddingLeft="15dp"

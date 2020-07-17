@@ -119,6 +119,7 @@
             android:layout_centerVertical="true"
             android:gravity="center_horizontal"
             android:clickable="true"
+            android:onClick="OnClick_registerButton"
             android:text="没有帐号？ 去注册"
             android:textColorLink="#ffffff" />
 

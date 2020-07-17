@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
@@ -20,18 +21,13 @@ public class HttpUtil {
     public static final MediaType MEDIA_TYPE_MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8");
     public static final String rootUrl="http://47.104.232.108/";
 
-    //登录，请求参数 账号：account,密码：password,POST
-    public static void login(String account, String password,Callback callback){
-        String url=rootUrl+"login";
-        RequestBody body = new FormBody.Builder()
-                .add("account",account)
-                .add("password",password)
-                .build();
-        Request request  = new Request.Builder()
+    public static void sendPostRequest(String url, RequestBody requestBody, Callback callback) {
+        Request request = new Request.Builder()
                 .url(url)
-                .post(body)
+                .post(requestBody)
                 .build();
-        okHttpClient.newCall(request).enqueue(callback);
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(callback);
     }
 
     //注册，请求参数 账号：account,用户名：username 密码：password,POST
@@ -89,5 +85,8 @@ public class HttpUtil {
                 .build();
         okHttpClient.newCall(request).enqueue(callback);
     }
+
+
+
 
 }
