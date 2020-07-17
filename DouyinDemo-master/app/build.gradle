@@ -57,6 +57,8 @@ dependencies {
     // 图片加载框架
     implementation 'com.github.bumptech.glide:glide:4.9.0'
 
+    //视频缓存代理
+    implementation 'com.danikula:videocache:2.7.1'
 
 
 }
