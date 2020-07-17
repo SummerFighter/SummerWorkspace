@@ -1,134 +1,129 @@
 package com.example.administrator.douyin;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
-import android.hardware.Camera;
-import android.media.CamcorderProfile;
-import android.media.MediaRecorder;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.os.Environment;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.IOException;
+import androidx.appcompat.app.AppCompatActivity;
 
-import static android.os.Build.VERSION_CODES.M;
 
-public class ShootActivity extends Activity implements Camera.PreviewCallback {
-    // 开始录制，停止录制按钮
-    private Button startRecord,stopRecord;
-    // 显示预览的SurfaceView
-    private SurfaceView surfaceView;
-    // 标记，判断当前是否正在录制
-    boolean isRunning = false;
-    // 录制类
-    private MediaRecorder recorder;
-    // 存储文件
-    private File saveFile;
+public class ShootActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private AutoFitTextureView mTextureview;
+
+    private Button mVideoRecodeBtn;//开始录像
+    private LinearLayout mVerticalLinear;
+    private Button mVideoRecodeBtn2;//开始录像
+    private LinearLayout mHorizontalLinear;
+    private Button mVHScreenBtn;
+    private CameraController mCameraController;
+    private boolean mIsRecordingVideo; //开始停止录像
+    public static String BASE_PATH = Environment.getExternalStorageDirectory() + "/AAA";
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉标题栏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置全屏
         setContentView(R.layout.activity_shoot);
 
-        startRecord = (Button) findViewById(R.id.startRecord);
-        stopRecord = (Button) findViewById(R.id.stopRecord);
-        surfaceView = (SurfaceView) findViewById(R.id.surView);
-
-        // onCreate()初始化 ，一开始肯定没有开始录制，所以停止按钮不可点击
-        stopRecord.setEnabled(false);
-
-        // 设置Surface不需要维护自己的缓冲区
-        surfaceView.getHolder().setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        // 设置分辨率
-        surfaceView.getHolder().setFixedSize(320, 280);
-        // 设置该组件不会让屏幕自动关闭
-        surfaceView.getHolder().setKeepScreenOn(true);
-    }
-
-    public void btnStartRecord(View view) {
-        if(!isRunning){
-            try{
-                recorder = new MediaRecorder();
-                recorder.reset();
-
-                //解决摄像预览效果有90度翻转的问题
-                Camera c = Camera.open();
-                c.setDisplayOrientation(90);
-                c.unlock();
-                recorder.setCamera(c);
-
-                //1.设置采集声音
-                recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-//设置采集图像
-                recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-
-
-//2.设置视频，音频的输出格式
-                recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-//3.设置音频的编码格式
-                recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-//设置图像的编码格式
-                recorder.setVideoEncoder(MediaRecorder.VideoEncoder.DEFAULT);
-
-                //设置立体声
-                recorder.setAudioChannels(2);
-//设置最大录像时间 单位：毫秒
-                recorder.setMaxDuration(600000);
-//设置最大录制的大小 单位，字节
-                recorder.setMaxFileSize(2048*2048);
-//音频一秒钟包含多少数据位
-                recorder.setAudioEncodingBitRate(128);
-//设置选择角度，顺时针方向，因为默认是逆向90度的，这样图像就是正常显示了,这里设置的是观看保存后的视频的角度
-                recorder.setOrientationHint(90);
-                //设置录像的比特率
-                recorder.setVideoEncodingBitRate(10*1920*1080);
-                recorder.setVideoSize(640,480);
-
-
-                //设置输出文件路径
-
-                saveFile = new File("/mnt/sdcard/myvideo.mp4");
-                recorder.setOutputFile(saveFile.getAbsolutePath());
-
-                recorder.setPreviewDisplay(surfaceView.getHolder().getSurface());
-
-                recorder.prepare();
-//开始录制
-                recorder.start();
-//让开始按钮不可点击,停止按钮可点击
-                startRecord.setEnabled(false);
-                stopRecord.setEnabled(true);
-                isRunning = true;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void btnStopRecord(View view) {
-        if(isRunning){
-            //停止录制
-            recorder.stop();
-//释放资源
-            recorder.release();
-            recorder = null;
-//设置开始按钮可点击，停止按钮不可点击
-            startRecord.setEnabled(true);
-            stopRecord.setEnabled(false);
-        }
     }
 
     @Override
-    public void onPreviewFrame(byte[] data, Camera camera) {
+    protected void onResume() {
+        super.onResume();
+        //获取相机管理类的实例
+        mCameraController = CameraController.getmInstance(this);
+        mCameraController.setFolderPath(BASE_PATH);
 
+        initView();
+        //判断当前横竖屏状态
+        if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            mVHScreenBtn.setText("切换为竖屏");
+        } else {
+            mVHScreenBtn.setText("切换为横屏");
+
+        }
+    }
+
+    private void initView() {
+        mTextureview = (AutoFitTextureView) findViewById(R.id.textureview);
+        mVideoRecodeBtn = (Button) findViewById(R.id.video_recode_btn);
+        mVideoRecodeBtn.setOnClickListener(this);
+        mVerticalLinear = (LinearLayout) findViewById(R.id.vertical_linear);
+        mVideoRecodeBtn2 = (Button) findViewById(R.id.video_recode_btn2);
+        mVideoRecodeBtn2.setOnClickListener(this);
+        mHorizontalLinear = (LinearLayout) findViewById(R.id.horizontal_linear);
+        mVHScreenBtn = (Button) findViewById(R.id.v_h_screen_btn);
+        mVHScreenBtn.setOnClickListener(this);
+
+        //判断当前屏幕方向
+        if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            //竖屏时
+            mHorizontalLinear.setVisibility(View.VISIBLE);
+            mVerticalLinear.setVisibility(View.GONE);
+        } else {
+            //横屏时
+            mVerticalLinear.setVisibility(View.VISIBLE);
+            mHorizontalLinear.setVisibility(View.GONE);
+        }
+        mCameraController.InitCamera(mTextureview);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            default:
+                break;
+            case R.id.video_recode_btn:
+                if (mIsRecordingVideo) {
+                    mIsRecordingVideo = !mIsRecordingVideo;
+                    mCameraController.stopRecordingVideo();
+                    mVideoRecodeBtn.setText("开始录像");
+                    mVideoRecodeBtn2.setText("开始录像");
+                    Toast.makeText(this, "录像结束", Toast.LENGTH_SHORT).show();
+                } else {
+                    mVideoRecodeBtn.setText("停止录像");
+                    mVideoRecodeBtn2.setText("停止录像");
+                    mIsRecordingVideo = !mIsRecordingVideo;
+                    mCameraController.startRecordingVideo();
+                    Toast.makeText(this, "录像开始", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.video_recode_btn2:
+                if (mIsRecordingVideo) {
+                    mIsRecordingVideo = !mIsRecordingVideo;
+                    mCameraController.stopRecordingVideo();
+                    mVideoRecodeBtn.setText("开始录像");
+                    mVideoRecodeBtn2.setText("开始录像");
+                    Toast.makeText(this, "录像结束", Toast.LENGTH_SHORT).show();
+                } else {
+                    mVideoRecodeBtn.setText("停止录像");
+                    mVideoRecodeBtn2.setText("停止录像");
+                    mIsRecordingVideo = !mIsRecordingVideo;
+                    mCameraController.startRecordingVideo();
+                    Toast.makeText(this, "录像开始", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.v_h_screen_btn:
+                //判断当前屏幕方向
+                if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+                    //切换竖屏
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    Toast.makeText(ShootActivity.this, "竖屏了", Toast.LENGTH_SHORT).show();
+                } else {
+                    //切换横屏
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    Toast.makeText(ShootActivity.this, "横屏了", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 }

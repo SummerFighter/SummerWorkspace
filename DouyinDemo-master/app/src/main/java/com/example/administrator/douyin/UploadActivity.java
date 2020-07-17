@@ -23,6 +23,7 @@ import okhttp3.Response;
 
 public class UploadActivity extends AppCompatActivity {
     private String path;
+    private String picturepath;
     private Button up;
     private EditText name;
     private EditText describe;
@@ -40,6 +41,7 @@ public class UploadActivity extends AppCompatActivity {
 
         final Intent intent = getIntent();
         path = intent.getStringExtra("name");
+        picturepath = intent.getStringExtra("picture");
 
         up = (Button) findViewById(R.id.up);
         name = (EditText)findViewById(R.id.name);
@@ -54,7 +56,7 @@ public class UploadActivity extends AppCompatActivity {
 
     //在这里调用上传视频的接口
     public void btnUpload(View view) {
-        String test = name.getText().toString() + describe.getText().toString() + path + videoTag;
+        String test = name.getText().toString() + describe.getText().toString() + path + picturepath + videoTag;
         Toast.makeText(this,test,Toast.LENGTH_LONG).show();
 
         postProgress.setVisibility(View.VISIBLE);

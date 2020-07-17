@@ -21,7 +21,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
@@ -38,6 +37,10 @@ dependencies {
    // implementation "androidx.fragment:fragment:1.1.0-alpha01"
     implementation 'com.squareup.okhttp3:okhttp:4.7.2'
 
+    implementation "androidx.camera:camera-camera2:1.0.0-beta03"
+    implementation "androidx.camera:camera-view:1.0.0-alpha10"
+    implementation "androidx.camera:camera-extensions:1.0.0-alpha10"
+    implementation "androidx.camera:camera-lifecycle:1.0.0-beta03"
 
 
    // implementation 'com.android.support:design:28.1.1'

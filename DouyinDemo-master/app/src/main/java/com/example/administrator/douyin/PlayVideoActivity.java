@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -26,10 +28,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.io.File;
+import java.io.FileOutputStream;
 
 public class PlayVideoActivity extends AppCompatActivity implements View.OnClickListener{
     private Uri upload;
-    private File file = new File(Environment.getExternalStorageDirectory(),"myvideo.mp4");//打开软件直接播放的视频名字是movie.mp4
+    private File file = new File(Environment.getExternalStorageDirectory() + "/AAA","myvideo.mp4");
     private VideoView videoView;
     private static final int FILE_SELECT_CODE=1;
     private static final String TAG="PlayVideoActivity";
@@ -54,6 +57,12 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         }
         else {
             inintVideoPath();
+        }
+        if(ContextCompat.checkSelfPermission(PlayVideoActivity.this, Manifest.permission.RECORD_AUDIO)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(PlayVideoActivity.this,new String[]{Manifest.permission.RECORD_AUDIO},1);//判断你是否授权
+        }
+        if(ContextCompat.checkSelfPermission(PlayVideoActivity.this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(PlayVideoActivity.this,new String[]{Manifest.permission.CAMERA},1);//判断你是否授权
         }
     }
 
@@ -84,6 +93,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 }
                 break;
             case R.id.shoot:
+                videoView.setVideoPath(file.getPath());
                 Intent intent1 = new Intent(PlayVideoActivity.this,ShootActivity.class);
                 startActivity(intent1);
                 break;
@@ -91,12 +101,14 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 if(upload==null){
                     Intent intent=new Intent(PlayVideoActivity.this,UploadActivity.class);
                     intent.putExtra("name",file.getPath());
+                    intent.putExtra("picture", GetFirstFrame(file.getPath()));
                     PlayVideoActivity.this.startActivity(intent);
                 }
                 else{
                     String path = getPath(this,upload);
                     Intent intent=new Intent(PlayVideoActivity.this,UploadActivity.class);
                     intent.putExtra("name", path);
+                    intent.putExtra("picture", GetFirstFrame(path));
                     PlayVideoActivity.this.startActivity(intent);
                 }
                 break;
@@ -225,6 +237,39 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
 
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    public static String GetFirstFrame(String path){
+        MediaMetadataRetriever mmr=new MediaMetadataRetriever();//实例化MediaMetadataRetriever对象
+        File file=new File(path);
+        mmr.setDataSource(path);
+        Bitmap bitmap = mmr.getFrameAtTime(0);  //0表示首帧图片
+        mmr.release(); //释放MediaMetadataRetriever对象
+        if(bitmap!=null){
+            //存储媒体已经挂载，并且挂载点可读/写。
+            if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                bitmap.recycle(); //回收bitmap
+                return "";
+            }
+            try {
+                String framePath = Environment.getExternalStorageDirectory() + "/AAA"; //图片保存文件夹
+                File frame_file = new File(framePath);
+                if (!frame_file.exists()) { //// 如果路径不存在，就创建路径
+                    frame_file.mkdirs();
+                }
+                File picture_file = new File(framePath,"mypicture.jpg"); // 创建路径和文件名的File对象
+                FileOutputStream out = new FileOutputStream(picture_file);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                out.flush();
+                out.close();   //注意关闭文件流
+                return picture_file.getPath();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            return "";
+        }
+        return "";
     }
 
 }
