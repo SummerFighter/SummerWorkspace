@@ -1,38 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.example.administrator.douyin.ShootActivity">
+    tools:context=".ShootActivity"
+    >
 
-    <RelativeLayout
+    <com.example.administrator.douyin.AutoFitTextureView
+        android:id="@+id/textureview"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/vertical_linear"
         android:orientation="horizontal"
-        >
-
-    </RelativeLayout>
-
-    <!-- 开始录制按钮 -->
-    <Button
-        android:id="@+id/startRecord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="btnStartRecord"
-        android:text="开始录制"
-        />
-
-    <Button
-        android:id="@+id/stopRecord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="btnStopRecord"
-        android:text="停止录制"
-        />
-    <SurfaceView
-        android:id="@+id/surView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</LinearLayout>
+        android:layout_height="80dp"
+        android:background="#000000"
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/video_recode_btn"
+            android:text="开始录像"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/horizontal_linear"
+        android:orientation="vertical"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:gravity="center"
+        android:layout_alignParentRight="true">
+        <Button
+            android:id="@+id/video_recode_btn2"
+            android:text="开始录像"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+    <Button
+        android:id="@+id/v_h_screen_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
+</RelativeLayout>
