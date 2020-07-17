@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.administrator.douyin.EditMyinfo"
-    android:background="#222435">
+    android:background="@android:color/holo_blue_dark"
+    android:fitsSystemWindows="true"
+    >
+
 
     <TextView
         android:id="@+id/textView"
@@ -13,13 +15,35 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp"
-
+        android:layout_marginTop="32dp"
         android:text="编辑个人资料"
         android:textColor="#ffffff"
         android:textSize="22sp"
         tools:layout_editor_absoluteX="150dp"
         tools:layout_editor_absoluteY="6dp" />
+
+
+    <!--    <ImageButton-->
+    <!--        android:id="@+id/imageButton"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_below="@+id/textView"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:layout_marginTop="22dp"-->
+    <!--        android:background="@mipmap/head" />-->
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageButton"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:background="@mipmap/header_icon_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/textView16"
@@ -27,12 +51,19 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/imageButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="-31dp"
         android:text="点击更换头像"
-        android:textColor="#ffffff"
-         />
+        android:textColor="#ffffff" />
 
-    <TextView
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignBottom="@+id/imageButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/view2" />
+
+        <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -205,33 +236,6 @@
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView"
-        android:textColor="#ffffff" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_alignBottom="@+id/imageButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/view2" />
-
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="22dp"
-        android:background="@mipmap/head" />
     <Button
         android:id="@+id/ok"
         android:layout_width="match_parent"

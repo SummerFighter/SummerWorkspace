@@ -21,7 +21,7 @@
         android:networkSecurityConfig="@xml/network_config"
         android:theme="@style/main_theme">
 
-        <activity android:name=".MainActivity2"></activity>
+        <activity android:name=".MainActivity2" />
         <activity android:name=".SearchActivity" />
 
 

@@ -95,22 +95,12 @@ public class Login extends AppCompatActivity {
                     }
                     editor.commit();
 
-
                     loginAsync(account, password);
 
                 }
             }
         });
 
-//        TextView tv_register=(TextView) findViewById(R.id.register);
-//        tv_register.setClickable(true);
-//        tv_register.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent2=new Intent(Login.this,Register.class);
-//                startActivity(intent2);
-//            }
-//        });
     }
 
     //登陆

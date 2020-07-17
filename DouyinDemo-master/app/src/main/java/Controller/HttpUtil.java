@@ -21,6 +21,7 @@ public class HttpUtil {
     public static final MediaType MEDIA_TYPE_MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8");
     public static final String rootUrl="http://47.104.232.108/";
 
+    // post请求通用
     public static void sendPostRequest(String url, RequestBody requestBody, Callback callback) {
         Request request = new Request.Builder()
                 .url(url)
@@ -28,21 +29,6 @@ public class HttpUtil {
                 .build();
         Call call = okHttpClient.newCall(request);
         call.enqueue(callback);
-    }
-
-    //注册，请求参数 账号：account,用户名：username 密码：password,POST
-    public static void register(String account, String username, String password,Callback callback){
-        String url=rootUrl+"register";
-        RequestBody body = new FormBody.Builder()
-                .add("account",account)
-                .add("username",username)
-                .add("password",password)
-                .build();
-        Request request  = new Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
-        okHttpClient.newCall(request).enqueue(callback);
     }
 
     //获取推荐视频列表，请求参数 账号：account
@@ -85,8 +71,6 @@ public class HttpUtil {
                 .build();
         okHttpClient.newCall(request).enqueue(callback);
     }
-
-
 
 
 }

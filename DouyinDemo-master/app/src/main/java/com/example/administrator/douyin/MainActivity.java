@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageButton ShootButton;
     private ImageButton SearchButton;
+    private TextView myInfoTextView;
 
     /*这里的imgs数组指定视频封面文件名，videos数组指定视频文件名，两个数组的元素按顺序对应
         图片文件存储在res/mipmap-xxhdpi中
@@ -80,12 +81,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        TextView myInfoTextView = (TextView)findViewById(R.id.myInfo);
+        myInfoTextView = (TextView)findViewById(R.id.myInfo);
         myInfoTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, PersonInfo.class);
                 startActivity(intent);
+                MainActivity.this.finish();
             }
         });
 
