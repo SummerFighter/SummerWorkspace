@@ -65,6 +65,8 @@ dependencies {
 
     //视频缓存代理
     implementation 'com.danikula:videocache:2.7.1'
+    //智能刷新框架
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
     //Xtab使用
     implementation 'com.androidkun:XTabLayout:1.1.3'
     //黄油刀

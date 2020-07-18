@@ -5,11 +5,18 @@ public class VideoCase {
     private String _description;
     private String _url;
 
-    public VideoCase(String title, String description,String url){
+    public int likeNum;
+    public int commentNum;
+
+
+    public VideoCase(String title, String description,String url,
+                     int likeNum,int commentNum){
         this._title=title;
         this._description=description;
         this._url=url;
 
+        this.likeNum = likeNum;
+        this.commentNum = commentNum;
     }
 
     public String getTitle() {
@@ -21,4 +28,5 @@ public class VideoCase {
     public String getURL() {
         return _url;
     }
+
 }

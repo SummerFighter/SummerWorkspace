@@ -53,6 +53,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/like_num"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:drawableTop="@mipmap/heart_icon"
@@ -62,7 +63,7 @@
             android:gravity="center"
             />
         <TextView
-            android:id="@+id/comment"
+            android:id="@+id/comment_num"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:drawableTop="@mipmap/msg_icon"
