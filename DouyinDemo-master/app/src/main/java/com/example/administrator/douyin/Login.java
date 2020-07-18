@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.IOException;
 
 import Controller.Constant;
+import Controller.DataCreate;
 import Controller.HttpUtil;
 import entities.User;
 import okhttp3.Call;
@@ -71,6 +72,7 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DataCreate.initData();
                 final String account = accountEdit.getText().toString();
                 final String password = passwordEdit.getText().toString();
 

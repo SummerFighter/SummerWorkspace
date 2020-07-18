@@ -91,7 +91,6 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             case R.id.play:
                 if(!videoView.isPlaying()){//播放
                     videoView.start();
-                    Toast.makeText(PlayVideoActivity.this,upload.getPath(),Toast.LENGTH_LONG).show();
                 }
                 break;
             case R.id.shoot:
