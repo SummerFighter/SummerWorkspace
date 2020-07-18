@@ -70,6 +70,13 @@
             />
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/fl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/line_bottom"
+        android:orientation="horizontal"/>
+
 
     <View
         android:id="@+id/line_bottom"
@@ -142,4 +149,5 @@
             android:textStyle="bold"
             />
     </LinearLayout>
+
 </RelativeLayout>

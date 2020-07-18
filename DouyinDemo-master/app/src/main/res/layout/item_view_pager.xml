@@ -62,11 +62,11 @@
             android:gravity="center"
             />
         <TextView
+            android:id="@+id/comment"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:drawableTop="@mipmap/msg_icon"
             android:layout_marginTop="16dp"
-            android:text="66.8w"
             android:textColor="@android:color/white"
             android:gravity="center"
             />

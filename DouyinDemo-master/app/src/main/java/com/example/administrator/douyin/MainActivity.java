@@ -2,9 +2,11 @@ package com.example.administrator.douyin;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -24,6 +27,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,14 +42,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Controller.DataCreate;
 import Controller.HttpUtil;
+import butterknife.BindView;
 import model.VideoCase;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     private static final String TAG = "douyin";
 
     private RecyclerView mRecyclerView;
@@ -54,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageButton ShootButton;
     private ImageButton SearchButton;
+
+    private Context con = this;
 
     /*这里的imgs数组指定视频封面文件名，videos数组指定视频文件名，两个数组的元素按顺序对应
         图片文件存储在res/mipmap-xxhdpi中
@@ -66,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         ShootButton = (ImageButton) findViewById(R.id.shoot);
         ShootButton.setOnClickListener(new View.OnClickListener() {
@@ -209,11 +218,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private void playVideo(int position) {
+    private void playVideo(int position){
         View itemView = mRecyclerView.getChildAt(0);
         final FullWindowVideoView videoView = itemView.findViewById(R.id.video_view);
         final ImageView imgPlay = itemView.findViewById(R.id.img_play);
         final ImageView imgThumb = itemView.findViewById(R.id.img_thumb);
+
+        final TextView comment = itemView.findViewById(R.id.comment);
+        comment.setText(mAdapter.VideoList.get(position).getTitle());//在这里设置成获取视频的点赞数量
+        comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommentDialog commentDialog = new CommentDialog();
+                commentDialog.show(getSupportFragmentManager(), "");
+            }
+        });
+
+
         //final RelativeLayout rootView = itemView.findViewById(R.id.root_view);
         //final MediaPlayer mediaPlayer = new MediaPlayer();
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -340,5 +361,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }
