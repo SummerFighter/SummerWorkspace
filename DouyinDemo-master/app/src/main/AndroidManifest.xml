@@ -35,6 +35,7 @@
         <activity android:name=".PlayVideoActivity" />
         <activity android:name=".EditMyinfo" />
         <activity android:name=".ShootActivity" />
+        <activity android:name=".FocusActivity" />
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />

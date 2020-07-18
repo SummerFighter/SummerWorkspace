@@ -2,10 +2,12 @@ package com.example.administrator.douyin;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -38,10 +40,20 @@ public class EditMyinfo extends AppCompatActivity {
 
     private String gender;
 
+    private Button fh;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_info);
+
+        fh = findViewById(R.id.fh);
+        fh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backtoPI();
+            }
+        });
+
         usernameET = findViewById(R.id.textView10);
         schoolET = findViewById(R.id.textView14);
         areaET = findViewById(R.id.textView15);
@@ -73,7 +85,10 @@ public class EditMyinfo extends AppCompatActivity {
         });
 
     }
-
+    public void backtoPI(){
+        Intent intent=new Intent(this,PersonInfo.class);
+        startActivity(intent);
+    }
     public void OnClick_editButton(View v)
     {
         final String username = usernameET.getText().toString();

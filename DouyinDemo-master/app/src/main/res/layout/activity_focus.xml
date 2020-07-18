@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".FocusActivity"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="88dp">
+
+        <ImageView
+            android:id="@+id/backtopersoninfo"
+            android:layout_width="69dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:src="@mipmap/return_white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/shimmer_color"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <com.androidkun.xtablayout.XTabLayout
+        android:id="@+id/tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        app:xTabIndicatorColor="#FF9F00"
+        app:xTabSelectedTextColor="@color/shimmer_color"
+        app:xTabTextColor="#CCCCCC"
+        app:xTabIndicatorWidth="90dp"
+        app:xTabTextBold="true"
+        app:xTabTextSize="14sp"/>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

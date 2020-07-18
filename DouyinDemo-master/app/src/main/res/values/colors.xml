@@ -9,4 +9,15 @@
     <color name="dark_transparent">#24000000</color>
     <color name="color_393a44">#393a44</color>
     <color name="shimmer_color">#a2878787</color>
+    <color name="white">#fff</color>
+
+    <color name="lightblue1">#BBFFFF</color>
+
+    <color name="lightblue2">#29EEBC</color>
+
+    <color name="lightblue3">#91B6C8</color>
+
+    <color name="light00">#88E4CD</color>
+
+    <color name="light01">#CAE1FF</color>
 </resources>
