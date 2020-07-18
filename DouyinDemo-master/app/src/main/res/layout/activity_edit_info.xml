@@ -47,6 +47,7 @@
 
     <TextView
         android:id="@+id/textView16"
+        android:onClick="OnClick_avatarChange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/imageButton"
@@ -87,7 +88,7 @@
         android:layout_marginStart="29dp"
         android:layout_marginLeft="29dp"
         android:layout_marginTop="15dp"
-        android:text="账号"
+        android:text="密码"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
@@ -165,7 +166,8 @@
         android:layout_alignBottom="@+id/textView4"
         android:layout_alignEnd="@+id/textView14"
         android:layout_alignRight="@+id/textView14"
-        android:hint="请输入你的账号"
+        android:hint="请输入你的密码"
+        android:inputType="textPassword"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
@@ -173,10 +175,12 @@
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/textView10"
         android:layout_alignBaseline="@+id/textView5"
-        android:layout_alignBottom="@+id/textView5"
         android:layout_alignEnd="@+id/textView9"
         android:layout_alignRight="@+id/textView9"
+        android:layout_alignBottom="@+id/textView5"
+        android:layout_marginTop="31dp"
         android:hint="请输入你的学校"
         android:textColor="#ffffff"
         android:textSize="18sp" />
@@ -241,16 +245,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView15"
-        android:layout_marginTop="53dp"
+        android:layout_marginTop="24dp"
+        android:onClick="OnClick_editButton"
         android:text="保存" />
 
     <Button
         android:id="@+id/fh"
+        android:onClick="OnClick_backInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ok"
         android:layout_marginTop="1dp"
         android:text="返回" />
+
+
+    <DatePicker
+        android:id="@+id/dp_datetimepicker_date"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/fh"
+        android:layout_height="wrap_content"
+        android:calendarViewShown="false"
+        android:theme="@android:style/Theme.Holo.Light" />
 
 
 </RelativeLayout>
