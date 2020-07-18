@@ -1,6 +1,5 @@
 package com.example.administrator.douyin;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.jiajie.load.LoadingDialog;
@@ -20,16 +18,11 @@ import com.alibaba.fastjson.JSONObject;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import Controller.Constant;
 import Controller.HttpUtil;
-import entities.UserPool;
+import entities.User;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -123,7 +116,7 @@ public class Login extends AppCompatActivity {
                 switch (responseNum) {
                     case LOGIN_SUCCESS: {
                         Looper.prepare();
-                        Constant.currentUser = UserPool.addUser(account, Login.this);
+                        Constant.currentUser = User.addUser(account);
                         Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
                         intent.setClass(Login.this, MainActivity.class);

@@ -3,8 +3,11 @@ package com.example.administrator.douyin;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -12,21 +15,30 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.jiajie.load.LoadingDialog;
+
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import Controller.Constant;
+import Controller.FileUtil;
 import Controller.HttpUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
@@ -120,10 +132,72 @@ public class EditMyinfo extends AppCompatActivity {
     }
 
     public void OnClick_avatarChange(View v){
-
+        Intent intentToPickPic = new Intent(Intent.ACTION_PICK, null);
+        intentToPickPic.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        startActivityForResult(intentToPickPic, 50);
     }
 
     public void OnClick_backInfo(View v){
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 50:
+                Uri uri = data.getData();
+                String filePath = FileUtil.getFilePathByUri(this, uri);
+                sendProfileRequest(filePath,Constant.currentUser.getAccount());
+        }
+    }
+
+    // 发头像
+    public void sendProfileRequest(String imagePath, String account) {
+        final LoadingDialog dialog = new LoadingDialog.Builder(this).loadText("加载中...").build();
+        dialog.show();
+
+        String url = HttpUtil.rootUrl+"setAvatar";
+        File file = new File(imagePath);
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("account",account)
+                .addFormDataPart(
+                        "image",
+                        "filename",
+                        RequestBody.create(MediaType.parse("image/jpg"),file)
+                );
+        RequestBody requestBody = builder.build();
+
+        HttpUtil.sendPostRequest(url, requestBody, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Looper.prepare();
+                Toast.makeText(EditMyinfo.this, "请求出错", Toast.LENGTH_SHORT).show();
+                Log.e("frost_connection",e.getMessage());
+                dialog.dismiss();
+                Looper.loop();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String responseData = response.body().string();
+                JSONObject jsonObject = JSON.parseObject(responseData);
+                int responseNum = jsonObject.getInteger("result");
+                switch (responseNum) {
+                    case 6:{
+                        Looper.prepare();
+                        Toast.makeText(EditMyinfo.this, "头像修改成功", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        Looper.loop();
+                        break;
+                    }
+                }
+            }
+        });
+    }
+
+
+
 }

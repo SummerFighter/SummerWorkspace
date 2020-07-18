@@ -52,6 +52,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         play.setOnClickListener(this);
         shoot.setOnClickListener(this);
         upload.setOnClickListener(this);//给按钮加监听
+
         if(ContextCompat.checkSelfPermission(PlayVideoActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(PlayVideoActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);//判断你是否授权
         }
@@ -90,6 +91,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             case R.id.play:
                 if(!videoView.isPlaying()){//播放
                     videoView.start();
+                    Toast.makeText(PlayVideoActivity.this,upload.getPath(),Toast.LENGTH_LONG).show();
                 }
                 break;
             case R.id.shoot:
@@ -107,16 +109,18 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 else{
                     String path = getPath(this,upload);
                     Intent intent=new Intent(PlayVideoActivity.this,UploadActivity.class);
+//                    Toast.makeText(PlayVideoActivity.this,path+"\n"+GetFirstFrame(path),Toast.LENGTH_LONG).show();
                     intent.putExtra("name", path);
                     intent.putExtra("picture", GetFirstFrame(path));
                     PlayVideoActivity.this.startActivity(intent);
+
                 }
                 break;
             case R.id.choice://选择文件
                 Intent intent2=new Intent(Intent.ACTION_GET_CONTENT);
                 intent2.setType("*/*");//设置类型，这是任意类型
                 intent2.addCategory(Intent.CATEGORY_OPENABLE);
-                startActivityForResult(intent2,1);
+                startActivityForResult(intent2,FILE_SELECT_CODE);
         }
     }
     public void onDestroy(){//释放资源
@@ -130,6 +134,8 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             Uri uri=data.getData();
             videoView.setVideoURI(uri);//将选择的文件路径给播放器
             upload = uri;
+            Toast.makeText(PlayVideoActivity.this,upload.getPath(),Toast.LENGTH_LONG).show();
+
             super.onActivityResult(requestCode, resultCode, data);
             return;
         }

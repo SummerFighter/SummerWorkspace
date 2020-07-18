@@ -109,8 +109,7 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
 
         accountTextView.setText(Constant.currentUser.getAccount());
         usernameTextView.setText(Constant.currentUser.getUsername());
-        Drawable image = Drawable.createFromPath(Constant.currentUser.getAvatarPath());
-        avatarImageView.setBackground(image);
+        Glide.with(this).load(Constant.currentUser.getAvatarUrl()).into(avatarImageView);
 
     }
 
