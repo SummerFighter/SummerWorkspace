@@ -313,12 +313,17 @@ public class MainActivity extends AppCompatActivity {
                     newAddVideoDataNum = videoJsonArray.length();
                     for(int i=0;i<newAddVideoDataNum;i++){
                         JSONObject videoJSON=videoJsonArray.getJSONObject(i);
+                        String videoIDSource = videoJSON.getString("id");
                         String videoTitleSource = videoJSON.getString("title");
                         String videoDescriptionSource = videoJSON.getString("info");
                         String videoURLSource = videoJSON.getString("url");
+                        String videoCoverURLSource = videoJSON.getString("cover_url");
+                        String videoAuthorSource = videoJSON.getString("account");
+
                         int videoLikeNumSource=videoJSON.getInt("like_num");
                         int videoCommentNumSource=videoJSON.getInt("comment_num");
-                        VideoCase v=new VideoCase(videoTitleSource,videoDescriptionSource,videoURLSource,
+                        VideoCase v=new VideoCase(videoIDSource,videoTitleSource,videoDescriptionSource,videoURLSource,videoCoverURLSource,
+                                videoAuthorSource,
                                 videoLikeNumSource,videoCommentNumSource);
                         Constant.videoDatas.add(v);
                     }

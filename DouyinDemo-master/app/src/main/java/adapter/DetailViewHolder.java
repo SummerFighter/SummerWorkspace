@@ -15,6 +15,9 @@ public class DetailViewHolder extends RecyclerView.ViewHolder {
     ImageView img_thumb;
     VideoView videoView;
     ImageView img_play;
+    TextView video_title;
+    TextView video_info;
+
     TextView like_num;
     TextView comment_num;
 
@@ -29,6 +32,8 @@ public class DetailViewHolder extends RecyclerView.ViewHolder {
         img_thumb = itemView.findViewById(R.id.img_thumb);
         videoView = itemView.findViewById(R.id.video_view);
         img_play = itemView.findViewById(R.id.img_play);
+        video_title= itemView.findViewById(R.id.video_title);
+        video_info= itemView.findViewById(R.id.video_info);
         like_num = itemView.findViewById(R.id.like_num);
         comment_num = itemView.findViewById(R.id.comment_num);
         rootView = itemView.findViewById(R.id.root_view);

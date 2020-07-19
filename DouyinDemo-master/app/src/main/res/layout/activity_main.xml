@@ -8,17 +8,34 @@
                 android:fitsSystemWindows="true"
     >
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/refresh"
+    <LinearLayout
+        android:id="@+id/fl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srlEnableLoadMore="true">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        android:layout_above="@+id/line_bottom"
+        android:orientation="horizontal">
 
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srlEnableLoadMore="true">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </LinearLayout>
+
+
+    <View
+        android:id="@+id/line_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_above="@+id/bottom"
+        android:background="@android:color/white"
+        />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="25dp"
@@ -74,24 +91,8 @@
             android:src="@mipmap/icon_storyhome_open"
             android:tint="#f2f2f2"
             />
+
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/fl"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/line_bottom"
-        android:orientation="horizontal"/>
-
-
-    <View
-        android:id="@+id/line_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_above="@+id/bottom"
-        android:background="@android:color/white"
-        />
-
     <LinearLayout
         android:id="@+id/bottom"
         android:layout_width="match_parent"

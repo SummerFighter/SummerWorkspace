@@ -11,6 +11,7 @@ import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.douyin.CommentDialog;
 import com.example.administrator.douyin.R;
 import com.example.administrator.douyin.VideoCache;
@@ -41,6 +42,11 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailViewHolder>{
                 removeItemListener.removeItem(position);
             return;
         }
+        Glide.with(mContext)
+                .load(videoList.get(position).getCoverURL())
+                .into(holder.img_thumb);
+        holder.video_title.setText(videoList.get(position).getTitle());
+        holder.video_info.setText(videoList.get(position).getDescription());
         holder.like_num.setText(String.valueOf(videoList.get(position).likeNum));
         holder.comment_num.setText(String.valueOf(videoList.get(position).commentNum));
         holder.videoView.setVideoPath(VideoCache.getProxy(this.mContext).getProxyUrl(videoList.get(position).getURL()));
