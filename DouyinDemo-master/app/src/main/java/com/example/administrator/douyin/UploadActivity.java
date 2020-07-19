@@ -101,6 +101,7 @@ public class UploadActivity extends AppCompatActivity {
 
         String url = HttpUtil.rootUrl+"upload";
         File file = new File(path);
+        File cover = new File(cover_path);
 
         Log.d("jiujiuwo","_________________");
 
@@ -113,6 +114,7 @@ public class UploadActivity extends AppCompatActivity {
                         RequestBody.create(MediaType.parse("video/mpeg4"),file)
                 ).addFormDataPart("videoTitle",name.getText().toString())
                 .addFormDataPart("videoInfo",describe.getText().toString())
+                .addFormDataPart("cover","filename",RequestBody.create(MediaType.parse("image/jpg"),cover))
                 ;
 
         if(music.isChecked()) builder.addFormDataPart("videoTag","音乐");
