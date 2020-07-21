@@ -31,7 +31,7 @@
             android:layout_height="wrap_content" />
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab1"
+            android:id="@+id/work_dongtai_like"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="visible"
@@ -69,7 +69,7 @@
             android:paddingEnd="16dp" />
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab2"
+            android:id="@+id/poster"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
@@ -96,7 +96,7 @@
         >
 
         <TextView
-            android:id="@+id/sy"
+            android:id="@+id/shouye"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -108,7 +108,7 @@
             />
 
         <TextView
-            android:id="@+id/gz"
+            android:id="@+id/guanzhu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -129,7 +129,7 @@
             />
 
         <TextView
-            android:id="@+id/xx"
+            android:id="@+id/xiaoxi"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -141,7 +141,7 @@
             />
 
         <TextView
-            android:id="@+id/ww"
+            android:id="@+id/wo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

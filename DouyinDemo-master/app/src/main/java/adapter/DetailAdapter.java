@@ -19,7 +19,6 @@ import com.example.administrator.douyin.VideoCache;
 import java.util.List;
 
 import model.VideoCase;
-
 public class DetailAdapter extends RecyclerView.Adapter<DetailViewHolder>{
     private Context mContext;
     private List<VideoCase> videoList;

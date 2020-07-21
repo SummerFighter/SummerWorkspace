@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
                 startActivity(intent);
             }
         });
+        //个人信息界面
         TextView myInfoTextView = (TextView)findViewById(R.id.myInfo);
         myInfoTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +95,21 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
             }
         });
 
+
         getVideoData(1);//开启子线程获取数据
+
+        //消息界面
+        TextView Tomessage = (TextView)findViewById(R.id.message);
+        Tomessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        getVideoData(0);//开启子线程获取数据
+
         initState();
         initView();
     }

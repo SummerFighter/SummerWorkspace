@@ -9,9 +9,7 @@ import androidx.fragment.app.Fragment;
 import butterknife.ButterKnife;
 
 /**
- * create by libo
- * create on 2020-05-19
- * description
+
  */
 public abstract class BaseFragment extends Fragment {
     protected View rootView;

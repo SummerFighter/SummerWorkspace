@@ -34,6 +34,8 @@
         <activity android:name=".EditMyinfo" />
         <activity android:name=".ShootActivity" />
         <activity android:name=".FocusActivity" />
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".ChatRoom" />
 
         <meta-data
             android:name="android.max_aspect"

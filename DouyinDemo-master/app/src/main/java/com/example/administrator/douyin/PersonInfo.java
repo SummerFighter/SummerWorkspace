@@ -52,15 +52,16 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
     private AppCompatTextView accountTextView;
     private AppCompatTextView usernameTextView;
     private AppCompatImageView avatarImageView;
-    private TabLayout tab1, tab2;
+    private TabLayout work_like, set_poster;
     private TitleLayout titleLayout;
     private int colorPrimary;
     private ArgbEvaluator evaluator;
     private View statusView;
     private Button editinfo;
-    private TextView sy;
-    private TextView at;
-    private ImageView hd;
+    private TextView shouye;
+    private TextView follow;
+    private TextView msg;
+
     CircleImageView ivHead;
     private VideoBean.UserBean curUserBean;
     private int getStatusBarHeight() {
@@ -79,11 +80,11 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
         setContentView(R.layout.activity_personinfo);
         colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
 
-        sy = findViewById(R.id.sy);
-        sy.setOnClickListener(new View.OnClickListener() {
+        shouye = findViewById(R.id.shouye);
+        shouye.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                asdasd();
+                toshouye();
             }
         });
 
@@ -95,11 +96,19 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
             }
         });
 
-        at=findViewById((R.id.follow));
-        at.setOnClickListener(new View.OnClickListener() {
+        follow=findViewById((R.id.follow));
+        follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 attention();
+            }
+        });
+
+        msg=findViewById((R.id.xiaoxi));
+        msg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToMessage();
             }
         });
         initView();
@@ -126,7 +135,7 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
         Intent intent = new Intent(this, EditMyinfo.class);
         startActivity(intent);
     }
-    public void asdasd() {
+    public void toshouye() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
@@ -135,6 +144,10 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
         startActivity(intent);
     }
 
+    private void ToMessage(){
+        Intent intent = new Intent(this, ChatActivity.class);
+        startActivity(intent);
+    }
 
     private void initView() {
         //设置状态栏和导航栏
@@ -149,13 +162,13 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
         ScaleScrollView scrollView = findViewById(R.id.scrollView);
         scrollView.setTargetView(banner);
         scrollView.setOnScrollChangeListener(this);
-        tab1 = findViewById(R.id.tab1);
-        tab2 = findViewById(R.id.tab2);
+        work_like = findViewById(R.id.work_dongtai_like);
+        set_poster = findViewById(R.id.poster);
         titleLayout = findViewById(R.id.title_layout);
         FullViewPager viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(new adapter.TabAdapter(this, getSupportFragmentManager(), getTabs()));
-        tab1.setupWithViewPager(viewPager);
-        tab2.setupWithViewPager(viewPager);
+        work_like.setupWithViewPager(viewPager);
+        set_poster.setupWithViewPager(viewPager);
     }
 
     private List<TabItemModel> getTabs() {
@@ -168,18 +181,18 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
 
     @Override
     public void onScrollChange(NestedScrollView v, int x, int y, int ox, int oy) {
-        if (null != tab1 && null != tab2 && null != titleLayout && null != statusView) {
-            int distance = tab1.getTop() - titleLayout.getHeight() - statusView.getHeight();
+        if (null != work_like && null != set_poster && null != titleLayout && null != statusView) {
+            int distance = work_like.getTop() - titleLayout.getHeight() - statusView.getHeight();
             float ratio = v.getScaleY() * 1f / distance;
             if (distance <= v.getScrollY()) {
                 ratio = 1;
-                if (tab2.getVisibility() != View.VISIBLE) {
-                    tab2.setVisibility(View.VISIBLE);
+                if (set_poster.getVisibility() != View.VISIBLE) {
+                    set_poster.setVisibility(View.VISIBLE);
                     statusView.setBackgroundColor(colorPrimary);
                 }
             } else {
-                if (tab2.getVisibility() == View.VISIBLE) {
-                    tab2.setVisibility(View.INVISIBLE);
+                if (set_poster.getVisibility() == View.VISIBLE) {
+                    set_poster.setVisibility(View.INVISIBLE);
                     statusView.setBackgroundColor(Color.TRANSPARENT);
                 }
             }
