@@ -4,7 +4,8 @@
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-feature
         android:name="android.hardware.camera2"
         android:required="true" />
@@ -14,21 +15,18 @@
     <application
         android:name=".VideoCache"
         android:allowBackup="true"
-        android:icon="@mipmap/header_icon_1"
+        android:icon="@mipmap/enter_icon1"
         android:label="@string/app_name"
-        android:resizeableActivity="true"
-        android:roundIcon="@mipmap/header_icon_1"
-        android:supportsRtl="true"
         android:networkSecurityConfig="@xml/network_config"
+        android:resizeableActivity="true"
+        android:roundIcon="@mipmap/enter_icon1round"
+        android:supportsRtl="true"
         android:theme="@style/main_theme">
-
+        <activity android:name=".Login" />
         <activity android:name=".MainActivity2" />
         <activity android:name=".SearchActivity" />
-
-
         <activity android:name=".PersonInfo" />
         <activity android:name=".DetailActivity" />
-
         <activity android:name=".Register" />
         <activity android:name=".MainActivity" />
         <activity android:name=".UploadActivity" />
@@ -36,15 +34,20 @@
         <activity android:name=".EditMyinfo" />
         <activity android:name=".ShootActivity" />
         <activity android:name=".FocusActivity" />
+
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
 
-        <activity android:name=".Login">
+        <activity
+            android:name=".StartActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
     </application>

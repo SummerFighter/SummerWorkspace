@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,14 +30,28 @@ public class CommentDialog extends BaseBottomSheetDialog {
     private CommentAdapter commentAdapter;
     private ArrayList<CommentBean> datas = new ArrayList<>();
     private View view;
-    private int[] likeArray = new int[]{4919, 334};
-    private String[] commentArray = new String[]{"我就说左脚踩右脚可以上天你们还不信！", "全是评论点赞，没人关注吗"};
+    private EditText comment;
+    private Button button;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.dialog_comment, container);
         ButterKnife.bind(this, view);
+
+        comment = view.findViewById(R.id.comment);
+        button = view.findViewById(R.id.button);
+
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //在这里上传评论
+                //评论内容为comment.getText().toString()
+
+
+
+            }
+        });
 
         init();
 
@@ -44,23 +60,11 @@ public class CommentDialog extends BaseBottomSheetDialog {
 
     private void init() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        commentAdapter = new CommentAdapter(getContext(), datas);
+        commentAdapter = new CommentAdapter(getContext(), DataCreate.comments);
+        System.out.println(DataCreate.comments.size());
         recyclerView.setAdapter(commentAdapter);
-
-        loadData();
     }
 
-    private void loadData() {
-        //System.out.println(DataCreate.userList.size());
-        for (int i = 0; i < DataCreate.userList.size(); i++) {
-            CommentBean commentBean = new CommentBean();
-            commentBean.setUserBean(DataCreate.userList.get(i));
-            commentBean.setContent(commentArray[i]);
-            commentBean.setLikeCount(likeArray[i]);
-            datas.add(commentBean);
-        }
-        commentAdapter.notifyDataSetChanged();
-    }
 
     @Override
     protected int getHeight() {

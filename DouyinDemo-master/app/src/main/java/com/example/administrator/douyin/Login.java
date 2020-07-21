@@ -120,6 +120,7 @@ public class Login extends AppCompatActivity {
                         Looper.prepare();
                         Constant.currentUser = User.addUser(account);
                         Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
+                        DataCreate.initData();
                         Intent intent = new Intent();
                         intent.setClass(Login.this, MainActivity.class);
                         dialog.dismiss();

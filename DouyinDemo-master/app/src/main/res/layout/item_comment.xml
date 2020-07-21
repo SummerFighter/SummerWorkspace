@@ -49,7 +49,7 @@
         android:padding="12dp">
 
         <TextView
-            android:id="@+id/tv_likecount"
+            android:id="@+id/like"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:drawableTop="@mipmap/heart_icon"

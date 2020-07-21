@@ -1,6 +1,10 @@
 package adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +20,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class CommentAdapter extends BaseRvAdapter<CommentBean, CommentAdapter.CommentViewHolder> {
+    private Context con;
 
     public CommentAdapter(Context context, List<CommentBean> datas) {
         super(context, datas);
@@ -27,6 +32,36 @@ public class CommentAdapter extends BaseRvAdapter<CommentBean, CommentAdapter.Co
         holder.tvNickname.setText(commentBean.getUserBean().getNickName());
         holder.tvContent.setText(commentBean.getContent());
         holder.tvLikecount.setText(""+commentBean.getLikeCount());
+        con = context;
+        Drawable top1 = con.getResources().getDrawable(R.mipmap.heart_icon);
+        Drawable top2 = con.getResources().getDrawable(R.mipmap.heart_icon2);
+
+        if(commentBean.isLiked()){
+            holder.tvLikecount.setCompoundDrawablesWithIntrinsicBounds(null, top2 , null, null);
+        }else{
+            holder.tvLikecount.setCompoundDrawablesWithIntrinsicBounds(null, top1 , null, null);
+        }
+
+
+        holder.tvLikecount.setOnClickListener(v -> {
+            if (!commentBean.isLiked()) {
+                holder.tvLikecount.setText(commentBean.getLikeCount()+1+"");
+                holder.tvLikecount.setCompoundDrawablesWithIntrinsicBounds(null, top2 , null, null);
+                //点赞
+
+
+
+            } else {
+                holder.tvLikecount.setText(commentBean.getLikeCount()-1+"");
+                holder.tvLikecount.setCompoundDrawablesWithIntrinsicBounds(null, top1 , null, null);
+                //取消点赞
+
+
+
+            }
+
+            commentBean.setLiked(!commentBean.isLiked());
+        });
     }
 
     @NonNull
@@ -43,7 +78,7 @@ public class CommentAdapter extends BaseRvAdapter<CommentBean, CommentAdapter.Co
         TextView tvNickname;
         @BindView(R.id.tv_content)
         TextView tvContent;
-        @BindView(R.id.tv_likecount)
+        @BindView(R.id.like)
         TextView tvLikecount;
 
         public CommentViewHolder(View itemView) {
