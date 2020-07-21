@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class VideoCase {
     private String _ID;//视频ID
     private String _title;//标题
@@ -12,7 +15,6 @@ public class VideoCase {
 
     public int likeNum;//点赞数量
     public int commentNum;//评论数量
-
 
     public VideoCase(String ID, String title, String description,String url,
                      String coverUrl, String authorAccount,
@@ -28,6 +30,19 @@ public class VideoCase {
         this.likeNum = likeNum;
         this.commentNum = commentNum;
     }
+
+    public VideoCase(JSONObject videoJSON) throws JSONException {
+        this._ID = videoJSON.getString("id");
+        this._title = videoJSON.getString("title");
+        this._description = videoJSON.getString("info");
+        this._url = videoJSON.getString("url");
+        this._coverUrl = videoJSON.getString("cover_url");
+        this._authorAccount = videoJSON.getString("account");
+
+        this.likeNum=videoJSON.getInt("like_num");
+        this.commentNum=videoJSON.getInt("comment_num");
+    }
+
 
     public String getID() {
         return _ID;

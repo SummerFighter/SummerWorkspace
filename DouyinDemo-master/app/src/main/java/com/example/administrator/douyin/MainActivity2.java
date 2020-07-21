@@ -2,23 +2,18 @@ package com.example.administrator.douyin;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.os.Handler;
 
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -27,29 +22,80 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MainActivity2 extends AppCompatActivity {
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.List;
+
+import Controller.Constant;
+import Controller.HttpUtil;
+import adapter.DetailAdapter;
+import model.VideoCase;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+
+//只作为临时查看搜索结果和我的视频的视频播放界面
+public class MainActivity2 extends AppCompatActivity implements DetailAdapter.RemoveItemListener {
     private static final String TAG = "douyin";
+
+    private SmartRefreshLayout refreshView;
     private RecyclerView mRecyclerView;
-    private MainActivity2.MyAdapter2 mAdapter;
+    private DetailAdapter mAdapter;
+    private ImageView imgPlay;
+    private ImageView imgThumb;
+    private TextView commentView;
+
+    private FullWindowVideoView fullVideoView;
     MyLayoutManager2 myLayoutManager;
 
-    private int[] imgs;
-    private int[] videos;
-    private int index;
+    private ImageButton ShootButton;
+    private ImageButton SearchButton;
+    private int refreshNum = 0;
+
+    private boolean isBuffer;
+    private boolean error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//强制竖屏
+        ShootButton = (ImageButton) findViewById(R.id.shoot);
+        ShootButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity2.this, PlayVideoActivity.class);
+                startActivity(intent);
+            }
+        });
+        SearchButton = (ImageButton) findViewById(R.id.tosearch);
+        SearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity2.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+        TextView myInfoTextView = (TextView)findViewById(R.id.myInfo);
+        myInfoTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity2.this, PersonInfo.class);
+                startActivity(intent);
+            }
+        });
 
-        final Intent intent = getIntent();
-        index = intent.getIntExtra("index",0);
-        imgs = intent.getIntArrayExtra("img");
-        videos = intent.getIntArrayExtra("video");
-
-        initView();
-        initListener();
         initState();
+        initView();
     }
 
     private void initState() {
@@ -65,11 +111,19 @@ public class MainActivity2 extends AppCompatActivity {
     private void initView() {
         mRecyclerView = findViewById(R.id.recycler);
         myLayoutManager = new MyLayoutManager2(this, OrientationHelper.VERTICAL, false);
-
-        mAdapter = new MainActivity2.MyAdapter2(this);
         mRecyclerView.setLayoutManager(myLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        refreshView = findViewById(R.id.refresh);
+        refreshView.setEnableRefresh(false);
+        refreshView.setEnableLoadMore(false);
+        initListener();
+        loadAdapter();
+    }
 
+    //加载适配器
+    private void loadAdapter(){
+        mAdapter = new DetailAdapter(this, Constant.searchVideoDatas);
+        mAdapter.setRemoveItemListener(this);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void initListener() {
@@ -95,108 +149,124 @@ public class MainActivity2 extends AppCompatActivity {
             public void onPageSelected(int position, boolean bottom) {
                 Log.e(TAG, "选择位置:" + position + " 下一页:" + bottom);
 
-                playVideo(0);
+                playVideo(position);
             }
         });
-    }
 
-    class MyAdapter2 extends RecyclerView.Adapter<MainActivity2.MyAdapter2.ViewHolder> {
-        private Context mContext;
-
-        public MyAdapter2(Context context) {
-            this.mContext = context;
-        }
-
-
-        @Override
-        public MainActivity2.MyAdapter2.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_pager, parent, false);
-            return new MainActivity2.MyAdapter2.ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(MainActivity2.MyAdapter2.ViewHolder holder, int position) {
-            holder.img_thumb.setImageResource(imgs[index]);
-            holder.videoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + videos[index]));
-            index++;
-            if (index >= imgs.length) {
-                index = 0;
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return 88;
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            ImageView img_thumb;
-            VideoView videoView;
-            ImageView img_play;
-            RelativeLayout rootView;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-                img_thumb = itemView.findViewById(R.id.img_thumb);
-                videoView = itemView.findViewById(R.id.video_view);
-                img_play = itemView.findViewById(R.id.img_play);
-                rootView = itemView.findViewById(R.id.root_view);
-            }
-        }
     }
 
     private void releaseVideo(int index) {
         View itemView = mRecyclerView.getChildAt(index);
         final VideoView videoView = itemView.findViewById(R.id.video_view);
-        final ImageView imgThumb = itemView.findViewById(R.id.img_thumb);
+        //final ImageView imgThumb = itemView.findViewById(R.id.img_thumb);
         final ImageView imgPlay = itemView.findViewById(R.id.img_play);
         videoView.stopPlayback();
-        imgThumb.animate().alpha(1).start();
         imgPlay.animate().alpha(0f).start();
     }
 
-
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void playVideo(int position) {
-        View itemView = mRecyclerView.getChildAt(position);
-        final FullWindowVideoView videoView = itemView.findViewById(R.id.video_view);
-        final ImageView imgPlay = itemView.findViewById(R.id.img_play);
-        final ImageView imgThumb = itemView.findViewById(R.id.img_thumb);
-        final RelativeLayout rootView = itemView.findViewById(R.id.root_view);
-        final MediaPlayer[] mediaPlayer = new MediaPlayer[1];
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+        if (null != fullVideoView && fullVideoView.isPlaying()) return;
+        View itemView = mRecyclerView.getChildAt(0);
+        fullVideoView = itemView.findViewById(R.id.video_view);
+        imgPlay = itemView.findViewById(R.id.img_play);
+        imgThumb = itemView.findViewById(R.id.img_thumb);
+        commentView = itemView.findViewById(R.id.comment_num);
+        commentView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onPrepared(MediaPlayer mp) {
-
+            public void onClick(View view) {
+                CommentDialog commentDialog = new CommentDialog();
+                commentDialog.show(getSupportFragmentManager(), "");
             }
         });
-        videoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+        startVideoPlay();
+
+    }
+
+    private void startVideoPlay() {
+        if (null == fullVideoView) return;
+
+        fullVideoView.start();
+
+        fullVideoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
             @Override
             public boolean onInfo(MediaPlayer mp, int what, int extra) {
-                mediaPlayer[0] = mp;
                 mp.setLooping(true);
                 imgThumb.animate().alpha(0).setDuration(200).start();
+                if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
+                    //如果没在播放，则手动播放
+                    if (!fullVideoView.isPlaying()) {
+                        mp.start();
+                    }
+                }
+                else if(what == MediaPlayer.MEDIA_INFO_BUFFERING_START){
+                    //缓冲中
+                    isBuffer = true;
+                }else if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END) {
+                    //恢复播放
+                    isBuffer = false;
+                }
                 return false;
             }
         });
 
-        videoView.start();
+        fullVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer arg0) {
+                if (null == arg0 || arg0.isPlaying()) return;
+                if (!error) {
+                    fullVideoView.seekTo(0);
+                    fullVideoView.start();
+                }
+            }
+        });
+
+        fullVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                error = true;
+                return false;
+            }
+        });
 
         imgPlay.setOnClickListener(new View.OnClickListener() {
             boolean isPlaying = true;
-
             @Override
             public void onClick(View v) {
-                if (videoView.isPlaying()) {
+                if (fullVideoView.isPlaying()) {
                     imgPlay.animate().alpha(0.7f).start();
-                    videoView.pause();
+                    fullVideoView.pause();
                     isPlaying = false;
                 } else {
                     imgPlay.animate().alpha(0f).start();
-                    videoView.start();
+                    fullVideoView.start();
                     isPlaying = true;
                 }
             }
         });
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (null != fullVideoView) fullVideoView.pause();
+    }
+
+    public void removeItem(final int position) {
+        Constant.videoDatas.remove(position);
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                mAdapter.notifyItemChanged(position);
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != fullVideoView)
+            fullVideoView.stopPlayback();
+    }
+
 }

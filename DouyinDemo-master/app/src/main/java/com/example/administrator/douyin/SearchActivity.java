@@ -19,25 +19,40 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import Controller.Constant;
+import Controller.HttpUtil;
+import model.VideoCase;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class SearchActivity extends AppCompatActivity {
 
     private ImageButton SearchButton;
     private EditText keyword;
-    private int[] imgs = {R.mipmap.img_video_3, R.mipmap.img_video_2, R.mipmap.img_video_1};
-    private int[] videos = {R.raw.video_3, R.raw.video_2, R.raw.video_1};
-    private String[] describes = {"第一个视频简介","阿巴阿巴阿巴阿巴","2333333333"};
-    private Context p = this;
+    private LinearLayout layout;
     private CheckBox[] cbs = new CheckBox[11];
-    private String kinds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        final LinearLayout layout = (LinearLayout) this.findViewById(R.id.layout);
+        layout = (LinearLayout) this.findViewById(R.id.search_result_layout);
         cbs[0]=this.findViewById(R.id.music_cb);
         cbs[1]=this.findViewById(R.id.movie_cb);
         cbs[2]=this.findViewById(R.id.society_cb);
@@ -55,53 +70,138 @@ public class SearchActivity extends AppCompatActivity {
         SearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                kinds="";
+                //在这里根据搜索条件(keyword和kinds)获取视频，并设置视频和封面的路径数组以及视频描述
+                layout.removeAllViews();
+                List<String> searchTags=new ArrayList<>();
                 for(int i=0;i<11;i++){
                     if(cbs[i].isChecked()){
-                        kinds = kinds + cbs[i].getText() + " ";
+                        searchTags.add(cbs[i].getText().toString());
                     }
                 }
-                Toast.makeText(p,kinds,Toast.LENGTH_SHORT).show();
-                //在这里根据搜索条件(keyword和kinds)获取视频，并设置视频和封面的路径数组以及视频描述
-
-
-
-
-
-                ImageButton Btn[] = new ImageButton[imgs.length];
-                TextView Txt[] = new TextView[imgs.length];
-                int j = -1;
-                for (int i=0; i<Btn.length; i++) {
-                    Btn[i] = new ImageButton(p);
-                    Btn[i].setId(2000 + i);
-                    Btn[i].setImageResource(imgs[i]);
-                    Btn[i].setBackgroundColor(00000000);
-                    Btn[i].setScaleType(ImageView.ScaleType.FIT_START);
-                    Txt[i] = new TextView(p);
-                    Txt[i].setText(describes[i]);
-                    Txt[i].setTextSize(40);
-                    Txt[i].setTextColor(Color.rgb(255, 255, 255));
-                    layout.addView(Btn[i]); //将按钮放入layout组件
-                    layout.addView(Txt[i]);
-                }
-
-                for (int k = 0; k <= Btn.length-1; k++) {
-
-                    Btn[k].setTag(k);    //为按钮设置一个标记，来确认是按下了哪一个按钮
-
-                    Btn[k].setOnClickListener(new Button.OnClickListener() {
+                if(searchTags.isEmpty()){
+                    RequestBody body = new FormBody.Builder()
+                            .add("keyword",keyword.getText().toString())
+                            .build();
+                    HttpUtil.sendPostRequest("http://47.104.232.108/returnByKeyword", body, new Callback() {
                         @Override
-                        public void onClick(View v) {
-                            int i = (Integer) v.getTag();
-                            Intent intent = new Intent(SearchActivity.this, MainActivity2.class);
-                            intent.putExtra("index",i);
-                            intent.putExtra("img", (Serializable) imgs);
-                            intent.putExtra("video", (Serializable) videos);
-                            startActivity(intent);
+                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(SearchActivity.this, "连接失败", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                            Constant.searchVideoDatas.clear();
+                            final String responseData = response.body().string();
+                            try {
+                                JSONArray videoJsonArray =new JSONObject(responseData).getJSONArray("videos");//获取的视频解析数组
+                                for(int i=0;i<videoJsonArray.length();i++){
+                                    JSONObject videoJSON=videoJsonArray.getJSONObject(i);
+                                    VideoCase v=new VideoCase(videoJSON);
+                                    Constant.searchVideoDatas.add(v);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            runOnUiThread(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    Toast.makeText(SearchActivity.this, "正在加载布局", Toast.LENGTH_SHORT).show();
+                                    loadResultLayout();
+                                }
+                            });
                         }
                     });
                 }
+                else {
+                    FormBody.Builder builder=new FormBody.Builder();
+                    for(String searchTag : searchTags){
+                        builder.add("tag",searchTag);
+                    }
+                    HttpUtil.sendPostRequest("http://47.104.232.108/returnByTag", builder.build(), new Callback() {
+                        @Override
+                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(SearchActivity.this, "连接失败", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                            Constant.searchVideoDatas.clear();
+                            final String responseData = response.body().string();
+                            try {
+                                JSONArray videoJsonArray =new JSONObject(responseData).getJSONArray("videos");//获取的视频解析数组
+                                for(int i=0;i<videoJsonArray.length();i++){
+                                    JSONObject videoJSON=videoJsonArray.getJSONObject(i);
+                                    VideoCase v=new VideoCase(videoJSON);
+                                    Constant.searchVideoDatas.add(v);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            runOnUiThread(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    loadResultLayout();
+                                }
+                            });
+                        }
+                    });
+                }
+
             }
         });
     }
+
+    private void loadResultLayout(){
+        //没有任何结果时
+        if(Constant.searchVideoDatas.isEmpty()){
+            TextView textView=new TextView(this);
+            textView.setText("没有找到你想要的结果！");
+            textView.setTextSize(40);
+            textView.setTextColor(Color.rgb(255, 255, 255));
+            layout.addView(textView);
+            return;
+        }
+        int resultNum = Constant.searchVideoDatas.size();
+        for (int i=0;i<resultNum;i++){
+            ImageButton imageButton=new ImageButton(this);
+            Glide.with(this)
+                    .load(Constant.searchVideoDatas.get(i).getCoverURL())
+                    .into(imageButton);
+            imageButton.setBackgroundColor(00000000);
+            imageButton.setScaleType(ImageView.ScaleType.FIT_START);
+            int finalI = i;
+            imageButton.setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(SearchActivity.this, MainActivity2.class);
+                    intent.putExtra("index", finalI);//设置位置
+                    startActivity(intent);
+                }
+            });
+
+            TextView textView=new TextView(this);
+            textView.setText(Constant.searchVideoDatas.get(i).getDescription());
+            textView.setTextSize(40);
+            textView.setTextColor(Color.rgb(255, 255, 255));
+
+            layout.addView(imageButton);
+            layout.addView(textView);
+        }
+
+    }
+
 }

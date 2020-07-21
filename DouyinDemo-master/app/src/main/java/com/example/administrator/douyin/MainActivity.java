@@ -2,43 +2,30 @@ package com.example.administrator.douyin;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
-import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
 
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.danikula.videocache.HttpProxyCacheServer;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -46,21 +33,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import Controller.Constant;
-import Controller.DataCreate;
 import Controller.HttpUtil;
 import adapter.DetailAdapter;
-import butterknife.BindView;
 import model.VideoCase;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DetailAdapter.RemoveItemListener {
     private static final String TAG = "douyin";
 
     private SmartRefreshLayout refreshView;
@@ -75,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageButton ShootButton;
     private ImageButton SearchButton;
-    private int refreshNum=-1;
+    private int refreshNum = 0;
 
     private boolean isBuffer;
     private boolean error;
@@ -110,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        getVideoData(0);//开启子线程获取数据
+        getVideoData(1);//开启子线程获取数据
         initState();
         initView();
     }
@@ -135,8 +119,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //加载适配器
-    private void loadAdapter(){
-        mAdapter = new DetailAdapter(this, Constant.videoDatas);
+    private void loadAdapter(List<VideoCase> data){
+        mAdapter = new DetailAdapter(this, data);
+        mAdapter.setRemoveItemListener(this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -170,14 +155,14 @@ public class MainActivity extends AppCompatActivity {
         refreshView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
-                getVideoData(1);
+                getVideoData(2);
             }
         });
 
         refreshView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
-                getVideoData(2);
+                getVideoData(3);
             }
         });
     }
@@ -209,7 +194,6 @@ public class MainActivity extends AppCompatActivity {
         startVideoPlay();
 
     }
-
 
     private void startVideoPlay() {
         if (null == fullVideoView) return;
@@ -298,13 +282,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getVideoData(int state){
-
         final String userAccount= getSharedPreferences("info1.txt", MODE_PRIVATE).getString("account","0");
-        HttpUtil.getRecommendVideo(userAccount,new Callback() {
+        HttpUtil.getRecommendVideo(userAccount, refreshNum, new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if(1==state)
+                if(2==state){
                     Constant.videoDatas.clear();
+                    //mAdapter.notifyDataSetChanged();
+                }
                 refreshNum++;
                 final String responseData = response.body().string();
                 int oldVideoDataNum=Constant.videoDatas.size(), newAddVideoDataNum= 0;
@@ -313,18 +298,7 @@ public class MainActivity extends AppCompatActivity {
                     newAddVideoDataNum = videoJsonArray.length();
                     for(int i=0;i<newAddVideoDataNum;i++){
                         JSONObject videoJSON=videoJsonArray.getJSONObject(i);
-                        String videoIDSource = videoJSON.getString("id");
-                        String videoTitleSource = videoJSON.getString("title");
-                        String videoDescriptionSource = videoJSON.getString("info");
-                        String videoURLSource = videoJSON.getString("url");
-                        String videoCoverURLSource = videoJSON.getString("cover_url");
-                        String videoAuthorSource = videoJSON.getString("account");
-
-                        int videoLikeNumSource=videoJSON.getInt("like_num");
-                        int videoCommentNumSource=videoJSON.getInt("comment_num");
-                        VideoCase v=new VideoCase(videoIDSource,videoTitleSource,videoDescriptionSource,videoURLSource,videoCoverURLSource,
-                                videoAuthorSource,
-                                videoLikeNumSource,videoCommentNumSource);
+                        VideoCase v=new VideoCase(videoJSON);
                         Constant.videoDatas.add(v);
                     }
 
@@ -336,13 +310,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         switch (state){
-                            case 0:
-                                loadAdapter();
-                                break;
                             case 1:
-                                refreshView.finishRefresh();
+                                loadAdapter(Constant.videoDatas);
                                 break;
                             case 2:
+                                refreshView.finishRefresh();
+                                //mAdapter.notifyItemRangeInserted(oldVideoDataNum, finalNewAddVideoDataNum);
+                                break;
+                            case 3:
                                 refreshView.finishLoadMore();
                                 mAdapter.notifyItemRangeInserted(oldVideoDataNum, finalNewAddVideoDataNum);
                                 break;

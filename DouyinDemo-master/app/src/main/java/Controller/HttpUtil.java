@@ -31,11 +31,13 @@ public class HttpUtil {
         call.enqueue(callback);
     }
 
-    //获取推荐视频列表，请求参数 账号：account
-    public static void getRecommendVideo(String account,Callback callback){
+    //获取推荐视频列表，请求参数 账号：account 刷新次数refreshNum
+    public static void getRecommendVideo(String account, int refreshNum, Callback callback){
         String url=rootUrl+"getRecommendedVideo";
+        String num=String.valueOf(refreshNum);
         RequestBody body = new FormBody.Builder()
                 .add("account",account)
+                .add("refreshNum", num)
                 .build();
         Request request  = new Request.Builder()
                 .url(url)
