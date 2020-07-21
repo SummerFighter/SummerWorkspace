@@ -23,7 +23,7 @@ import java.io.Serializable;
 
 public class SearchActivity extends AppCompatActivity {
 
-    private Button SearchButton;
+    private ImageButton SearchButton;
     private EditText keyword;
     private int[] imgs = {R.mipmap.img_video_3, R.mipmap.img_video_2, R.mipmap.img_video_1};
     private int[] videos = {R.raw.video_3, R.raw.video_2, R.raw.video_1};
@@ -50,7 +50,7 @@ public class SearchActivity extends AppCompatActivity {
         cbs[9]=this.findViewById(R.id.fashion_cb);
         cbs[10]=this.findViewById(R.id.science_cb);
 
-        SearchButton = (Button) findViewById(R.id.search);
+        SearchButton = (ImageButton) findViewById(R.id.search);
         keyword = (EditText) findViewById(R.id.keyword);
         SearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
