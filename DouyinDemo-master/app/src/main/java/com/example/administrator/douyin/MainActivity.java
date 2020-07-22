@@ -41,6 +41,8 @@ import adapter.DetailAdapter;
 import model.VideoCase;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import view.ShareDialog;
 
@@ -57,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
     private TextView shareView;
     private FullWindowVideoView fullVideoView;
     MyLayoutManager2 myLayoutManager;
-
     private ImageButton ShootButton;
     private ImageButton SearchButton;
     private int refreshNum = 0;
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("jiuming","mainactivity"+Constant.currentUser.toString());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//强制竖屏
@@ -92,12 +93,11 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
         myInfoTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("jiuming","转个人信息页");
+
                 Intent intent = new Intent(MainActivity.this, PersonInfo.class);
                 startActivity(intent);
             }
         });
-
 
         getVideoData(1);//开启子线程获取数据
 

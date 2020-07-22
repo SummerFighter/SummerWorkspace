@@ -11,7 +11,11 @@ public class VideoCase {
     private String _coverUrl;//封面地址
 
     private String _authorAccount;//作者账号
+    private String _authorAvatar;//作者头像
 
+    public String get_authorAvatar() {
+        return _authorAvatar;
+    }
 
     public int likeNum;//点赞数量
     public int commentNum;//评论数量
@@ -38,7 +42,7 @@ public class VideoCase {
         this._url = videoJSON.getString("url");
         this._coverUrl = videoJSON.getString("cover_url");
         this._authorAccount = videoJSON.getString("account");
-
+        this._authorAvatar = videoJSON.getString("author_url");
         this.likeNum=videoJSON.getInt("like_num");
         this.commentNum=videoJSON.getInt("comment_num");
     }

@@ -226,8 +226,6 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
     protected void onStart() {
         super.onStart();
 
-        Log.d("jiuming",Constant.currentUser.toString());
-
         RequestOptions userAvatarOptions = new RequestOptions()
                 .signature(new ObjectKey(System.currentTimeMillis()));
 
