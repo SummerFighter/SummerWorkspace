@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">小麦视频</string>
     <string name="trans">trans</string>
+
+    <!-- 微博 -->
+    <string name="icon_weibo">&#xe620;</string>
+    <!-- 微信 -->
+    <string name="icon_wechat">&#xe61d;</string>
+    <!-- 微信朋友圈 -->
+    <string name="icon_friends">&#xe61c;</string>
+    <!-- QQ -->
+    <string name="icon_qq">&#xe61e;</string>
+    <!-- QQ空间 -->
+    <string name="icon_qq_space">&#xe61f;</string>
+
 </resources>

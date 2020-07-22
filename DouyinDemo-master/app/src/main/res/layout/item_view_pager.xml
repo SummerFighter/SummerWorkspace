@@ -73,11 +73,12 @@
             android:gravity="center"
             />
         <TextView
+            android:id="@+id/share"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:drawableTop="@mipmap/share_icon"
             android:layout_marginTop="16dp"
-            android:text="99.8w"
+            android:text="999+"
             android:textColor="@android:color/white"
             android:gravity="center"
             />

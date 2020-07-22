@@ -42,6 +42,7 @@ import model.VideoCase;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import view.ShareDialog;
 
 
 public class MainActivity extends AppCompatActivity implements DetailAdapter.RemoveItemListener {
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
     private ImageView imgPlay;
     private ImageView imgThumb;
     private TextView commentView;
-
+    private TextView shareView;
     private FullWindowVideoView fullVideoView;
     MyLayoutManager2 myLayoutManager;
 
@@ -206,6 +207,16 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
                 commentDialog.show(getSupportFragmentManager(), "");
             }
         });
+
+        shareView = itemView.findViewById(R.id.share);
+        shareView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ShareDialog shareDialog = new ShareDialog();
+                shareDialog.show(getSupportFragmentManager(), "");
+            }
+        });
+
         startVideoPlay();
 
     }
