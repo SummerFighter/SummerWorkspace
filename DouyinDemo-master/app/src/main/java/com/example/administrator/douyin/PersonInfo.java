@@ -38,6 +38,7 @@ import java.util.concurrent.ExecutionException;
 import Controller.DataCreate;
 import fragment.TabFragment;
 import model.TabItemModel;
+import model.VideoCase;
 import widget.CircleImageView;
 import widget.FullViewPager;
 import widget.ScaleScrollView;
@@ -173,9 +174,31 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
 
     private List<TabItemModel> getTabs() {
         List<model.TabItemModel> tabs = new ArrayList<>();
-        tabs.add(new model.TabItemModel("作品10", TabFragment.class.getName(), null));
-        tabs.add(new model.TabItemModel("动态10", TabFragment.class.getName(), null));
-        tabs.add(new model.TabItemModel("喜欢999", TabFragment.class.getName(), null));
+        //传输我的相关视频bundle
+        Bundle myVideoBundle=new Bundle();
+        ArrayList<String>myWorkCovers=new ArrayList<>();
+        ArrayList<Integer>myWorkLikeNums=new ArrayList<>();
+        for(VideoCase v:Constant.currentUserVideoWorks){
+            myWorkCovers.add(v.getCoverURL());
+            myWorkLikeNums.add(v.likeNum);
+        }
+        myVideoBundle.putStringArrayList("imageURL",myWorkCovers);
+        myVideoBundle.putIntegerArrayList("likeNum",myWorkLikeNums);
+
+        Bundle likeVideoBundle=new Bundle();
+        ArrayList<String>myLikeCovers=new ArrayList<>();
+        ArrayList<Integer>myLikeLikeNums=new ArrayList<>();
+
+        for(VideoCase v:Constant.currentUserVideoLikes){
+            myLikeCovers.add(v.getCoverURL());
+            myLikeLikeNums.add(v.likeNum);
+        }
+        likeVideoBundle.putStringArrayList("imageURL",myLikeCovers);
+        likeVideoBundle.putIntegerArrayList("likeNum",myLikeLikeNums);
+
+        tabs.add(new model.TabItemModel("作品", TabFragment.class.getName(), myVideoBundle));
+        //tabs.add(new model.TabItemModel("动态", TabFragment.class.getName(), null));
+        tabs.add(new model.TabItemModel("喜欢", TabFragment.class.getName(), likeVideoBundle));
         return tabs;
     }
 

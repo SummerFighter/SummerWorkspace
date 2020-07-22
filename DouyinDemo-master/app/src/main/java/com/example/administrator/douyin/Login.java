@@ -18,12 +18,17 @@ import com.alibaba.fastjson.JSONObject;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.IOException;
 
 import Controller.Constant;
 import Controller.DataCreate;
 import Controller.HttpUtil;
 import entities.User;
+import model.VideoCase;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -155,6 +160,41 @@ public class Login extends AppCompatActivity {
                 Toast.makeText(Login.this, "登录出错", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
                 Looper.loop();
+            }
+        });
+        //登录的同时就获取我的视频信息
+        HttpUtil.getRelevantVideo(account, new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                final String responseData = response.body().string();
+                try {
+                    org.json.JSONObject resultJSON=new org.json.JSONObject(responseData);
+                    JSONArray myVideoJsonArray =resultJSON.getJSONArray("uploadVideo");
+                    for(int i=0;i<myVideoJsonArray.length();i++){
+                        org.json.JSONObject videoJSON=myVideoJsonArray.getJSONObject(i);
+                        VideoCase v=new VideoCase(videoJSON);
+                        Constant.currentUserVideoWorks.add(v);
+                    }
+
+                    JSONArray likeVideoJsonArray =resultJSON.getJSONArray("likeVideo");
+                    for(int i=0;i<likeVideoJsonArray.length();i++){
+                        org.json.JSONObject videoJSON=likeVideoJsonArray.getJSONObject(i);
+                        VideoCase v=new VideoCase(videoJSON);
+                        Constant.currentUserVideoLikes.add(v);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(Login.this, "已获取", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
             }
         });
     }

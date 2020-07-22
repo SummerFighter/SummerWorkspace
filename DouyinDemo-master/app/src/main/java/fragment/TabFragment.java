@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.administrator.douyin.DetailActivity;
+import com.example.administrator.douyin.MainActivity2;
 import com.example.administrator.douyin.R;
 
 
@@ -41,7 +42,10 @@ public class TabFragment extends Fragment implements VideoAdapter.OnItemClickLis
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mVideoAdapter = new VideoAdapter(this);
+        Bundle bundle = this.getArguments();
+        List<String> s = bundle.getStringArrayList("imageURL");
+        List<Integer> i=bundle.getIntegerArrayList("likeNum");
+        mVideoAdapter = new VideoAdapter(getContext(),s,i,this);
     }
 
     @Nullable
@@ -49,6 +53,7 @@ public class TabFragment extends Fragment implements VideoAdapter.OnItemClickLis
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab, container, false);
         mRecyclerView = view.findViewById(R.id.recyclerView);
+        mRecyclerView.setAdapter(mVideoAdapter);
         return view;
     }
 
@@ -70,7 +75,7 @@ public class TabFragment extends Fragment implements VideoAdapter.OnItemClickLis
             public void run() {
                 mSkeletonScreen.hide();
             }
-        }, 2000);
+        }, 1000);
     }
 
     private List<String> getList() {
@@ -84,7 +89,9 @@ public class TabFragment extends Fragment implements VideoAdapter.OnItemClickLis
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onItemClick(View view) {
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(Objects.requireNonNull(getActivity()), view, view.getTransitionName());
-        ActivityCompat.startActivity(getActivity(), new Intent(getContext(), DetailActivity.class), options.toBundle());
+        //ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(Objects.requireNonNull(getActivity()), view, view.getTransitionName());
+        //ActivityCompat.startActivity(getActivity(), new Intent(getContext(), DetailActivity.class), options.toBundle());
+        Bundle bundle=new Bundle();
+        ActivityCompat.startActivity(getActivity(), new Intent(getContext(), MainActivity2.class), bundle);
     }
 }

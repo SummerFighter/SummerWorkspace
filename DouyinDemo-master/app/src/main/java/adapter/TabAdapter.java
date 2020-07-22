@@ -35,6 +35,7 @@ public class TabAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         TabItemModel model = models.get(position);
+
         Fragment fragment = fm.getFragmentFactory().instantiate(context.getClassLoader(), model.getClazz());
         fragment.setArguments(model.getArgs());
         return fragment;

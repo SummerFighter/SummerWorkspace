@@ -23,25 +23,10 @@ import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
-import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.List;
 
 import Controller.Constant;
-import Controller.HttpUtil;
 import adapter.DetailAdapter;
 import model.VideoCase;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 //只作为临时查看搜索结果和我的视频的视频播放界面
 public class MainActivity2 extends AppCompatActivity implements DetailAdapter.RemoveItemListener {
