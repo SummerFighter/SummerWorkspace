@@ -80,7 +80,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailViewHolder>{
                 .load(holder.author_avatar_url)
                 .into(holder.avatar_view);
 
-        }
+    }
 
     @Override
     public int getItemCount() {

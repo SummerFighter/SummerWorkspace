@@ -8,6 +8,8 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.example.administrator.douyin.R;
@@ -46,6 +48,9 @@ public class CommentAdapter extends BaseRvAdapter<CommentBean, CommentAdapter.Co
         holder.tvLikecount.setOnClickListener(v -> {
             if (!commentBean.isLiked()) {
                 holder.tvLikecount.setText(commentBean.getLikeCount()+1+"");
+                Animation animation=new AlphaAnimation(1.0f,0.0f);
+                animation.setDuration(300);
+                holder.tvLikecount.startAnimation(animation);
                 holder.tvLikecount.setCompoundDrawablesWithIntrinsicBounds(null, top2 , null, null);
                 //点赞
 
@@ -53,6 +58,9 @@ public class CommentAdapter extends BaseRvAdapter<CommentBean, CommentAdapter.Co
 
             } else {
                 holder.tvLikecount.setText(commentBean.getLikeCount()-1+"");
+                Animation animation=new AlphaAnimation(1.0f,0.0f);
+                animation.setDuration(300);
+                holder.tvLikecount.startAnimation(animation);
                 holder.tvLikecount.setCompoundDrawablesWithIntrinsicBounds(null, top1 , null, null);
                 //取消点赞
 

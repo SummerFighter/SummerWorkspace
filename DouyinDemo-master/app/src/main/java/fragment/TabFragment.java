@@ -16,10 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.administrator.douyin.DetailActivity;
-import com.example.administrator.douyin.MainActivity2;
 import com.example.administrator.douyin.R;
-
-
+import com.example.administrator.douyin.SearchActivity;
 
 
 import java.util.ArrayList;
@@ -78,20 +76,12 @@ public class TabFragment extends Fragment implements VideoAdapter.OnItemClickLis
         }, 1000);
     }
 
-    private List<String> getList() {
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            list.add("" + i);
-        }
-        return list;
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void onItemClick(View view) {
-        //ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(Objects.requireNonNull(getActivity()), view, view.getTransitionName());
-        //ActivityCompat.startActivity(getActivity(), new Intent(getContext(), DetailActivity.class), options.toBundle());
-        Bundle bundle=new Bundle();
-        ActivityCompat.startActivity(getActivity(), new Intent(getContext(), MainActivity2.class), bundle);
+    public void onItemClick(int position) {
+        Intent intent = new Intent(getContext(), DetailActivity.class);
+        intent.putExtra("rootActivity","myWorks");//提示启动界面
+        intent.putExtra("index", position);//设置位置
+        startActivity(intent);
     }
 }

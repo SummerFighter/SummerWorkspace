@@ -187,7 +187,8 @@ public class SearchActivity extends AppCompatActivity {
             imageButton.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(SearchActivity.this, MainActivity2.class);
+                    Intent intent = new Intent(SearchActivity.this, DetailActivity.class);
+                    intent.putExtra("rootActivity","search");//提示启动界面
                     intent.putExtra("index", finalI);//设置位置
                     startActivity(intent);
                 }
