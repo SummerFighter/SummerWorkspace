@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.administrator.douyin.DetailActivity;
-import com.example.administrator.douyin.MainActivity2;
 import com.example.administrator.douyin.R;
 import com.example.administrator.douyin.SearchActivity;
 

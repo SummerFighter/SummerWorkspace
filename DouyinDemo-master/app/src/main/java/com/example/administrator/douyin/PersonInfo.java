@@ -8,6 +8,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,8 +27,11 @@ import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.material.tabs.TabLayout;
+import com.jiajie.load.LoadingDialog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -36,6 +41,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import Controller.DataCreate;
+import entities.User;
 import fragment.TabFragment;
 import model.TabItemModel;
 import model.VideoCase;
@@ -76,6 +82,7 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d("jiuming","personinfo"+Constant.currentUser.toString());
         new DataCreate().initData();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personinfo);
@@ -117,19 +124,7 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
         usernameTextView = findViewById(R.id.username);
         avatarImageView = findViewById(R.id.iv_head);
 
-        accountTextView.setText(Constant.currentUser.getAccount());
-        usernameTextView.setText(Constant.currentUser.getUsername());
-        Glide.with(this).load(Constant.currentUser.getAvatarUrl()).into(avatarImageView);
 
-    }
-
-    // 请求编辑个人信息
-
-    public void OnClick_EditButton(View v)
-    {
-        Intent intent=new Intent();
-        intent.setClass(PersonInfo.this, EditMyinfo.class);
-        startActivity(intent);
     }
 
     private void EditInfo() {
@@ -225,5 +220,23 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
             titleLayout.setBackgroundColor((int) evaluator.evaluate(ratio, Color.TRANSPARENT, colorPrimary));
             titleLayout.setTitleColor((int) evaluator.evaluate(ratio, Color.TRANSPARENT, Color.WHITE));
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Log.d("jiuming",Constant.currentUser.toString());
+
+        RequestOptions userAvatarOptions = new RequestOptions()
+                .signature(new ObjectKey(System.currentTimeMillis()));
+
+        Glide.with(PersonInfo.this)
+                .applyDefaultRequestOptions(userAvatarOptions)
+                .load(Constant.currentUser.getAvatarUrl())
+                .into(avatarImageView);
+
+        accountTextView.setText(Constant.currentUser.getAccount());
+        usernameTextView.setText(Constant.currentUser.getUsername());
     }
 }
