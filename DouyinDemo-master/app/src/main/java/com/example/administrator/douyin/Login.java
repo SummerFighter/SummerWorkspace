@@ -129,8 +129,8 @@ public class Login extends AppCompatActivity {
                         Intent intent = new Intent();
                         intent.setClass(Login.this, MainActivity.class);
                         dialog.dismiss();
-                        startActivity(intent);
                         Login.this.finish();
+                        startActivity(intent);
                         Looper.loop();
                         return;
                     }
