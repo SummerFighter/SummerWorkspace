@@ -50,7 +50,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
     public VideoHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.item_video, parent, false);
-        view.setTransitionName(DetailActivity.TRANSITION_NAME);//转到的Activity名
+        //view.setTransitionName(DetailActivity.TRANSITION_NAME);//转到的Activity名
         return new VideoHolder(view);
     }
 
@@ -63,7 +63,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onItemClick(v);
+                mListener.onItemClick(position);
             }
         });
     }
@@ -85,6 +85,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View view);
+        void onItemClick(int position);
     }
 }

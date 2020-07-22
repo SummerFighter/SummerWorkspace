@@ -196,9 +196,9 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
         likeVideoBundle.putStringArrayList("imageURL",myLikeCovers);
         likeVideoBundle.putIntegerArrayList("likeNum",myLikeLikeNums);
 
-        tabs.add(new model.TabItemModel("作品", TabFragment.class.getName(), myVideoBundle));
+        tabs.add(new model.TabItemModel("作品"+ myWorkCovers.size(), TabFragment.class.getName(), myVideoBundle));
         //tabs.add(new model.TabItemModel("动态", TabFragment.class.getName(), null));
-        tabs.add(new model.TabItemModel("喜欢", TabFragment.class.getName(), likeVideoBundle));
+        tabs.add(new model.TabItemModel("喜欢"+ myLikeCovers.size(), TabFragment.class.getName(), likeVideoBundle));
         return tabs;
     }
 

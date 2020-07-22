@@ -33,18 +33,12 @@ public class MyLayoutManager extends LinearLayoutManager implements RecyclerView
         mPagerSnapHelper.attachToRecyclerView(view);
         super.onAttachedToWindow(view);
     }
-//当Item添加进来了  调用这个方法
 
-    //
     @Override
     public void onChildViewAttachedToWindow(@NonNull View view) {
-//        播放视频操作 即将要播放的是上一个视频 还是下一个视频
         int position = getPosition(view);
-        if (0 == position) {
-            if (mOnViewPagerListener != null) {
-                mOnViewPagerListener.onPageSelected(getPosition(view), false);
-            }
-
+        if (mOnViewPagerListener != null) {
+            mOnViewPagerListener.onPageSelected(position, false);
         }
     }
 
@@ -62,8 +56,6 @@ public class MyLayoutManager extends LinearLayoutManager implements RecyclerView
                     mOnViewPagerListener.onPageSelected(position, position == getItemCount() - 1);
 
                 }
-//                postion  ---回调 ----》播放
-
 
                 break;
         }
@@ -72,16 +64,9 @@ public class MyLayoutManager extends LinearLayoutManager implements RecyclerView
 
     @Override
     public void onChildViewDetachedFromWindow(@NonNull View view) {
-//暂停播放操作
-        if (mDrift >= 0) {
-            if (mOnViewPagerListener != null)
-                mOnViewPagerListener.onPageRelease(true, getPosition(view));
-        } else {
-            if (mOnViewPagerListener != null)
-                mOnViewPagerListener.onPageRelease(false, getPosition(view));
-        }
+        if (mOnViewPagerListener != null)
+            mOnViewPagerListener.onPageRelease(mDrift >= 0, getPosition(view));
     }
-
 
     @Override
     public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State state) {
