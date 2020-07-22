@@ -55,8 +55,8 @@
 
         <TextView
             android:id="@+id/like_num"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:drawableTop="@mipmap/heart_icon"
             android:layout_marginTop="16dp"
             android:text="88.8w"
@@ -65,8 +65,8 @@
             />
         <TextView
             android:id="@+id/comment_num"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:drawableTop="@mipmap/msg_icon"
             android:layout_marginTop="16dp"
             android:textColor="@android:color/white"
@@ -74,8 +74,8 @@
             />
         <TextView
             android:id="@+id/share"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:drawableTop="@mipmap/share_icon"
             android:layout_marginTop="16dp"
             android:text="999+"

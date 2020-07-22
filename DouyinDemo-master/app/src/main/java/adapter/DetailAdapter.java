@@ -1,9 +1,12 @@
 package adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.VideoView;
@@ -49,7 +52,14 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailViewHolder>{
         holder.like_num.setText(String.valueOf(videoList.get(position).likeNum));
         holder.comment_num.setText(String.valueOf(videoList.get(position).commentNum));
         holder.videoView.setVideoPath(VideoCache.getProxy(this.mContext).getProxyUrl(videoList.get(position).getURL()));
-
+        Drawable top = mContext.getResources().getDrawable(R.mipmap.heart_icon2);
+        holder.like_num.setOnClickListener(v -> {
+            holder.like_num.setText(String.valueOf(videoList.get(position).likeNum + 1));
+            Animation animation=new AlphaAnimation(1.0f,0.0f);
+            animation.setDuration(300);
+            holder.like_num.startAnimation(animation);
+            holder.like_num.setCompoundDrawablesWithIntrinsicBounds(null, top , null, null);
+        });
     }
 
     @Override

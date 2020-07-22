@@ -17,7 +17,6 @@ public class DetailViewHolder extends RecyclerView.ViewHolder {
     ImageView img_play;
     TextView video_title;
     TextView video_info;
-
     TextView like_num;
     TextView comment_num;
 
