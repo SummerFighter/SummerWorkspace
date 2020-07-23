@@ -117,6 +117,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
             case R.id.shoot:
                 edit = false;
                 videoView.setVideoPath(file.getPath());
+                upload = null;
                 Intent intent1 = new Intent(PlayVideoActivity.this,ShootActivity.class);
                 startActivity(intent1);
                 break;
