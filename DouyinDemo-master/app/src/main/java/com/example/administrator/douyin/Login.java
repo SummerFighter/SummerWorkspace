@@ -25,7 +25,7 @@ import org.json.JSONException;
 import java.io.IOException;
 
 import Controller.Constant;
-import Controller.DataCreate;
+
 import Controller.HttpUtil;
 import entities.User;
 import model.VideoCase;
@@ -77,7 +77,7 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataCreate.initData();
+                //DataCreate.initData();
                 final String account = accountEdit.getText().toString();
                 final String password = passwordEdit.getText().toString();
 
@@ -125,7 +125,7 @@ public class Login extends AppCompatActivity {
                         Looper.prepare();
                         Constant.currentUser = User.addUser(account);
                         Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
-                        DataCreate.initData();
+                       // DataCreate.initData();
                         Intent intent = new Intent();
                         intent.setClass(Login.this, MainActivity.class);
                         dialog.dismiss();
@@ -213,6 +213,17 @@ public class Login extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 accountEdit.setText(data.getStringExtra("account"));
                 passwordEdit.setText(data.getStringExtra("password"));
+            }
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String tag = intent.getStringExtra("EXIT_TAG");
+        if (tag != null&& !TextUtils.isEmpty(tag)) {
+            if ("SINGLETASK".equals(tag)) {//退出程序
+                finish();
             }
         }
     }

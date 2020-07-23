@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/main_theme">
         <activity android:name=".Login" />
-        <activity android:name=".MainActivity2" />
+
         <activity android:name=".SearchActivity" />
         <activity android:name=".PersonInfo" />
         <activity android:name=".DetailActivity" />
@@ -37,6 +37,8 @@
         <activity android:name=".ChatActivity" />
         <activity android:name=".ChatRoom" />
         <activity android:name=".ReportActivity"/>
+        <activity android:name=".Setting"/>
+        <activity android:name=".AboutUs"/>
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />

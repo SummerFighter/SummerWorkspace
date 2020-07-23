@@ -68,7 +68,7 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
     private TextView shouye;
     private TextView follow;
     private TextView msg;
-
+    private ImageView setting;
     CircleImageView ivHead;
     private VideoBean.UserBean curUserBean;
     private int getStatusBarHeight() {
@@ -119,12 +119,19 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
                 ToMessage();
             }
         });
-        initView();
+
         accountTextView = findViewById(R.id.userId);
         usernameTextView = findViewById(R.id.username);
         avatarImageView = findViewById(R.id.iv_head);
 
-
+        setting=findViewById((R.id.settings));
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Tosetting();
+            }
+        });
+        initView();
     }
 
     private void EditInfo() {
@@ -142,6 +149,10 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
 
     private void ToMessage(){
         Intent intent = new Intent(this, ChatActivity.class);
+        startActivity(intent);
+    }
+    private void Tosetting(){
+        Intent intent = new Intent(this, Setting.class);
         startActivity(intent);
     }
 

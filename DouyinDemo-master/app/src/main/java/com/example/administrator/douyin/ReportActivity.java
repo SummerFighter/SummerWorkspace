@@ -15,8 +15,8 @@ import view.ShareDialog;
 
 public class ReportActivity extends AppCompatActivity {
 
-private ImageView backtoshare;
-private Button commitreport;
+    private ImageView backtoshare;
+    private Button commitreport;
     private CheckBox seqingCb;
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {

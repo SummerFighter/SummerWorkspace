@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary">
+
+
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="89dp"
+        android:background="#161823">
+
+        <ImageView
+            android:id="@+id/backtosetting"
+            android:layout_width="69dp"
+            android:layout_height="130dp"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:src="@mipmap/return_white" />
+
+        <TextView
+            android:id="@+id/aboutus_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="monospace"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            tools:text="关于我们" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/aboutus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_shape"
+            android:text="关于我们团队的介绍"
+            android:textColor="@color/light_gray" />
+
+        <TextView
+            android:id="@+id/introduce"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_shape"
+            android:text="\t\t\t\t\t\t团队名称：夏天热热不带风\n
+            中文寓意：团队创建时正值盛夏，天气酷热、闷燥无风\n
+            英文名称：SummerFighter\n
+            团队宣言：坚持一下，挑战一夏\n"
+            android:textColor="@color/light_gray" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+           android:orientation="vertical"
+            android:background="@color/light_gray"
+            >
+
+            <TextView
+                android:id="@+id/applogo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_shape"
+                android:text="程序图标"
+                android:textColor="@color/light_gray" />
+
+            <ImageView
+                android:layout_width="124dp"
+                android:layout_height="119dp"
+                android:scaleType="center"
+                android:background="@mipmap/enter_icon1round"
+
+                />
+        </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/about_logo_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_shape"
+            android:text="团队Logo"
+            android:textColor="@color/light_gray" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="470dp"
+            android:background="@mipmap/logo1"
+            android:scaleType="centerInside"
+
+            />
+    </LinearLayout>
+</LinearLayout>

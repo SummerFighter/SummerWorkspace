@@ -35,7 +35,8 @@ public class TitleLayout extends RelativeLayout {
         super.onFinishInflate();
         title = findViewById(R.id.title);
         finish = findViewById(R.id.finish);
-        menu = findViewById(R.id.menu);
+        menu = findViewById(R.id.settings);
+
     }
 
     public void setTitle(CharSequence text) {

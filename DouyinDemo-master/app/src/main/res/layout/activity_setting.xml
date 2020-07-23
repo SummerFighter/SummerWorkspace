@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="89dp"
+        android:background="#161823">
+
+        <ImageView
+            android:id="@+id/bktpersoninfo"
+            android:layout_width="69dp"
+            android:layout_height="130dp"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:src="@mipmap/return_white" />
+
+        <TextView
+            android:id="@+id/setting_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="monospace"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            tools:text="设置" />
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/aboutus"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:text="关于我们"
+            android:background="@drawable/button_shape"
+            android:textColor="@color/light_gray" />
+        <Button
+            android:id="@+id/unlogin"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:text="退出登录"
+            android:background="@drawable/button_shape"
+            android:textColor="@color/light_gray" />
+        <Button
+            android:id="@+id/exitapp"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:text="退出小麦视频"
+            android:background="@drawable/button_shape"
+            android:textColor="@color/light_gray" />
+    </LinearLayout>
+</LinearLayout>
