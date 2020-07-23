@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#161823">
+
+
+
+    <ImageView
+            android:id="@+id/backtoshare"
+            android:layout_width="69dp"
+            android:layout_height="88dp"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:src="@mipmap/return_white" />
+        <TextView
+            android:id="@+id/tv_with_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="monospace"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:text="视频举报" />
+
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/colorPrimary">
+
+        <CheckBox
+            android:id="@+id/seqing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/light01"
+            android:layoutDirection="rtl"
+            android:text="色情低俗"
+            android:textColor="@color/light01" />
+
+        <CheckBox
+            android:id="@+id/ruma"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/light01"
+            android:layoutDirection="rtl"
+            android:text="侮辱谩骂"
+            android:textColor="@color/light01" />
+
+        <CheckBox
+            android:id="@+id/feiyuanchuang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/light01"
+            android:layoutDirection="rtl"
+            android:text="非原创内容"
+            android:textColor="@color/light01" />
+
+        <CheckBox
+            android:id="@+id/guanggao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/light01"
+            android:layoutDirection="rtl"
+            android:text="垃圾广告"
+            android:textColor="@color/light01" />
+
+        <CheckBox
+            android:id="@+id/illegal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/light01"
+            android:layoutDirection="rtl"
+            android:text="违法犯罪"
+            android:textColor="@color/light01" />
+
+        <CheckBox
+            android:id="@+id/zhengzhimingan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/light01"
+            android:layoutDirection="rtl"
+            android:text="政治敏感"
+            android:textColor="@color/light01" />
+
+        <CheckBox
+            android:id="@+id/baoliqingxiang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/light01"
+            android:layoutDirection="rtl"
+            android:text="暴力倾向"
+            android:textColor="@color/light01" />
+
+        <CheckBox
+            android:id="@+id/yinrenbushi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/light01"
+            android:layoutDirection="rtl"
+            android:text="引人不适"
+            android:textColor="@color/light01" />
+
+        <CheckBox
+            android:id="@+id/weichengnianmistake"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/light01"
+            android:layoutDirection="rtl"
+            android:text="未成年人不当行为"
+            android:textColor="@color/light01" />
+
+        <CheckBox
+            android:id="@+id/leadweichengnian"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/light01"
+            android:layoutDirection="rtl"
+            android:text="内容带坏未成年人"
+            android:textColor="@color/light01" />
+
+        <CheckBox
+            android:id="@+id/ziwoshanghai"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/light01"
+            android:layoutDirection="rtl"
+            android:text="自我伤害"
+            android:textColor="@color/light01" />
+
+        <CheckBox
+            android:id="@+id/youdao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/light01"
+            android:layoutDirection="rtl"
+            android:text="诱导点赞、分享、关注"
+            android:textColor="@color/light01" />
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="_________________________________________________"
+    android:textColor="@color/light01"
+    />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="举报描述（选填）"
+            android:textColor="@color/light01" />
+
+        <EditText
+            android:id="@+id/edit_report_reason"
+            android:gravity="start"
+            android:layout_width="match_parent"
+            android:layout_height="301dp"
+            android:background="@color/colorPrimary"
+            android:hint="请书写违规描述以及举报理由"
+            android:maxLines="13"
+            android:textColor="@color/light01"
+            android:textColorHint="@color/light01" />
+    </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/commitreport"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        android:text="提交"
+        android:background="@drawable/button_shape"
+        android:textColor="@color/light_gray" />
+</LinearLayout>
+
+
+</LinearLayout>

@@ -36,7 +36,7 @@
         <activity android:name=".FocusActivity" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".ChatRoom" />
-
+        <activity android:name=".ReportActivity"/>
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />

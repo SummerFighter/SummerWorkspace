@@ -1,19 +1,27 @@
 package view;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.administrator.douyin.BaseBottomSheetDialog;
+import com.example.administrator.douyin.ChatActivity;
+import com.example.administrator.douyin.EditMyinfo;
+import com.example.administrator.douyin.MainActivity;
 import com.example.administrator.douyin.R;
+import com.example.administrator.douyin.ReportActivity;
+import com.example.administrator.douyin.SearchActivity;
 
 import java.util.ArrayList;
 import adapter.ShareAdapter;
@@ -28,8 +36,6 @@ public class ShareDialog extends BaseBottomSheetDialog {
 
     @BindView(R.id.rv_share)
     RecyclerView rvShare;
-
-
     private ShareAdapter shareAdapter;
     private View view;
     private ArrayList<ShareBean> shareBeans = new ArrayList<>();
@@ -38,12 +44,20 @@ public class ShareDialog extends BaseBottomSheetDialog {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.dialog_share, container);
+        Button reportbtn = (Button) view.findViewById(R.id.report);
+        reportbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ReportActivity.class);
+                startActivity(intent);
+            }
+        });
         ButterKnife.bind(this, view);
-
         init();
 
         return view;
     }
+
 
 
     private void init() {
@@ -52,6 +66,7 @@ public class ShareDialog extends BaseBottomSheetDialog {
         rvShare.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         shareAdapter = new ShareAdapter(getContext(), shareBeans);
         rvShare.setAdapter(shareAdapter);
+
 
         setShareDatas();
 

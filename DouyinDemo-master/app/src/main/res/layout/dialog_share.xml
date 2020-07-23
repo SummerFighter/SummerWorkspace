@@ -38,7 +38,13 @@
         android:layout_height="1dp"
         android:background="@color/light_gray"
         android:layout_marginTop="20dp"/>
-
+    <Button
+        android:id="@+id/report"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        android:text="举报视频"
+        android:background="@color/white"
+        android:textColor="@color/black_overlay" />
 
 
 </LinearLayout>

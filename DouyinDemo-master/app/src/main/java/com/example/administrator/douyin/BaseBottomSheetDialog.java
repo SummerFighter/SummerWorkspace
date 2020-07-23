@@ -2,9 +2,11 @@ package com.example.administrator.douyin;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -12,7 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 
-public class BaseBottomSheetDialog extends BottomSheetDialogFragment {
+public class BaseBottomSheetDialog extends BottomSheetDialogFragment{
     private FrameLayout bottomSheet;
     public BottomSheetBehavior<FrameLayout> behavior;
 
@@ -40,6 +42,7 @@ public class BaseBottomSheetDialog extends BottomSheetDialogFragment {
         super.onCreate(savedInstanceState);
 
         setCancelable(true);
+
     }
 
     protected int getHeight() {
