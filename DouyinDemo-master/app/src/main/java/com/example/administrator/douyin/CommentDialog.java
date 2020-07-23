@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +30,7 @@ import adapter.CommentAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import model.CommentBean;
+import model.RefreshItemEvent;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -43,17 +45,20 @@ public class CommentDialog extends BaseBottomSheetDialog {
     private CommentAdapter commentAdapter;
     private ArrayList<CommentBean> datas = new ArrayList<>();//所有评论的内容
     private String videoID;
+    private int position;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_comment, container);
         ButterKnife.bind(this, view);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         Bundle bundle = this.getArguments();
         assert bundle != null;
         videoID = bundle.getString("videoID", "0");
+        position=bundle.getInt("position");
         init(view);
 
         EditText comment = view.findViewById(R.id.comment);
@@ -81,15 +86,15 @@ public class CommentDialog extends BaseBottomSheetDialog {
                         int oldCommentNum=datas.size();
                         final String responseData = response.body().string();
                         try {
-                            JSONObject commentIDJSON=new JSONObject(responseData);
-                            String commentID=commentIDJSON.getString("comment_id");
-                            CommentBean c=new CommentBean(commentID,commentContent,upperID,
-                                    Constant.currentUser.getUsername(),Constant.currentUser.getAccount(),Constant.currentUser.getAvatarUrl());
+                            JSONObject commentJSON=new JSONObject(responseData).getJSONObject("comment");
+                            CommentBean c=new CommentBean(commentJSON);
                             datas.add(c);
                             view.post(new Runnable() {
                                 @Override
                                 public void run() {
                                     comment.setText("");
+                                    Constant.videoDatas.get(position).commentNum++;
+                                    EventBus.getDefault().post(new RefreshItemEvent(position));//通知主界面评论数改变
                                     commentAdapter.notifyItemRangeInserted(oldCommentNum,1);
                                 }
                             });
@@ -105,7 +110,7 @@ public class CommentDialog extends BaseBottomSheetDialog {
                 });
             }
         });
-
+        //EventBus.getDefault().register(this);
         return view;
     }
 
@@ -142,7 +147,6 @@ public class CommentDialog extends BaseBottomSheetDialog {
             }
         });
     }
-
 
     @Override
     protected int getHeight() {

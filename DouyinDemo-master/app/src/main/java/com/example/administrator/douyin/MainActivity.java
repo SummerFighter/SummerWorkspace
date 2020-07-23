@@ -27,6 +27,9 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +42,7 @@ import Controller.Constant;
 import Controller.HttpUtil;
 import adapter.DetailAdapter;
 import adapter.DetailViewHolder;
+import model.RefreshItemEvent;
 import model.VideoCase;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -72,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//强制竖屏
+        if(EventBus.getDefault().isRegistered(MainActivity.this))
+            EventBus.getDefault().register(MainActivity.this);
         ShootButton = (ImageButton) findViewById(R.id.shoot);
         ShootButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
 
         initState();
         initView();
+
     }
 
     private void initState() {
@@ -212,8 +219,10 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
             @Override
             public void onClick(View view) {
                 CommentDialog commentDialog = new CommentDialog();
+                //传递videoID和位置信息
                 Bundle bundle=new Bundle();
                 bundle.putString("videoID",Constant.videoDatas.get(position).getID());
+                bundle.putInt("position", position);
                 commentDialog.setArguments(bundle);
                 commentDialog.show(getSupportFragmentManager(), "");
             }
@@ -294,6 +303,12 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
         });
     }
 
+    //响应刷新Item的事件
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    private void onRefreshItemEvent(RefreshItemEvent refreshItemEvent){
+        mAdapter.notifyItemChanged(refreshItemEvent.getPosition());
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -315,6 +330,7 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
         super.onDestroy();
         if (null != fullVideoView)
             fullVideoView.stopPlayback();
+        EventBus.getDefault().unregister(MainActivity.this);
     }
 
     private void getVideoData(int state){

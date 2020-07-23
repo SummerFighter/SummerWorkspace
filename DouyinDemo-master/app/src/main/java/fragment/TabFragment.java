@@ -33,7 +33,7 @@ import skeleton.SkeletonScreen;
 * */
 public class TabFragment extends Fragment implements VideoAdapter.OnItemClickListener {
 
-    private SkeletonScreen mSkeletonScreen;
+    //private SkeletonScreen mSkeletonScreen;
     private VideoAdapter mVideoAdapter;
     private RecyclerView mRecyclerView;
 
@@ -59,6 +59,7 @@ public class TabFragment extends Fragment implements VideoAdapter.OnItemClickLis
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRecyclerView.setNestedScrollingEnabled(false);
+        /*
         mSkeletonScreen = Skeleton.bind(mRecyclerView)
                 .adapter(mVideoAdapter)
                 .load(R.layout.item_video_placeholder)
@@ -74,6 +75,7 @@ public class TabFragment extends Fragment implements VideoAdapter.OnItemClickLis
                 mSkeletonScreen.hide();
             }
         }, 1000);
+        */
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
