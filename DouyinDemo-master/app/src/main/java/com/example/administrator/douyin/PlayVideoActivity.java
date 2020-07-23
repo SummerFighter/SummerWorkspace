@@ -29,13 +29,24 @@ import androidx.core.content.ContextCompat;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+
+import Controller.Constant;
+import Controller.FileUtil;
+import Controller.MediaRecorderUtil;
+import Controller.Mp4ParseUtil;
 
 public class PlayVideoActivity extends AppCompatActivity implements View.OnClickListener{
     private Uri upload;
+    private Uri music;
     private File file = new File(Environment.getExternalStorageDirectory() + "/AAA","myvideo.mp4");
+    private File editfile = new File(Environment.getExternalStorageDirectory() + "/AAA","myevideo.mp4");
     private VideoView videoView;
     private static final int FILE_SELECT_CODE=1;
     private static final String TAG="PlayVideoActivity";
+    private boolean edit = false;
+    private boolean record = false;
+    MediaRecorderUtil mrUtil=new MediaRecorderUtil();
 
 
     @Override
@@ -43,15 +54,25 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
 
+        edit = false;
+        record = false;
         videoView=(VideoView)findViewById(R.id.video_view);
         Button play=(Button)findViewById(R.id.play);
         Button shoot=(Button)findViewById(R.id.shoot);
         Button upload=(Button)findViewById(R.id.upload);
         Button choice=(Button)findViewById(R.id.choice) ;//按钮的初始化
+        Button music=(Button)findViewById(R.id.background_music);
+        Button confirm=(Button)findViewById(R.id.confirm);
+        Button voice=(Button)findViewById(R.id.background_voice);
+        Button confirm2=(Button)findViewById(R.id.confirm2);
         choice.setOnClickListener(this);
         play.setOnClickListener(this);
         shoot.setOnClickListener(this);
         upload.setOnClickListener(this);//给按钮加监听
+        music.setOnClickListener(this);
+        confirm.setOnClickListener(this);
+        voice.setOnClickListener(this);
+        confirm2.setOnClickListener(this);
 
         if(ContextCompat.checkSelfPermission(PlayVideoActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(PlayVideoActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);//判断你是否授权
@@ -94,12 +115,20 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 }
                 break;
             case R.id.shoot:
+                edit = false;
                 videoView.setVideoPath(file.getPath());
+                upload = null;
                 Intent intent1 = new Intent(PlayVideoActivity.this,ShootActivity.class);
                 startActivity(intent1);
                 break;
             case R.id.upload:
-                if(upload==null){
+                if(edit){
+                    Intent intent=new Intent(PlayVideoActivity.this,UploadActivity.class);
+                    intent.putExtra("name",editfile.getPath());
+                    intent.putExtra("picture", GetFirstFrame(editfile.getPath()));
+                    PlayVideoActivity.this.startActivity(intent);
+                }
+                else if(upload==null){
                     Intent intent=new Intent(PlayVideoActivity.this,UploadActivity.class);
                     intent.putExtra("name",file.getPath());
                     intent.putExtra("picture", GetFirstFrame(file.getPath()));
@@ -116,10 +145,51 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                 }
                 break;
             case R.id.choice://选择文件
+                edit = false;
                 Intent intent2=new Intent(Intent.ACTION_GET_CONTENT);
                 intent2.setType("*/*");//设置类型，这是任意类型
                 intent2.addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(intent2,FILE_SELECT_CODE);
+                break;
+            case R.id.background_music:
+                Intent intent3=new Intent(Intent.ACTION_GET_CONTENT);
+                intent3.setType("*/*");//设置类型，这是任意类型
+                intent3.addCategory(Intent.CATEGORY_OPENABLE);
+                startActivityForResult(intent3,77);
+                break;
+            case R.id.confirm:
+                if(upload==null&&music!=null){
+                    Mp4ParseUtil.muxAacMp4(FileUtil.getFilePathByUri(this, music),file.getPath(),editfile.getPath());
+                    videoView.setVideoPath(editfile.getPath());
+                    edit = true;
+                }
+                else if(music!=null){
+                    Mp4ParseUtil.muxAacMp4(FileUtil.getFilePathByUri(this, music),FileUtil.getFilePathByUri(this, upload),editfile.getPath());
+                    videoView.setVideoPath(editfile.getPath());
+                    edit = true;
+                }
+                break;
+            case R.id.background_voice:
+                if(!videoView.isPlaying()){//播放
+                    videoView.start();
+                }
+                mrUtil.recorderStart();
+                record = true;
+                break;
+            case R.id.confirm2:
+                if(record) {
+                    mrUtil.recorderSave();
+                    if (upload == null) {
+                        Mp4ParseUtil.muxAacMp4(Environment.getExternalStorageDirectory() + "/AAA/recorder.aac", file.getPath(), editfile.getPath());
+                        videoView.setVideoPath(editfile.getPath());
+                        edit = true;
+                    } else{
+                        Mp4ParseUtil.muxAacMp4(Environment.getExternalStorageDirectory() + "/AAA/recorder.aac", FileUtil.getFilePathByUri(this, upload), editfile.getPath());
+                        videoView.setVideoPath(editfile.getPath());
+                        edit = true;
+                    }
+                }
+                record = false;
         }
     }
     public void onDestroy(){//释放资源
@@ -129,21 +199,20 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         }
     }
     public void onActivityResult(int requestCode,int resultCode,Intent data){
-        if(resultCode== Activity.RESULT_OK){
-            Uri uri=data.getData();
-            videoView.setVideoURI(uri);//将选择的文件路径给播放器
-            upload = uri;
-            Toast.makeText(PlayVideoActivity.this,upload.getPath(),Toast.LENGTH_LONG).show();
-
-            super.onActivityResult(requestCode, resultCode, data);
-            return;
-        }
-        if (requestCode == FILE_SELECT_CODE) {
-            Uri uri = data.getData();
-            upload = uri;
-            Log.i(TAG, "------->" + uri.getPath());
-        }
         super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case FILE_SELECT_CODE:
+                Uri uri=data.getData();
+                videoView.setVideoURI(uri);//将选择的文件路径给播放器
+                upload = uri;
+                Toast.makeText(PlayVideoActivity.this,upload.getPath(),Toast.LENGTH_LONG).show();
+                break;
+            case 77:
+                Uri uri2=data.getData();
+                music = uri2;
+                Toast.makeText(PlayVideoActivity.this,music.getPath(),Toast.LENGTH_LONG).show();
+                break;
+        }
     }
 
     //根据uri获取视频的绝对路径
