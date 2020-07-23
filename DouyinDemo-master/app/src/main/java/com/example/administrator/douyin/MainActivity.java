@@ -38,6 +38,7 @@ import java.util.List;
 import Controller.Constant;
 import Controller.HttpUtil;
 import adapter.DetailAdapter;
+import adapter.DetailViewHolder;
 import model.VideoCase;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
     private TextView commentView;
     private TextView shareView;
     private FullWindowVideoView fullVideoView;
-    MyLayoutManager2 myLayoutManager;
+    MyLayoutManager myLayoutManager;
 
     private ImageButton ShootButton;
     private ImageButton SearchButton;
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
         refreshView = findViewById(R.id.refresh);
         refreshView.setEnableScrollContentWhenLoaded(false);
         mRecyclerView = findViewById(R.id.recycler);
-        myLayoutManager = new MyLayoutManager2(this, OrientationHelper.VERTICAL, false);
+        myLayoutManager = new MyLayoutManager(this, OrientationHelper.VERTICAL, false);
         mRecyclerView.setLayoutManager(myLayoutManager);
         initListener();
     }
@@ -197,20 +198,27 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void playVideo(int position) {
         if (null != fullVideoView && fullVideoView.isPlaying()) return;
-        View itemView = mRecyclerView.getChildAt(0);
-        fullVideoView = itemView.findViewById(R.id.video_view);
-        imgPlay = itemView.findViewById(R.id.img_play);
-        imgThumb = itemView.findViewById(R.id.img_thumb);
-        commentView = itemView.findViewById(R.id.comment_num);
+        DetailViewHolder holder=(DetailViewHolder) mRecyclerView.findViewHolderForLayoutPosition(position);
+        if (null == holder || null == holder.itemView) return;
+        fullVideoView = holder.getView(R.id.video_view);
+        if (null == fullVideoView) return;
+        fullVideoView.requestFocus();
+        imgPlay=holder.getView(R.id.img_play);
+        imgThumb=holder.getView(R.id.img_thumb);
+        commentView = holder.getView(R.id.comment_num);
+        shareView = holder.getView(R.id.share);
+
         commentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CommentDialog commentDialog = new CommentDialog();
+                Bundle bundle=new Bundle();
+                bundle.putString("videoID",Constant.videoDatas.get(position).getID());
+                commentDialog.setArguments(bundle);
                 commentDialog.show(getSupportFragmentManager(), "");
             }
         });
 
-        shareView = itemView.findViewById(R.id.share);
         shareView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,8 +1,6 @@
 package Controller;
 
 
-
-import com.example.administrator.douyin.CommentBean;
 import com.example.administrator.douyin.R;
 import com.example.administrator.douyin.VideoBean;
 
@@ -14,7 +12,6 @@ import java.util.ArrayList;
 public class DataCreate {
     public static ArrayList<VideoBean> datas = new ArrayList<>();
     public static ArrayList<VideoBean.UserBean> userList = new ArrayList<>();
-    public static ArrayList<CommentBean> comments = new ArrayList<>();
 
     public static void initData() {
 
@@ -73,7 +70,7 @@ public class DataCreate {
 
         datas.add(videoBeanOne);
         datas.add(videoBeanTwo);
-
+        /*
         CommentBean commentBeanOne = new CommentBean();
         commentBeanOne.setUserBean(DataCreate.userList.get(0));
         commentBeanOne.setContent("我就说左脚踩右脚可以上天你们还不信！");
@@ -86,5 +83,6 @@ public class DataCreate {
 
         comments.add(commentBeanOne);
         comments.add(commentBeanTwo);
+        */
     }
 }
