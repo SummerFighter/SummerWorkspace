@@ -66,7 +66,6 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
     private View statusView;
     private Button editinfo;
     private TextView shouye;
-    private TextView follow;
     private TextView msg;
     private ImageView setting;
     CircleImageView ivHead;
@@ -104,13 +103,21 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
             }
         });
 
-        follow=findViewById((R.id.follow));
+        TextView follow = findViewById((R.id.follow));
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                attention();
+                attention(0);
             }
         });
+        TextView fans = findViewById((R.id.fans));
+        fans.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attention(1);
+            }
+        });
+
 
         msg=findViewById((R.id.xiaoxi));
         msg.setOnClickListener(new View.OnClickListener() {
@@ -142,8 +149,9 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-    public void attention() {
+    public void attention(int index) {
         Intent intent = new Intent(this, FocusActivity.class);
+        intent.putExtra("index",index);
         startActivity(intent);
     }
 

@@ -1,12 +1,15 @@
 package com.example.administrator.douyin;
 
+import android.os.Bundle;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
 
-import Controller.DataCreate;
 import adapter.FansAdapter;
 import butterknife.BindView;
+import model.FragmentUserItem;
 
 public class FansFragment extends BaseFragment {
     @BindView(R.id.recyclerview)
@@ -22,7 +25,10 @@ public class FansFragment extends BaseFragment {
     protected void init() {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        fansAdapter = new FansAdapter(getContext(), DataCreate.userList);
+        Bundle bundle=this.getArguments();
+        assert bundle != null;
+        List<FragmentUserItem> fragmentUserItems = bundle.getParcelableArrayList("fragmentUserItems");
+        fansAdapter = new FansAdapter(getContext(), fragmentUserItems);
         recyclerView.setAdapter(fansAdapter);
     }
 
