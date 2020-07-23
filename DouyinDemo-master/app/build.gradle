@@ -76,6 +76,7 @@ dependencies {
 
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0-beta05'
 
+    implementation 'com.googlecode.mp4parser:isoparser:1.1.21'
 }
 repositories {
     mavenCentral()
