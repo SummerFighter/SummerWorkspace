@@ -1,10 +1,13 @@
 package adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.VideoView;
@@ -72,6 +75,26 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailViewHolder>{
         holder.videoView.setVideoPath(VideoCache.getProxy(this.mContext).getProxyUrl(videoList.get(position).getURL()));
         holder.author_account = videoList.get(position).getAuthorAccount();
         holder.author_avatar_url = videoList.get(position).get_authorAvatar();
+        Drawable top1 = mContext.getResources().getDrawable(R.mipmap.heart_icon2);
+        Drawable top2 = mContext.getResources().getDrawable(R.mipmap.heart_icon);
+        holder.like_num.setOnClickListener(v -> {
+            if(true) {
+                //点赞
+                holder.like_num.setText(String.valueOf(videoList.get(position).likeNum + 1));
+                Animation animation = new AlphaAnimation(1.0f, 0.0f);
+                animation.setDuration(300);
+                holder.like_num.startAnimation(animation);
+                holder.like_num.setCompoundDrawablesWithIntrinsicBounds(null, top1, null, null);
+            }
+            else{
+                //取消点赞
+                holder.like_num.setText(String.valueOf(videoList.get(position).likeNum - 1));
+                Animation animation = new AlphaAnimation(1.0f, 0.0f);
+                animation.setDuration(300);
+                holder.like_num.startAnimation(animation);
+                holder.like_num.setCompoundDrawablesWithIntrinsicBounds(null, top2, null, null);
+            }
+        });
 
         RequestOptions userAvatarOptions = new RequestOptions()
                 .signature(new ObjectKey(System.currentTimeMillis()));

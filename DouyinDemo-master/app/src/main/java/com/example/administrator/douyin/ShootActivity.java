@@ -89,6 +89,7 @@ public class ShootActivity extends AppCompatActivity implements View.OnClickList
                     mVideoRecodeBtn.setText("开始录像");
                     mVideoRecodeBtn2.setText("开始录像");
                     Toast.makeText(this, "录像结束", Toast.LENGTH_SHORT).show();
+                    finish();
                 } else {
                     mVideoRecodeBtn.setText("停止录像");
                     mVideoRecodeBtn2.setText("停止录像");

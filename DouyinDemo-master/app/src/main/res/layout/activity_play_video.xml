@@ -46,6 +46,11 @@
             android:text="选择视频"/>
     </LinearLayout>
 
+    <VideoView
+        android:id="@+id/video_view"
+        android:layout_width="match_parent"
+        android:layout_height="620dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -74,10 +79,5 @@
             android:layout_weight="1"
             android:text="结束配音"/>
     </LinearLayout>
-
-    <VideoView
-        android:id="@+id/video_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>
