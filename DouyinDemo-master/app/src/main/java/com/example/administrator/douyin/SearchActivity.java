@@ -82,7 +82,7 @@ public class SearchActivity extends AppCompatActivity {
                     RequestBody body = new FormBody.Builder()
                             .add("keyword",keyword.getText().toString())
                             .build();
-                    HttpUtil.sendPostRequest("http://47.104.232.108/returnByKeyword", body, new Callback() {
+                    HttpUtil.sendPostRequest(HttpUtil.rootUrl+ "returnByKeyword", body, new Callback() {
                         @Override
                         public void onFailure(@NotNull Call call, @NotNull IOException e) {
                             runOnUiThread(new Runnable() {
@@ -109,10 +109,8 @@ public class SearchActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                             runOnUiThread(new Runnable() {
-
                                 @Override
                                 public void run() {
-                                    Toast.makeText(SearchActivity.this, "正在加载布局", Toast.LENGTH_SHORT).show();
                                     loadResultLayout();
                                 }
                             });
@@ -124,7 +122,7 @@ public class SearchActivity extends AppCompatActivity {
                     for(String searchTag : searchTags){
                         builder.add("tag",searchTag);
                     }
-                    HttpUtil.sendPostRequest("http://47.104.232.108/returnByTag", builder.build(), new Callback() {
+                    HttpUtil.sendPostRequest(HttpUtil.rootUrl+ "returnByTag", builder.build(), new Callback() {
                         @Override
                         public void onFailure(@NotNull Call call, @NotNull IOException e) {
                             runOnUiThread(new Runnable() {

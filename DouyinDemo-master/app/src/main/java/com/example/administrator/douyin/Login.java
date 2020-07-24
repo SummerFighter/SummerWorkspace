@@ -185,12 +185,6 @@ public class Login extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(Login.this, "已获取", Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

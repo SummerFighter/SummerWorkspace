@@ -79,7 +79,7 @@ public class CommentDialog extends BaseBottomSheetDialog {
                         .add("upper_id",upperID)
                         .add("content",commentContent)
                         .build();
-                HttpUtil.sendPostRequest("http://47.104.232.108/setComment", body, new Callback() {
+                HttpUtil.sendPostRequest(HttpUtil.rootUrl+"setComment", body, new Callback() {
 
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
@@ -95,6 +95,7 @@ public class CommentDialog extends BaseBottomSheetDialog {
                                     comment.setText("");
                                     Constant.videoDatas.get(position).commentNum++;
                                     EventBus.getDefault().post(new RefreshItemEvent(position));//通知主界面评论数改变
+                                    recyclerView.scrollToPosition(oldCommentNum);
                                     commentAdapter.notifyItemRangeInserted(oldCommentNum,1);
                                 }
                             });

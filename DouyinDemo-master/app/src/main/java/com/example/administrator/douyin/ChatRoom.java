@@ -31,17 +31,11 @@ public class ChatRoom extends AppCompatActivity implements ChatAdapter.ListItemC
         backtomsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BacktoMsg();
+                finish();
             }
         });
 
     }
-
-    private void BacktoMsg() {
-        Intent intent=new Intent(this,ChatActivity.class);
-        startActivity(intent);
-    }
-
 
     @Override
     public void onListItemClick(String chat_target) {

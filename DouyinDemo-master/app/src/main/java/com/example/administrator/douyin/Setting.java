@@ -28,7 +28,7 @@ public class Setting extends AppCompatActivity {
         unlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               onBackPressed();
+                onExitLoginPressed();
             }
         });
         bktpersoninfo = findViewById(R.id.bktpersoninfo);
@@ -63,7 +63,7 @@ public class Setting extends AppCompatActivity {
 
 
     //确认退出弹框
-    public void onBackPressed() {
+    public void onExitLoginPressed() {
         new AlertDialog.Builder(this).setTitle("确认退出登录吗？")
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {

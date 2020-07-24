@@ -36,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import Controller.Constant;
@@ -338,40 +339,52 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
         HttpUtil.getRecommendVideo(userAccount, refreshNum, new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if(2==state){
-                    Constant.videoDatas.clear();
-                    //mAdapter.notifyDataSetChanged();
-                }
                 refreshNum++;
                 final String responseData = response.body().string();
-                int oldVideoDataNum=Constant.videoDatas.size(), newAddVideoDataNum= 0;
+                List<VideoCase>newAddVideo=new ArrayList<>();
                 try {
                     JSONArray videoJsonArray =new JSONObject(responseData).getJSONArray("videos");//获取的视频解析数组
-                    newAddVideoDataNum = videoJsonArray.length();
-                    for(int i=0;i<newAddVideoDataNum;i++){
+                    for(int i=0;i<videoJsonArray.length();i++){
                         JSONObject videoJSON=videoJsonArray.getJSONObject(i);
                         VideoCase v=new VideoCase(videoJSON);
-                        Constant.videoDatas.add(v);
+                        newAddVideo.add(v);
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                int finalNewAddVideoDataNum = newAddVideoDataNum;
+                int oldVideoDataNum = Constant.videoDatas.size();
+                int newAddVideoDataNum = newAddVideo.size();
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         switch (state){
                             case 1:
+                                Constant.videoDatas.addAll(newAddVideo);
                                 loadAdapter(Constant.videoDatas);
                                 break;
                             case 2:
                                 refreshView.finishRefresh();
-                                //mAdapter.notifyItemRangeInserted(oldVideoDataNum, finalNewAddVideoDataNum);
+                                if(newAddVideoDataNum>0){
+                                    Constant.videoDatas = newAddVideo;
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                                else {
+                                    Toast.makeText(MainActivity.this,"没有更多视频了！",Toast.LENGTH_LONG).show();
+                                }
                                 break;
                             case 3:
                                 refreshView.finishLoadMore();
-                                mAdapter.notifyItemRangeInserted(oldVideoDataNum, finalNewAddVideoDataNum);
+                                if(newAddVideoDataNum>0){
+                                    for(VideoCase v:newAddVideo){
+                                        Constant.videoDatas.add(v);
+                                    }
+                                    mAdapter.notifyItemRangeInserted(oldVideoDataNum, newAddVideoDataNum);
+                                }
+                                else {
+                                    Toast.makeText(MainActivity.this,"没有更多视频了！",Toast.LENGTH_LONG).show();
+                                }
                                 break;
                         }
                     }
@@ -383,7 +396,6 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
                     @Override
                     public void run() {
                         Toast.makeText(MainActivity.this,"连接失败！！！",Toast.LENGTH_LONG).show();
-                        //暂时不写
                     }
                 });
             }

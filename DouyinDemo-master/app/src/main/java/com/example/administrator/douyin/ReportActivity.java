@@ -1,6 +1,5 @@
 package com.example.administrator.douyin;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,13 +10,9 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.regex.Pattern;
-
 import Controller.Constant;
 import Controller.HttpUtil;
 import okhttp3.Call;
@@ -25,8 +20,6 @@ import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import view.ShareDialog;
-
 public class ReportActivity extends AppCompatActivity {
 
     private CheckBox[] cbs = new CheckBox[12];
@@ -75,16 +68,17 @@ public class ReportActivity extends AppCompatActivity {
                 reportReason.append(cbs[i].getText().toString()+",");
             }
         }
-        Pattern pattern = Pattern.compile("\\s{2,}|\t");
         String editReason=editReasonView.getText().toString();
 
-        if(!pattern.matcher(editReason).matches())
+        //去除空格后以便判断举报的理由不为空
+        if(!editReason.trim().equals("")){
             reportReason.append(editReason);
-        if(pattern.matcher(reportReason.toString()).matches()){
-            Toast.makeText(ReportActivity.this, "您总得说点理由吧", Toast.LENGTH_SHORT).show();
+        }
+        String lastReportReason=reportReason.toString().trim();
+        if(lastReportReason.length()<5){
+            Toast.makeText(ReportActivity.this, "举报的理由不得少于4个字", Toast.LENGTH_SHORT).show();
             return;
         }
-        Toast.makeText(ReportActivity.this, reportReason, Toast.LENGTH_SHORT).show();
 
         RequestBody body = new FormBody.Builder()
                 .add("account", Constant.currentUser.getAccount())
@@ -92,7 +86,6 @@ public class ReportActivity extends AppCompatActivity {
                 .add("description",reportReason.toString())
                 .build();
         HttpUtil.sendPostRequest(HttpUtil.rootUrl+"reportVideo", body, new Callback() {
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 final String responseData = response.body().string();
@@ -101,6 +94,7 @@ public class ReportActivity extends AppCompatActivity {
                     public void run() {
                         if(responseData.equals("ok"))
                             Toast.makeText(ReportActivity.this, "您的反馈已经收到，感谢配合", Toast.LENGTH_SHORT).show();
+                        editReasonView.setText("");
                     }
                 });
             }
