@@ -27,7 +27,8 @@ public class AboutUs extends AppCompatActivity {
     }
 
     private void Backtosetting() {
-        Intent intent = new Intent(this, Setting.class);
-        startActivity(intent);
+        //Intent intent = new Intent(this, Setting.class);
+        //startActivity(intent);
+        finish();
     }
 }
