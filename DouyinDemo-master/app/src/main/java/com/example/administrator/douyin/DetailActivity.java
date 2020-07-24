@@ -28,24 +28,20 @@ import Controller.Constant;
 import adapter.DetailAdapter;
 import adapter.DetailViewHolder;
 import model.VideoCase;
+import view.ShareDialog;
 
 
 //只作为临时查看搜索结果和我的视频的视频播放界面
 public class DetailActivity extends AppCompatActivity {
     private static final String TAG = "douyin";
 
-    private SmartRefreshLayout refreshView;
     private RecyclerView mRecyclerView;
     private DetailAdapter mAdapter;
     private ImageView imgPlay;
     private ImageView imgThumb;
-    private TextView commentView;
 
     private FullWindowVideoView fullVideoView;
     MyLayoutManager myLayoutManager;
-
-    private ImageButton ShootButton;
-    private ImageButton SearchButton;
 
     private boolean isBuffer;
     private boolean error;
@@ -55,20 +51,19 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//强制竖屏
-        ShootButton = (ImageButton) findViewById(R.id.shoot);
-        ShootButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton shootButton = (ImageButton) findViewById(R.id.shoot);
+        shootButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DetailActivity.this, PlayVideoActivity.class);
                 startActivity(intent);
             }
         });
-        SearchButton = (ImageButton) findViewById(R.id.tosearch);
-        SearchButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton searchButton = (ImageButton) findViewById(R.id.tosearch);
+        searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DetailActivity.this, SearchActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
         TextView myInfoTextView = (TextView)findViewById(R.id.myInfo);
@@ -98,7 +93,7 @@ public class DetailActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recycler);
         myLayoutManager = new MyLayoutManager(this, OrientationHelper.VERTICAL, false);
         mRecyclerView.setLayoutManager(myLayoutManager);
-        refreshView = findViewById(R.id.refresh);
+        SmartRefreshLayout refreshView = findViewById(R.id.refresh);
         refreshView.setEnableRefresh(false);
         refreshView.setEnableLoadMore(false);
         initListener();
@@ -168,14 +163,30 @@ public class DetailActivity extends AppCompatActivity {
         fullVideoView.requestFocus();
         imgPlay=holder.getView(R.id.img_play);
         imgThumb=holder.getView(R.id.img_thumb);
-        commentView = holder.getView(R.id.comment_num);
+        TextView commentView = holder.getView(R.id.comment_num);
+        TextView shareView = holder.getView(R.id.share);
+
         commentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CommentDialog commentDialog = new CommentDialog();
+                //传递videoID和位置信息
+                Bundle bundle=new Bundle();
+                bundle.putString("videoID",holder.getVideoID());
+                bundle.putInt("position", position);
+                commentDialog.setArguments(bundle);
                 commentDialog.show(getSupportFragmentManager(), "");
             }
         });
+
+        shareView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ShareDialog shareDialog = new ShareDialog();
+                shareDialog.show(getSupportFragmentManager(), holder.getVideoID());
+            }
+        });
+
         startVideoPlay();
 
     }
@@ -256,4 +267,9 @@ public class DetailActivity extends AppCompatActivity {
             fullVideoView.stopPlayback();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (null != fullVideoView &&!fullVideoView.isPlaying()) fullVideoView.start();
+    }
 }

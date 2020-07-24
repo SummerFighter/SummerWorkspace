@@ -40,6 +40,7 @@ public class DetailViewHolder extends RecyclerView.ViewHolder {
 
     RelativeLayout rootView;
 
+    String videoID;
     String author_account;
     String author_avatar_url;
     de.hdodenhof.circleimageview.CircleImageView avatar_view;
@@ -49,6 +50,8 @@ public class DetailViewHolder extends RecyclerView.ViewHolder {
     public <T extends View> T getView(int viewId) {
         return itemView.findViewById(viewId);
     }
+
+    public String getVideoID(){return videoID;}
 
     public DetailViewHolder(@NonNull View itemView, Context context) {
         super(itemView);

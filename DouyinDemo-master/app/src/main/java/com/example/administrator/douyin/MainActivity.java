@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
                 CommentDialog commentDialog = new CommentDialog();
                 //传递videoID和位置信息
                 Bundle bundle=new Bundle();
-                bundle.putString("videoID",Constant.videoDatas.get(position).getID());
+                bundle.putString("videoID",holder.getVideoID());
                 bundle.putInt("position", position);
                 commentDialog.setArguments(bundle);
                 commentDialog.show(getSupportFragmentManager(), "");
@@ -233,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
             @Override
             public void onClick(View view) {
                 ShareDialog shareDialog = new ShareDialog();
-                shareDialog.show(getSupportFragmentManager(), Constant.videoDatas.get(position).getID());
+                shareDialog.show(getSupportFragmentManager(), holder.getVideoID());
             }
         });
 
@@ -314,6 +314,12 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
     protected void onStop() {
         super.onStop();
         if (null != fullVideoView) fullVideoView.pause();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (null != fullVideoView &&!fullVideoView.isPlaying()) fullVideoView.start();
     }
 
     public void removeItem(final int position) {

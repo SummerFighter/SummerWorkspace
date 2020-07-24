@@ -64,6 +64,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailViewHolder>{
         Glide.with(mContext)
                 .load(videoList.get(position).getCoverURL())
                 .into(holder.img_thumb);
+        holder.videoID=videoList.get(position).getID();
         holder.video_title.setText(videoList.get(position).getTitle());
         holder.video_info.setText(videoList.get(position).getDescription());
         holder.like_num.setText(String.valueOf(videoList.get(position).likeNum));
