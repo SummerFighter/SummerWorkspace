@@ -131,8 +131,8 @@ public class Setting extends AppCompatActivity {
 
     //返回
     private void ToPersoninfo() {
-        Intent intent = new Intent(this, PersonInfo.class);
-        startActivity(intent);
-
+        //Intent intent = new Intent(this, PersonInfo.class);
+        //startActivity(intent);
+        finish();
     }
 }
