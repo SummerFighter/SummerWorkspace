@@ -2,46 +2,63 @@ package com.example.administrator.douyin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
+import Controller.Constant;
+import Controller.HttpUtil;
 import adapter.ChatAdapter;
 import model.ChatMessage;
 import model.PullXml;
+import model.VideoCase;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 /*
  * 聊天页面，初始化采用本地assets文件夹下的data。xml文件初始化
  * */
 public class ChatActivity extends AppCompatActivity implements ChatAdapter.ListItemClickListener{
 
-
-    private ChatAdapter cAdapter;
-    private List<ChatMessage> messages;
+    private List<ChatMessage> messages=new ArrayList<>();
     private static final String TAG = "ItemViews";
-    private ImageView bkto;
-    private TextView shouye;
-    private TextView myinfo;
+    private RecyclerView recycleView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tips);
         //取得需要展示的数据
+        /*
         try {
             InputStream assetInput = getAssets().open("data.xml");//data.xml在assets文件夹里面
             messages = PullXml.pull2xml(assetInput);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+        */
 
-        shouye = findViewById(R.id.shouye);
+        TextView shouye = findViewById(R.id.shouye);
         shouye.setOnClickListener(new View.OnClickListener() {
            @Override
             public void onClick(View v) {
@@ -49,15 +66,14 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ListI
             }
         });
 
-        myinfo = findViewById(R.id.wo);
+        TextView myinfo = findViewById(R.id.wo);
         myinfo.setOnClickListener(new View.OnClickListener() {
            @Override
             public void onClick(View v) {
                 tomyinfo();
            }
         });
-        //定义recycleView
-        RecyclerView recycleView = findViewById(R.id.rv_list);
+        recycleView = findViewById(R.id.rv_list);
 
         //设置Manager，即设置其样式
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -65,15 +81,9 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ListI
 
         recycleView.setLayoutManager(layoutManager);
 
-        recycleView.setHasFixedSize(true);
-
-        //创建Adapter,将数据传入
-        cAdapter = new ChatAdapter(messages, this);
-
-        //设置Adapter
-        recycleView.setAdapter(cAdapter);
-
-        bkto = findViewById(R.id.backto);
+        //recycleView.setHasFixedSize(true);
+        loadData();
+        ImageView bkto = findViewById(R.id.backto);
         bkto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +91,6 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ListI
             }
         });
     }
-
 
     private void tomain() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -92,7 +101,6 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ListI
         Intent intent=new Intent(this,MainActivity.class);
         startActivity(intent);
     }
-
 
     private void tomyinfo() {
         Intent intent = new Intent(this, PersonInfo.class);
@@ -106,5 +114,42 @@ public class ChatActivity extends AppCompatActivity implements ChatAdapter.ListI
         startActivity(it);
     }
 
+    private void loadAdapter(){
+        ChatAdapter cAdapter = new ChatAdapter(this, messages, this);
+        recycleView.setAdapter(cAdapter);
+    }
+
+    private void loadData(){
+        RequestBody requestBody = new FormBody.Builder()
+                .add("account", Constant.currentUser.getAccount())
+                .build();
+        HttpUtil.sendPostRequest(HttpUtil.rootUrl+ "getMessage", requestBody, new Callback(){
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                final String responseData = response.body().string();
+                try {
+                    JSONArray messageJSONArray =new JSONObject(responseData).getJSONArray("message");
+                    for(int i=0;i<messageJSONArray.length();i++){
+                        JSONObject messageJSON=messageJSONArray.getJSONObject(i);
+                        ChatMessage c=new ChatMessage(messageJSON);
+                        messages.add(c);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadAdapter();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+            }
+        });
+
+    }
 
 }

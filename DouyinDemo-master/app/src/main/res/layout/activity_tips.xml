@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:background="@color/colorPrimary">
+    android:background="@android:color/black"
+    android:fitsSystemWindows="true">
 
     <RelativeLayout
         android:id="@+id/header"
         android:background="#161823"
-
-
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="60dp">
 
@@ -34,15 +34,16 @@
 
     </RelativeLayout>
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_list"
         android:layout_width="match_parent"
-        android:layout_height="731dp"
-        tools:listitem="@layout/item_chater" />
+        android:layout_height="match_parent"
+        tools:listitem="@layout/item_chater"
+        android:layout_below="@+id/header"
+        android:layout_above="@+id/bottom"/>
 
     <LinearLayout
-        android:id="@+id/imageView"
+        android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/listPreferredItemHeight"
         android:layout_gravity="bottom"
@@ -110,5 +111,5 @@
             />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
 

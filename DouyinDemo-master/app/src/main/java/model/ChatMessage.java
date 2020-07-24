@@ -1,4 +1,8 @@
 package model;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * 聊天消息类
  */
@@ -11,6 +15,20 @@ public class ChatMessage {
     private String time;
     private String description;
     private String icon;
+    private String reciprocalAccount;
+
+    public ChatMessage(){
+        super();
+    }
+
+    public ChatMessage(JSONObject messageJSON) throws JSONException {
+        title=messageJSON.getString("username");
+        time=messageJSON.getString("time");
+        description=messageJSON.getString("description");
+        icon=messageJSON.getString("userAvatarUrl");
+        reciprocalAccount= messageJSON.getString("fromAccount");
+        isOfficial=title.equals("小麦视频官方")?true:false;
+    }
 
     public String getTitle() {
         return title;
