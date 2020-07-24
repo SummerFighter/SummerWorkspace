@@ -50,7 +50,7 @@
         android:layout_alignParentBottom="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:background="@color/colorPrimary"
+        android:background="@android:color/black"
         >
 
         <TextView
