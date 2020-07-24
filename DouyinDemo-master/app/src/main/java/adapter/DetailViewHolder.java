@@ -29,20 +29,19 @@ import okhttp3.Response;
 import widget.CircleImageView;
 
 public class DetailViewHolder extends RecyclerView.ViewHolder {
+    RelativeLayout rootView;
+
     ImageView img_thumb;
     VideoView videoView;
     ImageView img_play;
     TextView video_title;
     TextView video_info;
-
     TextView like_num;
     TextView comment_num;
 
-    RelativeLayout rootView;
-
     String videoID;
     String author_account;
-    String author_avatar_url;
+
     de.hdodenhof.circleimageview.CircleImageView avatar_view;
 
     ImageView add_follow;
@@ -66,32 +65,6 @@ public class DetailViewHolder extends RecyclerView.ViewHolder {
         avatar_view = itemView.findViewById(R.id.avatar_view);
         add_follow = itemView.findViewById(R.id.add_follow);
 
-        add_follow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RequestBody requestBody = new FormBody.Builder()
-                        .add("account", Constant.currentUser.getAccount())
-                        .add("toFollow", author_account)
-                        .add("flag","1")
-                        .build();
-                String url = HttpUtil.rootUrl +"follow";
-                HttpUtil.sendPostRequest(url, requestBody, new Callback(){
-                    @Override
-                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                        Looper.prepare();
-                        Toast.makeText(context,"已关注",Toast.LENGTH_LONG).show();
-                        Looper.loop();
-
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                        Log.d("jiuming","adapter 关注onclick onfailure");
-                    }
-                });
-
-            }
-        });
     }
 
 }

@@ -136,28 +136,37 @@ public class EditMyinfo extends AppCompatActivity {
                 .add("username",username)
                 .add("school",school)
                 .add("area",area)
-                .add("birth",birth.toString())
+                .add("birth", birth)
                 .build();
         String url = HttpUtil.rootUrl +"setUserInfo";
 
         HttpUtil.sendPostRequest(url, requestBody, new Callback(){
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                dialog.dismiss();
                 String responseData = response.body().string();
                 JSONObject jsonObject = JSON.parseObject(responseData);
                 int responseNum = jsonObject.getInteger("result");
                 switch (responseNum){
                     case 6:{
-                        Looper.prepare();
-                        Toast.makeText(EditMyinfo.this, "修改成功", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-
-                        String account = Constant.currentUser.getAccount();
-                        Constant.currentUser = User.addUser(account);
-                        Constant.currentUser = User.addUser(account);
+                        //服务器返回修改成功后直接改本地的就好了
+                        Constant.currentUser.setUsername(username);
+                        Constant.currentUser.setGender(gender);
+                        Constant.currentUser.setSchool(school);
+                        Constant.currentUser.setBirth(birth);
+                        Constant.currentUser.setArea(area);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(EditMyinfo.this, "修改成功", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        });
+                        //Toast.makeText(EditMyinfo.this, "修改成功", Toast.LENGTH_SHORT).show();
+                        //String account = Constant.currentUser.getAccount();
+                        //Constant.currentUser = User.addUser(account);
                         Log.d("jiuming","改完信息"+Constant.currentUser.toString());
 
-                        Looper.loop();
                         break;
                     }
                 }
@@ -179,24 +188,23 @@ public class EditMyinfo extends AppCompatActivity {
         startActivityForResult(intentToPickPic, 50);
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 50:
+                //Toast.makeText(EditMyinfo.this, data.getData().getPath(), Toast.LENGTH_SHORT).show();
                 try {
                     Uri uri = data.getData();
                     String filePath = FileUtil.getFilePathByUri(this, uri);
                     sendProfileRequest(filePath,Constant.currentUser.getAccount());
-
                     avatarView.setImageURI(Uri.parse(filePath));
-
                 }catch (Exception e){
-                    Toast.makeText(EditMyinfo.this, "未选择图片", Toast.LENGTH_SHORT).show();
                 }
+                break;
+            default:
+                break;
         }
-
     }
 
     // 发头像
@@ -237,9 +245,8 @@ public class EditMyinfo extends AppCompatActivity {
                         Toast.makeText(EditMyinfo.this, "头像修改成功", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
 
-                        String account = Constant.currentUser.getAccount();
-                        Constant.currentUser = User.addUser(account);
-                        Constant.currentUser = User.addUser(account);
+                        //String account = Constant.currentUser.getAccount();
+                        //Constant.currentUser = User.addUser(account);
                         Looper.loop();
                         break;
                     }

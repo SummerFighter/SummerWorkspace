@@ -270,6 +270,9 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (null != fullVideoView &&!fullVideoView.isPlaying()) fullVideoView.start();
+        if (null == fullVideoView || fullVideoView.isPlaying())
+            return;
+        fullVideoView.start();
+        imgPlay.animate().alpha(0f).start();//fullVideoView不为null的话imgPlay也不为null
     }
 }

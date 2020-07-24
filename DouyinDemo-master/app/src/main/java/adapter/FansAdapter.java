@@ -19,6 +19,7 @@ import Controller.Constant;
 import Controller.HttpUtil;
 import butterknife.BindView;
 import model.FragmentUserItem;
+import model.VideoCase;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -50,10 +51,21 @@ public class FansAdapter extends BaseRvAdapter<FragmentUserItem, FansAdapter.Fan
                 holder.tvFocus.setText("已关注");
                 user.setSign("已关注");
                 holder.tvFocus.setBackgroundResource(R.drawable.shape_round_halfwhite);
+                //本地通知该作者所有的视频为已关注
+                for(VideoCase videoCase:Constant.videoDatas){
+                    if(videoCase.getAuthorAccount().equals(user.getAccount())){
+                        videoCase.ifFollow = true;
+                    }
+                }
             } else {
                 holder.tvFocus.setText("关注");
                 user.setSign("关注");
                 holder.tvFocus.setBackgroundResource(R.drawable.shape_round_red);
+                for(VideoCase videoCase:Constant.videoDatas){
+                    if(videoCase.getAuthorAccount().equals(user.getAccount())){
+                        videoCase.ifFollow = false;
+                    }
+                }
             }
             RequestBody requestBody = new FormBody.Builder()
                     .add("account", Constant.currentUser.getAccount())

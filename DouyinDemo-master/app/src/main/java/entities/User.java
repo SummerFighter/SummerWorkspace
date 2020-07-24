@@ -22,17 +22,37 @@ import okhttp3.Response;
 
 public class User {
     private String account; // 账号
-
-    public String getAccount() {
-        return account;
-    }
-
     private String username; // 昵称
-    private String balance; //余额
+    private float balance; //余额
     private String avatarUrl; //头像服务器地址
     //    private String avatarPath; //头像本地地址
     private String school;
     private String area;
+    private String gender;
+    private String birth;
+
+    private int likeNum;//获赞数
+    public int follow;//关注的人数
+    public int fans;//粉丝数
+
+    public User(){
+        super();
+    }
+
+    public User(JSONObject jsonObject){
+        this.account=jsonObject.getString("account");
+        this.username=jsonObject.getString("username");
+        this.balance=jsonObject.getFloat("balance");
+        this.avatarUrl=jsonObject.getString("avatarUrl");
+        this.school=jsonObject.getString("school");
+        this.area=jsonObject.getString("area");
+        this.gender=jsonObject.getString("gender");
+        this.birth=jsonObject.getString("birth");
+        this.follow=jsonObject.getIntValue("followNum");
+        this.fans=jsonObject.getIntValue("followerNum");
+        this.likeNum=jsonObject.getIntValue("likeNum");
+
+    }
 
     @Override
     public String toString() {
@@ -48,8 +68,10 @@ public class User {
                 '}';
     }
 
-    private String gender;
-    private String birth;
+    public String getAccount() {
+        return account;
+    }
+
     public String getSchool() {
         return school;
     }
@@ -82,6 +104,7 @@ public class User {
         this.school = school;
     }
 
+/*
     public static User addUser(String account){
         User user = new User();
         user.setAccount(account);
@@ -116,16 +139,17 @@ public class User {
         });
         return user;
     }
+*/
 
-
-
-    public String getBalance() {
+    public float getBalance() {
         return balance;
     }
 
     public String getUsername() {
         return username;
     }
+
+    public int getLikeNum(){ return likeNum; }
 
     public String getAvatarUrl() {
         return avatarUrl;
@@ -135,7 +159,7 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
-    public void setBalance(String balance) {
+    public void setBalance(float balance) {
         this.balance = balance;
     }
 
@@ -146,4 +170,6 @@ public class User {
     public void setAccount(String account) {
         this.account = account;
     }
+
+
 }

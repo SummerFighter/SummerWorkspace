@@ -13,27 +13,11 @@ public class VideoCase {
     private String _authorAccount;//作者账号
     private String _authorAvatar;//作者头像
 
-    public String get_authorAvatar() {
-        return _authorAvatar;
-    }
-
     public int likeNum;//点赞数量
     public int commentNum;//评论数量
 
-    public VideoCase(String ID, String title, String description,String url,
-                     String coverUrl, String authorAccount,
-                     int likeNum,int commentNum){
-        this._ID=ID;
-        this._title=title;
-        this._description=description;
-        this._url=url;
-        this._coverUrl=coverUrl;
-
-        this._authorAccount = authorAccount;
-
-        this.likeNum = likeNum;
-        this.commentNum = commentNum;
-    }
+    public boolean ifLike;//是否点赞视频
+    public boolean ifFollow;//是否关注作者
 
     public VideoCase(JSONObject videoJSON) throws JSONException {
         this._ID = videoJSON.getString("id");
@@ -45,6 +29,8 @@ public class VideoCase {
         this._authorAvatar = videoJSON.getString("author_url");
         this.likeNum=videoJSON.getInt("like_num");
         this.commentNum=videoJSON.getInt("comment_num");
+        this.ifLike = videoJSON.getInt("if_like")==1;
+        this.ifFollow = videoJSON.getInt("if_followed")==1;
     }
 
 
@@ -63,5 +49,7 @@ public class VideoCase {
     public String getCoverURL(){return _coverUrl;}
 
     public String getAuthorAccount(){return _authorAccount;}
-
+    public String getAuthorAvatar() {
+        return _authorAvatar;
+    }
 }

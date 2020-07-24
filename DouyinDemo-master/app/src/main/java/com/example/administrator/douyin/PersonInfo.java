@@ -184,6 +184,13 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
         viewPager.setAdapter(new adapter.TabAdapter(this, getSupportFragmentManager(), getTabs()));
         work_like.setupWithViewPager(viewPager);
         set_poster.setupWithViewPager(viewPager);
+
+        Glide.with(this)
+                .load(Constant.currentUser.getAvatarUrl())
+                .into(avatarImageView);
+
+        accountTextView.setText(Constant.currentUser.getAccount());
+        usernameTextView.setText(Constant.currentUser.getUsername());
     }
 
     private List<TabItemModel> getTabs() {
@@ -241,19 +248,17 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
         }
     }
 
+    /*
     @Override
     protected void onStart() {
         super.onStart();
 
-        RequestOptions userAvatarOptions = new RequestOptions()
-                .signature(new ObjectKey(System.currentTimeMillis()));
-
         Glide.with(PersonInfo.this)
-                .applyDefaultRequestOptions(userAvatarOptions)
                 .load(Constant.currentUser.getAvatarUrl())
                 .into(avatarImageView);
 
         accountTextView.setText(Constant.currentUser.getAccount());
         usernameTextView.setText(Constant.currentUser.getUsername());
     }
+    */
 }

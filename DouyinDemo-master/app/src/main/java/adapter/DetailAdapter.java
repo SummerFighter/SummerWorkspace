@@ -1,7 +1,9 @@
 package adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
@@ -51,6 +54,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailViewHolder>{
         this.videoList=list;
     }
 
+    @NotNull
     @Override
     public DetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_pager, parent, false);
@@ -64,45 +68,96 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailViewHolder>{
                 removeItemListener.removeItem(position);
             return;
         }
+        VideoCase videoCase=videoList.get(position);
         Glide.with(mContext)
-                .load(videoList.get(position).getCoverURL())
+                .load(videoCase.getCoverURL())
                 .into(holder.img_thumb);
-        holder.videoID=videoList.get(position).getID();
-        holder.video_title.setText(videoList.get(position).getTitle());
-        holder.video_info.setText(videoList.get(position).getDescription());
-        holder.like_num.setText(String.valueOf(videoList.get(position).likeNum));
-        holder.comment_num.setText(String.valueOf(videoList.get(position).commentNum));
-        holder.videoView.setVideoPath(VideoCache.getProxy(this.mContext).getProxyUrl(videoList.get(position).getURL()));
-        holder.author_account = videoList.get(position).getAuthorAccount();
-        holder.author_avatar_url = videoList.get(position).get_authorAvatar();
-        Drawable top1 = mContext.getResources().getDrawable(R.mipmap.heart_icon2);
-        Drawable top2 = mContext.getResources().getDrawable(R.mipmap.heart_icon);
+        Glide.with(mContext)
+                .load(videoCase.getAuthorAvatar())
+                .into(holder.avatar_view);
+
+        holder.videoID=videoCase.getID();
+        holder.video_title.setText(videoCase.getTitle());
+        holder.video_info.setText(videoCase.getDescription());
+        holder.like_num.setText(String.valueOf(videoCase.likeNum));
+        holder.comment_num.setText(String.valueOf(videoCase.commentNum));
+        holder.videoView.setVideoPath(VideoCache.getProxy(this.mContext).getProxyUrl(videoCase.getURL()));
+        holder.author_account = videoCase.getAuthorAccount();
+
+        Drawable likeIcon = mContext.getResources().getDrawable(R.mipmap.heart_icon2);
+        Drawable unlikeIcon = mContext.getResources().getDrawable(R.mipmap.heart_icon);
+        holder.like_num.setCompoundDrawablesWithIntrinsicBounds(null, videoCase.ifLike?likeIcon:unlikeIcon, null, null);
+
         holder.like_num.setOnClickListener(v -> {
-            if(true) {
+            //本地数值上先更新
+            if(!videoCase.ifLike) {
                 //点赞
-                holder.like_num.setText(String.valueOf(videoList.get(position).likeNum + 1));
+                holder.like_num.setText(String.valueOf(++videoCase.likeNum));
                 Animation animation = new AlphaAnimation(1.0f, 0.0f);
                 animation.setDuration(300);
                 holder.like_num.startAnimation(animation);
-                holder.like_num.setCompoundDrawablesWithIntrinsicBounds(null, top1, null, null);
+                holder.like_num.setCompoundDrawablesWithIntrinsicBounds(null, likeIcon, null, null);
+                videoCase.ifLike = true;
             }
             else{
                 //取消点赞
-                holder.like_num.setText(String.valueOf(videoList.get(position).likeNum - 1));
+                holder.like_num.setText(String.valueOf(--videoCase.likeNum));
                 Animation animation = new AlphaAnimation(1.0f, 0.0f);
                 animation.setDuration(300);
                 holder.like_num.startAnimation(animation);
-                holder.like_num.setCompoundDrawablesWithIntrinsicBounds(null, top2, null, null);
+                holder.like_num.setCompoundDrawablesWithIntrinsicBounds(null, unlikeIcon, null, null);
+                videoCase.ifLike = false;
             }
+            //通知服务器
+            RequestBody requestBody = new FormBody.Builder()
+                    .add("account", Constant.currentUser.getAccount())
+                    .add("videoID", videoCase.getID())
+                    .add("flag", videoCase.ifLike?"1":"0")
+                    .build();
+            String url = HttpUtil.rootUrl +"getALike";
+            HttpUtil.sendPostRequest(url, requestBody, new Callback(){
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                }
+
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                }
+            });
+
         });
 
-        RequestOptions userAvatarOptions = new RequestOptions()
-                .signature(new ObjectKey(System.currentTimeMillis()));
+        holder.add_follow.setVisibility(videoCase.ifFollow?View.INVISIBLE:View.VISIBLE);
+        holder.add_follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.add_follow.setVisibility(View.INVISIBLE);
+                for(VideoCase video:videoList){
+                    //所有该作者的关注都设为是
+                    if(video.getAuthorAccount().equals(videoCase.getAuthorAccount()))
+                        video.ifFollow = true;
+                }
+                videoCase.ifFollow = false;
+                RequestBody requestBody = new FormBody.Builder()
+                        .add("account", Constant.currentUser.getAccount())
+                        .add("toFollow", videoCase.getAuthorAccount())
+                        .add("flag","1")
+                        .build();
+                String url = HttpUtil.rootUrl +"follow";
+                HttpUtil.sendPostRequest(url, requestBody, new Callback(){
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
 
-        Glide.with(mContext)
-                .applyDefaultRequestOptions(userAvatarOptions)
-                .load(holder.author_avatar_url)
-                .into(holder.avatar_view);
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                    }
+                });
+
+            }
+        });
 
     }
 

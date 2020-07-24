@@ -114,43 +114,33 @@ public class Login extends AppCompatActivity {
                 .build();
         String url = HttpUtil.rootUrl +"login";
         HttpUtil.sendPostRequest(url, requestBody, new Callback(){
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseData = response.body().string();
                 JSONObject jsonObject = JSON.parseObject(responseData);
-                int responseNum = jsonObject.getInteger("result");
-                switch (responseNum) {
-                    case LOGIN_SUCCESS: {
-                        Looper.prepare();
-                        Constant.currentUser = User.addUser(account);
-                        Toast.makeText(Login.this, "登录成功", Toast.LENGTH_SHORT).show();
-                       // DataCreate.initData();
-                        Intent intent = new Intent();
-                        intent.setClass(Login.this, MainActivity.class);
-                        dialog.dismiss();
-                        Login.this.finish();
-                        startActivity(intent);
-                        Looper.loop();
-                        return;
-                    }
-                    case PASSWORD_WRONG: {
-                        Looper.prepare();
-                        Toast.makeText(Login.this, "密码错误", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                        Looper.loop();
-                        break;
+                runOnUiThread(() -> {
+                    dialog.dismiss();
+                    int responseNum = jsonObject.getInteger("result");
+                    switch (responseNum) {
+                        case LOGIN_SUCCESS: {
+                            //Constant.currentUser = User.addUser(account);
+                            Constant.currentUser=new User(jsonObject.getJSONObject("user"));
+                            Intent intent = new Intent(Login.this, MainActivity.class);
 
-
+                            Login.this.finish();
+                            startActivity(intent);
+                            return;
+                        }
+                        case PASSWORD_WRONG: {
+                            Toast.makeText(Login.this, "密码错误", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        case ACCOUNT_NOT_EXIST: {
+                            Toast.makeText(Login.this, "账号不存在", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
                     }
-                    case ACCOUNT_NOT_EXIST: {
-                        Looper.prepare();
-                        Toast.makeText(Login.this, "账号不存在", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                        Looper.loop();
-                        break;
-                    }
-                }
+                });
             }
 
             @Override

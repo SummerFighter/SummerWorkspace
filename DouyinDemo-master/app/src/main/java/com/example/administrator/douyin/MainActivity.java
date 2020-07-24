@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -59,16 +60,12 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
     private DetailAdapter mAdapter;
     private ImageView imgPlay;
     private ImageView imgThumb;
-    private TextView commentView;
-    private TextView shareView;
     private FullWindowVideoView fullVideoView;
+    private ProgressBar loadVideoProgressBar;
     MyLayoutManager myLayoutManager;
 
-    private ImageButton ShootButton;
-    private ImageButton SearchButton;
     private int refreshNum = 0;
 
-    private boolean isBuffer;
     private boolean error;
 
     @Override
@@ -79,16 +76,16 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//强制竖屏
         if(EventBus.getDefault().isRegistered(MainActivity.this))
             EventBus.getDefault().register(MainActivity.this);
-        ShootButton = (ImageButton) findViewById(R.id.shoot);
-        ShootButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton shootButton = (ImageButton) findViewById(R.id.shoot);
+        shootButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, PlayVideoActivity.class);
                 startActivity(intent);
             }
         });
-        SearchButton = (ImageButton) findViewById(R.id.tosearch);
-        SearchButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton searchButton = (ImageButton) findViewById(R.id.tosearch);
+        searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
@@ -213,8 +210,8 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
         fullVideoView.requestFocus();
         imgPlay=holder.getView(R.id.img_play);
         imgThumb=holder.getView(R.id.img_thumb);
-        commentView = holder.getView(R.id.comment_num);
-        shareView = holder.getView(R.id.share);
+        TextView commentView = holder.getView(R.id.comment_num);
+        TextView shareView = holder.getView(R.id.share);
 
         commentView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,13 +253,6 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
                     if (!fullVideoView.isPlaying()) {
                         mp.start();
                     }
-                }
-                else if(what == MediaPlayer.MEDIA_INFO_BUFFERING_START){
-                    //缓冲中
-                    isBuffer = true;
-                }else if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END) {
-                    //恢复播放
-                    isBuffer = false;
                 }
                 return false;
             }
@@ -319,7 +309,10 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (null != fullVideoView &&!fullVideoView.isPlaying()) fullVideoView.start();
+        if (null == fullVideoView || fullVideoView.isPlaying())
+            return;
+        fullVideoView.start();
+        imgPlay.animate().alpha(0f).start();//fullVideoView不为null的话imgPlay也不为null
     }
 
     public void removeItem(final int position) {
