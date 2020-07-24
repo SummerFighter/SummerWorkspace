@@ -61,7 +61,6 @@
             android:layout_height="70dp"
             android:drawableTop="@mipmap/heart_icon"
             android:layout_marginTop="16dp"
-            android:text="88.8w"
             android:textColor="@android:color/white"
             android:gravity="center"
             />
@@ -80,7 +79,6 @@
             android:layout_height="70dp"
             android:drawableTop="@mipmap/share_icon"
             android:layout_marginTop="16dp"
-            android:text="999+"
             android:textColor="@android:color/white"
             android:gravity="center"
             />

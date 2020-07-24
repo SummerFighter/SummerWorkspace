@@ -45,10 +45,12 @@ public class ShareDialog extends BaseBottomSheetDialog {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.dialog_share, container);
         Button reportbtn = (Button) view.findViewById(R.id.report);
+        String videoID=this.getTag();
         reportbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ReportActivity.class);
+                intent.putExtra("videoID",videoID);
                 startActivity(intent);
             }
         });

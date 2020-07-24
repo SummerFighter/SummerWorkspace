@@ -31,8 +31,15 @@
             android:textColor="#ffffff"
             android:textSize="18sp"
             android:text="视频举报" />
-
-
+        <Button
+            android:id="@+id/commit_report"
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:text="提交"
+            android:background="@drawable/button_shape"
+            android:textColor="@color/light_gray" />
 
     </RelativeLayout>
 
@@ -178,19 +185,8 @@
             android:maxLines="13"
             android:textColor="@color/light01"
             android:textColorHint="@color/light01" />
-    </LinearLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/commitreport"
-        android:layout_width="match_parent"
-        android:layout_height="37dp"
-        android:text="提交"
-        android:background="@drawable/button_shape"
-        android:textColor="@color/light_gray" />
-</LinearLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

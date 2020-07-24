@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
             @Override
             public void onClick(View view) {
                 ShareDialog shareDialog = new ShareDialog();
-                shareDialog.show(getSupportFragmentManager(), "");
+                shareDialog.show(getSupportFragmentManager(), Constant.videoDatas.get(position).getID());
             }
         });
 
