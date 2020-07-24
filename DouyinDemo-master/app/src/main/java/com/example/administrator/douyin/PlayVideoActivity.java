@@ -88,6 +88,12 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        videoView.start();
+    }
+
     private void inintVideoPath(){
         videoView.setVideoPath(file.getPath());//指定视频文件的路径
     }
@@ -168,6 +174,7 @@ public class PlayVideoActivity extends AppCompatActivity implements View.OnClick
                     videoView.setVideoPath(editfile.getPath());
                     edit = true;
                 }
+                videoView.start();
                 break;
             case R.id.background_voice:
                 if(!videoView.isPlaying()){//播放

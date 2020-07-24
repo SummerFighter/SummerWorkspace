@@ -17,13 +17,15 @@
         android:id="@+id/vertical_linear"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="120dp"
         android:background="#000000"
         android:gravity="center"
         android:layout_alignParentBottom="true">
         <Button
             android:id="@+id/video_recode_btn"
+            android:background="@color/black_overlay"
             android:text="开始录像"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
@@ -38,7 +40,9 @@
         android:layout_alignParentRight="true">
         <Button
             android:id="@+id/video_recode_btn2"
+            android:background="@color/black_overlay"
             android:text="开始录像"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
