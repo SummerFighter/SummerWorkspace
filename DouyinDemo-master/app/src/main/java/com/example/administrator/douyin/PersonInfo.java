@@ -61,11 +61,14 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
     private AppCompatTextView accountTextView;
     private AppCompatTextView usernameTextView;
     private AppCompatImageView avatarImageView;
+    private AppCompatTextView genderView;
+    private AppCompatTextView locationView;
     private TabLayout work_like, set_poster;
     private TitleLayout titleLayout;
     private int colorPrimary;
     private ArgbEvaluator evaluator;
     private View statusView;
+    private TextView likeNumView;
     private TextView follow;
     private TextView fans;
     private FullViewPager viewPager;
@@ -130,7 +133,9 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
         accountTextView = findViewById(R.id.userId);
         usernameTextView = findViewById(R.id.username);
         avatarImageView = findViewById(R.id.iv_head);
-
+        genderView=findViewById(R.id.sex);
+        locationView=findViewById(R.id.location);
+        likeNumView=findViewById(R.id.praise);
 
         ImageView setting = findViewById((R.id.settings));
         setting.setOnClickListener(new View.OnClickListener() {
@@ -257,6 +262,9 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
     private void loadData(){
         accountTextView.setText(Constant.currentUser.getAccount());
         usernameTextView.setText(Constant.currentUser.getUsername());
+        genderView.setText(Constant.currentUser.getGender());
+        locationView.setText(Constant.currentUser.getArea());
+        likeNumView.setText(Constant.currentUser.getLikeNum()+" 获赞 ");
         follow.setText(Constant.currentUser.follow+" 关注 ");
         fans.setText(Constant.currentUser.fans+" 粉丝 ");
         Glide.with(this)
