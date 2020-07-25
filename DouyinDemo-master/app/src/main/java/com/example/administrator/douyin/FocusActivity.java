@@ -87,8 +87,12 @@ public class FocusActivity extends BaseActivity {
                         fans.add(item);
                     }
                     for(int i=0;i<recommendsJSONArray.length();i++){
-                        FragmentUserItem item=new FragmentUserItem(recommendsJSONArray.getJSONObject(i));
-                        item.setSign("关注");
+                        JSONObject itemJSON=recommendsJSONArray.getJSONObject(i);
+                        if(Constant.currentUser.getAccount().equals(itemJSON.getString("account")))
+                            continue;
+                        FragmentUserItem item=new FragmentUserItem(itemJSON);
+                        int flag=itemJSON.getInt("sign");
+                        item.setSign(flag==0? "关注":"已关注");
                         recommends.add(item);
                     }
 
