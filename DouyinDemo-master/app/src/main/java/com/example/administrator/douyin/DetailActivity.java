@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -41,6 +42,7 @@ public class DetailActivity extends AppCompatActivity {
     private ImageView imgThumb;
 
     private FullWindowVideoView fullVideoView;
+    private ProgressBar loadVideoProgressBar;
     MyLayoutManager myLayoutManager;
 
     private boolean isBuffer;
@@ -163,6 +165,8 @@ public class DetailActivity extends AppCompatActivity {
         fullVideoView.requestFocus();
         imgPlay=holder.getView(R.id.img_play);
         imgThumb=holder.getView(R.id.img_thumb);
+        loadVideoProgressBar=holder.getView(R.id.load_video_progressBar);
+        loadVideoProgressBar.setVisibility(View.VISIBLE);
         TextView commentView = holder.getView(R.id.comment_num);
         TextView shareView = holder.getView(R.id.share);
 
@@ -206,9 +210,11 @@ public class DetailActivity extends AppCompatActivity {
                     if (!fullVideoView.isPlaying()) {
                         mp.start();
                     }
+                    loadVideoProgressBar.setVisibility(View.INVISIBLE);
                 }
                 else if(what == MediaPlayer.MEDIA_INFO_BUFFERING_START){
                     //缓冲中
+                    loadVideoProgressBar.setVisibility(View.VISIBLE);
                     isBuffer = true;
                 }else if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END) {
                     //恢复播放

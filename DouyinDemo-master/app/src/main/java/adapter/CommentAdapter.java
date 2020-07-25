@@ -34,34 +34,7 @@ public class CommentAdapter extends BaseRvAdapter<CommentBean, CommentAdapter.Co
                 .into(holder.ivHead);
         holder.tvNickname.setText(commentBean.getAuthorName());
         holder.tvContent.setText(commentBean.getContent());
-        //Drawable top1 = context.getResources().getDrawable(R.mipmap.heart_icon);
-        //Drawable top2 = context.getResources().getDrawable(R.mipmap.heart_icon2);
-
-        /*
-        if(commentBean.isLiked()){
-            holder.tvLikecount.setCompoundDrawablesWithIntrinsicBounds(null, top2 , null, null);
-        }else{
-            holder.tvLikecount.setCompoundDrawablesWithIntrinsicBounds(null, top1 , null, null);
-        }
-        holder.tvLikecount.setOnClickListener(v -> {
-            if (!commentBean.isLiked()) {
-                holder.tvLikecount.setText(commentBean.getLikeCount()+1+"");
-                Animation animation=new AlphaAnimation(1.0f,0.0f);
-                animation.setDuration(300);
-                holder.tvLikecount.startAnimation(animation);
-                holder.tvLikecount.setCompoundDrawablesWithIntrinsicBounds(null, top2 , null, null);
-                //点赞
-            } else {
-                holder.tvLikecount.setText(commentBean.getLikeCount()-1+"");
-                Animation animation=new AlphaAnimation(1.0f,0.0f);
-                animation.setDuration(300);
-                holder.tvLikecount.startAnimation(animation);
-                holder.tvLikecount.setCompoundDrawablesWithIntrinsicBounds(null, top1 , null, null);
-                //取消点赞
-            }
-            commentBean.setLiked(!commentBean.isLiked());
-        });
-        */
+        holder.tvTime.setText(commentBean.getReleaseTime());
     }
 
     @NonNull
@@ -78,8 +51,8 @@ public class CommentAdapter extends BaseRvAdapter<CommentBean, CommentAdapter.Co
         TextView tvNickname;
         @BindView(R.id.tv_content)
         TextView tvContent;
-        @BindView(R.id.like)
-        TextView tvLikecount;
+        @BindView(R.id.tv_time)
+        TextView tvTime;
 
         public CommentViewHolder(View itemView) {
             super(itemView);

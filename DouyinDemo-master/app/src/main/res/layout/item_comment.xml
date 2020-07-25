@@ -16,7 +16,7 @@
         app:civ_border_color="@android:color/white"
         app:civ_border_width="2dp" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
@@ -37,28 +37,26 @@
             android:layout_height="wrap_content"
             android:text="这个也太好看了吧"
             android:textColor="@color/black_overlay"
+            android:layout_below="@id/tv_nickname"
             android:textSize="14sp"
             android:layout_marginTop="5dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:padding="12dp">
 
         <TextView
-            android:id="@+id/like"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:drawableTop="@mipmap/heart_icon"
-            android:layout_marginTop="16dp"
-            android:text="88.8w"
-            android:gravity="center"
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="24dp"
+            android:layout_toEndOf="@+id/tv_content"
+            android:text="时间"
+            android:textSize="12sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/tv_content"
+            android:layout_marginTop="15dp"
             />
-
-    </LinearLayout>
+    </RelativeLayout >
 
 </LinearLayout>
 
