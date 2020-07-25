@@ -102,10 +102,6 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
                 startActivity(intent);
             }
         });
-
-
-        getVideoData(1);//开启子线程获取数据
-
         //消息界面
         TextView Tomessage = (TextView)findViewById(R.id.message);
         Tomessage.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
             }
         });
 
+        getVideoData(1);//开启子线程获取数据
         initState();
         initView();
 
@@ -208,6 +205,8 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
         fullVideoView.requestFocus();
         imgPlay=holder.getView(R.id.img_play);
         imgThumb=holder.getView(R.id.img_thumb);
+        loadVideoProgressBar=holder.getView(R.id.load_video_progressBar);
+        loadVideoProgressBar.setVisibility(View.VISIBLE);
         TextView commentView = holder.getView(R.id.comment_num);
         TextView shareView = holder.getView(R.id.share);
 
@@ -251,7 +250,12 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
                     if (!fullVideoView.isPlaying()) {
                         mp.start();
                     }
+                    loadVideoProgressBar.setVisibility(View.INVISIBLE);
                 }
+                else if (what == MediaPlayer.MEDIA_INFO_BUFFERING_START) {
+                    loadVideoProgressBar.setVisibility(View.VISIBLE);
+                }
+
                 return false;
             }
         });

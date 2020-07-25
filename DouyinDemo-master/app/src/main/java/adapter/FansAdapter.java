@@ -52,6 +52,7 @@ public class FansAdapter extends BaseRvAdapter<FragmentUserItem, FansAdapter.Fan
                 user.setSign("已关注");
                 holder.tvFocus.setBackgroundResource(R.drawable.shape_round_halfwhite);
                 //本地通知该作者所有的视频为已关注
+                Constant.currentUser.follow++;
                 for(VideoCase videoCase:Constant.videoDatas){
                     if(videoCase.getAuthorAccount().equals(user.getAccount())){
                         videoCase.ifFollow = true;
@@ -60,6 +61,7 @@ public class FansAdapter extends BaseRvAdapter<FragmentUserItem, FansAdapter.Fan
             } else {
                 holder.tvFocus.setText("关注");
                 user.setSign("关注");
+                Constant.currentUser.follow--;
                 holder.tvFocus.setBackgroundResource(R.drawable.shape_round_red);
                 for(VideoCase videoCase:Constant.videoDatas){
                     if(videoCase.getAuthorAccount().equals(user.getAccount())){

@@ -12,6 +12,12 @@
         android:clickable="false"
         android:focusable="false"
         />
+    <ProgressBar
+        android:id="@+id/load_video_progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
     <ImageView
         android:id="@+id/img_thumb"
         android:layout_width="match_parent"

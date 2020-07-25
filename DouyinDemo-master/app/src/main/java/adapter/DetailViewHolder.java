@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,13 +39,12 @@ public class DetailViewHolder extends RecyclerView.ViewHolder {
     TextView video_info;
     TextView like_num;
     TextView comment_num;
+    de.hdodenhof.circleimageview.CircleImageView avatar_view;
+    ImageView add_follow;
+    ProgressBar load_view;
 
     String videoID;
     String author_account;
-
-    de.hdodenhof.circleimageview.CircleImageView avatar_view;
-
-    ImageView add_follow;
 
     public <T extends View> T getView(int viewId) {
         return itemView.findViewById(viewId);
@@ -64,7 +64,7 @@ public class DetailViewHolder extends RecyclerView.ViewHolder {
         rootView = itemView.findViewById(R.id.root_view);
         avatar_view = itemView.findViewById(R.id.avatar_view);
         add_follow = itemView.findViewById(R.id.add_follow);
-
+        load_view=itemView.findViewById(R.id.load_video_progressBar);
     }
 
 }
