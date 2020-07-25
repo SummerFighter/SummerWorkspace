@@ -11,6 +11,7 @@
         android:required="true" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".VideoCache"
@@ -19,6 +20,7 @@
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_config"
         android:resizeableActivity="true"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/enter_icon1round"
         android:supportsRtl="true"
         android:theme="@style/main_theme">

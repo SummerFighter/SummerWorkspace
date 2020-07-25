@@ -1,5 +1,6 @@
 package com.example.administrator.douyin;
 import android.animation.ArgbEvaluator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import Controller.Constant;
@@ -64,12 +66,9 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
     private int colorPrimary;
     private ArgbEvaluator evaluator;
     private View statusView;
-    private Button editinfo;
-    private TextView shouye;
-    private TextView msg;
-    private ImageView setting;
-    CircleImageView ivHead;
-    private VideoBean.UserBean curUserBean;
+    private TextView follow;
+    private TextView fans;
+    private FullViewPager viewPager;
     private int getStatusBarHeight() {
         int height = 0;
         int resId = getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -79,6 +78,7 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
         return height;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("jiuming","personinfo"+Constant.currentUser.toString());
@@ -87,7 +87,7 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
         setContentView(R.layout.activity_personinfo);
         colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
 
-        shouye = findViewById(R.id.shouye);
+        TextView shouye = findViewById(R.id.shouye);
         shouye.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +95,7 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
             }
         });
 
-        editinfo = findViewById(R.id.editinfo);
+        Button editinfo = findViewById(R.id.editinfo);
         editinfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,14 +103,14 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
             }
         });
 
-        TextView follow = findViewById((R.id.follow));
+        follow = findViewById((R.id.follow));
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 attention(0);
             }
         });
-        TextView fans = findViewById((R.id.fans));
+        fans = findViewById((R.id.fans));
         fans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,7 +119,7 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
         });
 
 
-        msg=findViewById((R.id.xiaoxi));
+        TextView msg = findViewById((R.id.xiaoxi));
         msg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,7 +131,8 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
         usernameTextView = findViewById(R.id.username);
         avatarImageView = findViewById(R.id.iv_head);
 
-        setting=findViewById((R.id.settings));
+
+        ImageView setting = findViewById((R.id.settings));
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,17 +181,7 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
         work_like = findViewById(R.id.work_dongtai_like);
         set_poster = findViewById(R.id.poster);
         titleLayout = findViewById(R.id.title_layout);
-        FullViewPager viewPager = findViewById(R.id.viewpager);
-        viewPager.setAdapter(new adapter.TabAdapter(this, getSupportFragmentManager(), getTabs()));
-        work_like.setupWithViewPager(viewPager);
-        set_poster.setupWithViewPager(viewPager);
-
-        Glide.with(this)
-                .load(Constant.currentUser.getAvatarUrl())
-                .into(avatarImageView);
-
-        accountTextView.setText(Constant.currentUser.getAccount());
-        usernameTextView.setText(Constant.currentUser.getUsername());
+        viewPager = findViewById(R.id.viewpager);
     }
 
     private List<TabItemModel> getTabs() {
@@ -205,17 +196,18 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
         }
         myVideoBundle.putStringArrayList("imageURL",myWorkCovers);
         myVideoBundle.putIntegerArrayList("likeNum",myWorkLikeNums);
+        myVideoBundle.putString("rootActivity","myWorks");
 
         Bundle likeVideoBundle=new Bundle();
         ArrayList<String>myLikeCovers=new ArrayList<>();
         ArrayList<Integer>myLikeLikeNums=new ArrayList<>();
-
         for(VideoCase v:Constant.currentUserVideoLikes){
             myLikeCovers.add(v.getCoverURL());
             myLikeLikeNums.add(v.likeNum);
         }
         likeVideoBundle.putStringArrayList("imageURL",myLikeCovers);
         likeVideoBundle.putIntegerArrayList("likeNum",myLikeLikeNums);
+        likeVideoBundle.putString("rootActivity","myLikes");
 
         tabs.add(new model.TabItemModel("作品"+ myWorkCovers.size(), TabFragment.class.getName(), myVideoBundle));
         //tabs.add(new model.TabItemModel("动态", TabFragment.class.getName(), null));
@@ -248,17 +240,31 @@ public class PersonInfo extends AppCompatActivity implements ScaleScrollView.OnS
         }
     }
 
-    /*
+
     @Override
     protected void onStart() {
         super.onStart();
+        loadData();
+    }
 
-        Glide.with(PersonInfo.this)
-                .load(Constant.currentUser.getAvatarUrl())
-                .into(avatarImageView);
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        loadData();
+    }
 
+    @SuppressLint("SetTextI18n")
+    private void loadData(){
         accountTextView.setText(Constant.currentUser.getAccount());
         usernameTextView.setText(Constant.currentUser.getUsername());
+        follow.setText(Constant.currentUser.follow+" 关注 ");
+        fans.setText(Constant.currentUser.fans+" 粉丝 ");
+        Glide.with(this)
+                .load(Constant.currentUser.getAvatarUrl())
+                .into(avatarImageView);
+        viewPager.setAdapter(new adapter.TabAdapter(this, getSupportFragmentManager(), getTabs()));//我的作品和喜欢的作品
+        work_like.setupWithViewPager(viewPager);
+        set_poster.setupWithViewPager(viewPager);
     }
-    */
+
 }

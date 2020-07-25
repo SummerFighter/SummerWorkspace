@@ -22,9 +22,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -97,16 +97,11 @@ public class SearchActivity extends AppCompatActivity {
                         public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                             Constant.searchVideoDatas.clear();
                             final String responseData = response.body().string();
-                            try {
-                                JSONArray videoJsonArray =new JSONObject(responseData).getJSONArray("videos");//获取的视频解析数组
-                                for(int i=0;i<videoJsonArray.length();i++){
-                                    JSONObject videoJSON=videoJsonArray.getJSONObject(i);
-                                    VideoCase v=new VideoCase(videoJSON);
-                                    Constant.searchVideoDatas.add(v);
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                            JSONArray videoJsonArray =JSON.parseObject(responseData).getJSONArray("videos");//获取的视频解析数组
+                            for(int i=0;i<videoJsonArray.size();i++){
+                                JSONObject videoJSON=videoJsonArray.getJSONObject(i);
+                                VideoCase v=new VideoCase(videoJSON);
+                                Constant.searchVideoDatas.add(v);
                             }
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -137,16 +132,11 @@ public class SearchActivity extends AppCompatActivity {
                         public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                             Constant.searchVideoDatas.clear();
                             final String responseData = response.body().string();
-                            try {
-                                JSONArray videoJsonArray =new JSONObject(responseData).getJSONArray("videos");//获取的视频解析数组
-                                for(int i=0;i<videoJsonArray.length();i++){
-                                    JSONObject videoJSON=videoJsonArray.getJSONObject(i);
-                                    VideoCase v=new VideoCase(videoJSON);
-                                    Constant.searchVideoDatas.add(v);
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                            JSONArray videoJsonArray =JSON.parseObject(responseData).getJSONArray("videos");//获取的视频解析数组
+                            for(int i=0;i<videoJsonArray.size();i++){
+                                JSONObject videoJSON=videoJsonArray.getJSONObject(i);
+                                VideoCase v=new VideoCase(videoJSON);
+                                Constant.searchVideoDatas.add(v);
                             }
                             runOnUiThread(new Runnable() {
 

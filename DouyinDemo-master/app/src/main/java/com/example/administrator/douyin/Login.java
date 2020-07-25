@@ -11,16 +11,16 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.alibaba.fastjson.JSON;
 import com.jiajie.load.LoadingDialog;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.io.IOException;
 
@@ -126,10 +126,10 @@ public class Login extends AppCompatActivity {
                             //Constant.currentUser = User.addUser(account);
                             Constant.currentUser=new User(jsonObject.getJSONObject("user"));
                             Intent intent = new Intent(Login.this, MainActivity.class);
-
                             Login.this.finish();
                             startActivity(intent);
-                            return;
+                            //return;
+                            break;
                         }
                         case PASSWORD_WRONG: {
                             Toast.makeText(Login.this, "密码错误", Toast.LENGTH_SHORT).show();
@@ -157,23 +157,19 @@ public class Login extends AppCompatActivity {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 final String responseData = response.body().string();
-                try {
-                    org.json.JSONObject resultJSON=new org.json.JSONObject(responseData);
-                    JSONArray myVideoJsonArray =resultJSON.getJSONArray("uploadVideo");
-                    for(int i=0;i<myVideoJsonArray.length();i++){
-                        org.json.JSONObject videoJSON=myVideoJsonArray.getJSONObject(i);
-                        VideoCase v=new VideoCase(videoJSON);
-                        Constant.currentUserVideoWorks.add(v);
-                    }
+                JSONObject resultJSON=JSONObject.parseObject(responseData);
 
-                    JSONArray likeVideoJsonArray =resultJSON.getJSONArray("likeVideo");
-                    for(int i=0;i<likeVideoJsonArray.length();i++){
-                        org.json.JSONObject videoJSON=likeVideoJsonArray.getJSONObject(i);
-                        VideoCase v=new VideoCase(videoJSON);
-                        Constant.currentUserVideoLikes.add(v);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                JSONArray myVideoJsonArray =resultJSON.getJSONArray("uploadVideo");
+                for(int i=0;i<myVideoJsonArray.size();i++){
+                    JSONObject videoJSON=myVideoJsonArray.getJSONObject(i);
+                    VideoCase v=new VideoCase(videoJSON);
+                    Constant.currentUserVideoWorks.add(v);
+                }
+                JSONArray likeVideoJsonArray =resultJSON.getJSONArray("likeVideo");
+                for(int i=0;i<likeVideoJsonArray.size();i++){
+                    JSONObject videoJSON=likeVideoJsonArray.getJSONObject(i);
+                    VideoCase v=new VideoCase(videoJSON);
+                    Constant.currentUserVideoLikes.add(v);
                 }
             }
             @Override

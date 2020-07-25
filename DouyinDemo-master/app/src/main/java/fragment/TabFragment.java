@@ -36,13 +36,16 @@ public class TabFragment extends Fragment implements VideoAdapter.OnItemClickLis
     //private SkeletonScreen mSkeletonScreen;
     private VideoAdapter mVideoAdapter;
     private RecyclerView mRecyclerView;
+    private String videoSourceKind;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = this.getArguments();
+        assert bundle != null;
         List<String> s = bundle.getStringArrayList("imageURL");
         List<Integer> i=bundle.getIntegerArrayList("likeNum");
+        videoSourceKind=bundle.getString("rootActivity");
         mVideoAdapter = new VideoAdapter(getContext(),s,i,this);
     }
 
@@ -59,30 +62,13 @@ public class TabFragment extends Fragment implements VideoAdapter.OnItemClickLis
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRecyclerView.setNestedScrollingEnabled(false);
-        /*
-        mSkeletonScreen = Skeleton.bind(mRecyclerView)
-                .adapter(mVideoAdapter)
-                .load(R.layout.item_video_placeholder)
-                .shimmer(true)
-                .color(R.color.light_transparent)
-                .angle(20)
-                .frozen(false)
-                .count(10)
-                .show();
-        mRecyclerView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mSkeletonScreen.hide();
-            }
-        }, 1000);
-        */
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onItemClick(int position) {
         Intent intent = new Intent(getContext(), DetailActivity.class);
-        intent.putExtra("rootActivity","myWorks");//提示启动界面
+        intent.putExtra("rootActivity",videoSourceKind);//提示启动界面
         intent.putExtra("index", position);//设置位置
         startActivity(intent);
     }

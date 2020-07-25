@@ -1,7 +1,6 @@
 package model;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 public class VideoCase {
     private String _ID;//视频ID
@@ -19,7 +18,7 @@ public class VideoCase {
     public boolean ifLike;//是否点赞视频
     public boolean ifFollow;//是否关注作者
 
-    public VideoCase(JSONObject videoJSON) throws JSONException {
+    public VideoCase(JSONObject videoJSON) {
         this._ID = videoJSON.getString("id");
         this._title = videoJSON.getString("title");
         this._description = videoJSON.getString("info");
@@ -27,10 +26,10 @@ public class VideoCase {
         this._coverUrl = videoJSON.getString("cover_url");
         this._authorAccount = videoJSON.getString("account");
         this._authorAvatar = videoJSON.getString("author_url");
-        this.likeNum=videoJSON.getInt("like_num");
-        this.commentNum=videoJSON.getInt("comment_num");
-        this.ifLike = videoJSON.getInt("if_like")==1;
-        this.ifFollow = videoJSON.getInt("if_followed")==1;
+        this.likeNum=videoJSON.getIntValue("like_num");
+        this.commentNum=videoJSON.getIntValue("comment_num");
+        this.ifLike = videoJSON.getIntValue("if_like")==1;
+        this.ifFollow = videoJSON.getIntValue("if_followed")==1;
     }
 
 

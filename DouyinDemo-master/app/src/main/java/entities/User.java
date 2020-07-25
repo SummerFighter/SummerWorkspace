@@ -1,24 +1,6 @@
 package entities;
 
-import android.util.Log;
-import android.widget.Toast;
-
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-
-import Controller.HttpUtil;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class User {
     private String account; // 账号

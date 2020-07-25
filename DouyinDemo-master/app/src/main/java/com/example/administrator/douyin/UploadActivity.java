@@ -70,8 +70,6 @@ public class UploadActivity extends AppCompatActivity {
         path = intent.getStringExtra("name");
         cover_path = intent.getStringExtra("picture");
 
-        Toast.makeText(UploadActivity.this,path+"\n"+ cover_path,Toast.LENGTH_LONG).show();
-
         up = (Button) findViewById(R.id.button);
         name = (EditText)findViewById(R.id.name);
         describe = (EditText)findViewById(R.id.describe);

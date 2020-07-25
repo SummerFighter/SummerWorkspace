@@ -32,9 +32,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -115,8 +115,6 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
                 startActivity(intent);
             }
         });
-
-        getVideoData(0);//开启子线程获取数据
 
         initState();
         initView();
@@ -334,23 +332,18 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
     }
 
     private void getVideoData(int state){
-        final String userAccount= getSharedPreferences("info1.txt", MODE_PRIVATE).getString("account","0");
-        HttpUtil.getRecommendVideo(userAccount, refreshNum, new Callback() {
+        HttpUtil.getRecommendVideo(Constant.currentUser.getAccount(), refreshNum, new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 refreshNum++;
                 final String responseData = response.body().string();
                 List<VideoCase>newAddVideo=new ArrayList<>();
-                try {
-                    JSONArray videoJsonArray =new JSONObject(responseData).getJSONArray("videos");//获取的视频解析数组
-                    for(int i=0;i<videoJsonArray.length();i++){
-                        JSONObject videoJSON=videoJsonArray.getJSONObject(i);
-                        VideoCase v=new VideoCase(videoJSON);
-                        newAddVideo.add(v);
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                JSONObject resultJSON=JSONObject.parseObject(responseData);
+                JSONArray videoJsonArray =resultJSON.getJSONArray("videos");
+                for(int i=0;i<videoJsonArray.size();i++){
+                    JSONObject videoJSON=videoJsonArray.getJSONObject(i);
+                    VideoCase v=new VideoCase(videoJSON);
+                    newAddVideo.add(v);
                 }
                 int oldVideoDataNum = Constant.videoDatas.size();
                 int newAddVideoDataNum = newAddVideo.size();
@@ -366,7 +359,8 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
                             case 2:
                                 refreshView.finishRefresh();
                                 if(newAddVideoDataNum>0){
-                                    Constant.videoDatas = newAddVideo;
+                                    Constant.videoDatas.clear();
+                                    Constant.videoDatas.addAll(newAddVideo);
                                     mAdapter.notifyDataSetChanged();
                                 }
                                 else {
@@ -376,9 +370,7 @@ public class MainActivity extends AppCompatActivity implements DetailAdapter.Rem
                             case 3:
                                 refreshView.finishLoadMore();
                                 if(newAddVideoDataNum>0){
-                                    for(VideoCase v:newAddVideo){
-                                        Constant.videoDatas.add(v);
-                                    }
+                                    Constant.videoDatas.addAll(newAddVideo);
                                     mAdapter.notifyItemRangeInserted(oldVideoDataNum, newAddVideoDataNum);
                                 }
                                 else {

@@ -1,8 +1,10 @@
 package com.example.administrator.douyin;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.app.ActivityCompat;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -60,6 +63,11 @@ public class EditMyinfo extends AppCompatActivity {
     private String gender;
     private AppCompatImageView avatarView;
 
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("jiuming","editinfo"+Constant.currentUser.toString());
@@ -81,11 +89,7 @@ public class EditMyinfo extends AppCompatActivity {
         gender = Constant.currentUser.getGender();
         birthET.setText(Constant.currentUser.getBirth());
 
-        RequestOptions userAvatarOptions = new RequestOptions()
-                .signature(new ObjectKey(System.currentTimeMillis()));
-
         Glide.with(EditMyinfo.this)
-                .applyDefaultRequestOptions(userAvatarOptions)
                 .load(Constant.currentUser.getAvatarUrl())
                 .into(avatarView);
 
@@ -183,6 +187,10 @@ public class EditMyinfo extends AppCompatActivity {
     }
 
     public void OnClick_avatarChange(View v){
+        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, 1);
+        }
         Intent intentToPickPic = new Intent(Intent.ACTION_PICK, null);
         intentToPickPic.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         startActivityForResult(intentToPickPic, 50);
@@ -193,12 +201,11 @@ public class EditMyinfo extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 50:
-                //Toast.makeText(EditMyinfo.this, data.getData().getPath(), Toast.LENGTH_SHORT).show();
                 try {
                     Uri uri = data.getData();
                     String filePath = FileUtil.getFilePathByUri(this, uri);
                     sendProfileRequest(filePath,Constant.currentUser.getAccount());
-                    avatarView.setImageURI(Uri.parse(filePath));
+                    avatarView.setImageURI(uri);
                 }catch (Exception e){
                 }
                 break;
@@ -214,21 +221,22 @@ public class EditMyinfo extends AppCompatActivity {
 
         String url = HttpUtil.rootUrl+"setAvatar";
         File file = new File(imagePath);
+
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("account",account)
                 .addFormDataPart(
                         "image",
-                        "filename",
+                        file.getName(),
                         RequestBody.create(MediaType.parse("image/jpg"),file)
                 );
-        RequestBody requestBody = builder.build();
 
+        RequestBody requestBody = builder.build();
         HttpUtil.sendPostRequest(url, requestBody, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Looper.prepare();
-                Toast.makeText(EditMyinfo.this, "请求出错", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditMyinfo.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("frost_connection",e.getMessage());
                 dialog.dismiss();
                 Looper.loop();
@@ -239,18 +247,16 @@ public class EditMyinfo extends AppCompatActivity {
                 String responseData = response.body().string();
                 JSONObject jsonObject = JSON.parseObject(responseData);
                 int responseNum = jsonObject.getInteger("result");
-                switch (responseNum) {
-                    case 6:{
-                        Looper.prepare();
-                        Toast.makeText(EditMyinfo.this, "头像修改成功", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-
-                        //String account = Constant.currentUser.getAccount();
-                        //Constant.currentUser = User.addUser(account);
-                        Looper.loop();
-                        break;
-                    }
+                if (responseNum == 6) {
+                    String newAvatar=jsonObject.getString("avatarUrl");
+                    Constant.currentUser.setAvatarUrl(newAvatar);
                 }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.dismiss();
+                    }
+                });
             }
         });
     }
