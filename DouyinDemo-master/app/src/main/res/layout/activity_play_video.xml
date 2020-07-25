@@ -24,6 +24,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/light_gray"
+            android:background="@mipmap/blackbutton1"
             android:text="预览视频
 "/>
         <Button
@@ -31,18 +33,24 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/light_gray"
+            android:background="@mipmap/blackbutton1"
             android:text="录制视频"/>
         <Button
             android:id="@+id/upload"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/light_gray"
+            android:background="@mipmap/blackbutton1"
             android:text="上传视频"/>
         <Button
             android:id="@+id/choice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/light_gray"
+            android:background="@mipmap/blackbutton1"
             android:text="选择视频"/>
     </LinearLayout>
 
@@ -59,24 +67,32 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/light_gray"
+            android:background="@mipmap/blackbutton2"
             android:text="选择BGM"/>
         <Button
             android:id="@+id/confirm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/light_gray"
+            android:background="@mipmap/blackbutton2"
             android:text="确认BGM"/>
         <Button
             android:id="@+id/background_voice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/light_gray"
+            android:background="@mipmap/blackbutton2"
             android:text="开始配音"/>
         <Button
             android:id="@+id/confirm2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/light_gray"
+            android:background="@mipmap/blackbutton2"
             android:text="结束配音"/>
     </LinearLayout>
 

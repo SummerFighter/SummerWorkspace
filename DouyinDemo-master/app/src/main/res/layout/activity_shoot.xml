@@ -21,14 +21,14 @@
         android:background="#000000"
         android:gravity="center"
         android:layout_alignParentBottom="true">
+
         <Button
             android:id="@+id/video_recode_btn"
-            android:background="@color/black_overlay"
-            android:text="开始录像"
-            android:textColor="@color/white"
-            android:layout_width="wrap_content"
+            android:layout_width="126dp"
             android:layout_height="wrap_content"
-            />
+            android:background="@mipmap/redcircle"
+            android:text="开始录像"
+            android:textColor="@color/white" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/horizontal_linear"
@@ -38,19 +38,21 @@
         android:background="#000000"
         android:gravity="center"
         android:layout_alignParentRight="true">
+
         <Button
             android:id="@+id/video_recode_btn2"
-            android:background="@color/black_overlay"
-            android:text="开始录像"
-            android:textColor="@color/white"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="103dp"
+            android:background="@mipmap/redcircle"
+            android:text="开始录像"
+            android:textColor="@color/white" />
     </LinearLayout>
     <Button
         android:id="@+id/v_h_screen_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:background="@mipmap/blackbutton1"
+        android:textColor="@color/light_gray"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"/>
 </RelativeLayout>

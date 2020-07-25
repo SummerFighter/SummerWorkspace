@@ -36,8 +36,9 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:background="@android:color/darker_gray"
+                android:background="@color/light01"
                 android:hint="今天想看点什么？"
+                android:textColor="@color/lightblue3"
                 android:selectAllOnFocus="true" />
 
             <ImageButton
